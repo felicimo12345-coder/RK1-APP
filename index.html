@@ -183,6 +183,7 @@
       line-height: 1.5;
       padding: 0 16px;
     }
+    #ix-embed-root { display: none !important; }
   </style>
 </head>
 <body>
@@ -197,8 +198,4416 @@
       <div id="device" data-screen="001" data-ix-mode="home"></div>
     </div>
   </div>
+  <div id="ix-embed-root" hidden aria-hidden="true">
+    <script type="text/plain" id="ix-embed-001-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fw-bold: 700;
+      --fs-label: 12px;
+      --fs-value: 48px;
+      --fs-title: 32px;
+      --fs-tiny: 4px;
+      --lh-label: 13px;
+      --lh-value: 40px;
+      --lh-title: 40px;
+      --lh-tiny: 4px;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .layer--header  { left: 3px;   top: 69px;  width: 393px; height: 84px;  z-index: 1; border-radius: 42px; }
+    .layer--metrics { left: 3px;   top: 158px; width: 393px; height: 194px; z-index: 2; border-radius: 42px; }
+    .layer--bottom  { left: 3px;   top: 536px; width: 393px; height: 323px; z-index: 3; border-radius: 42px; }
+    .layer--mood-panel  { left: 3px;   top: 357px; width: 194px; height: 174px; z-index: 4; border-radius: 33.6px; }
+    .layer--sleep-panel { left: 202px; top: 357px; width: 194px; height: 174px; z-index: 4; border-radius: 33.6px; }
+    .layer--avatar { left: 12px; top: 77px; width: 69px; height: 69px; z-index: 8; border-radius: 50%; object-fit: cover; }
+    .layer--heart { left: 126px; top: 228px; width: 16px; height: 16px; z-index: 12; }
+    .layer--glass-smile { left: -19px; top: 334px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-smile  { left: 22px;  top: 375px; width: 34px;  height: 34px;  z-index: 11; }
+    .layer--glass-moon { left: 183px; top: 335px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-moon  { left: 224px; top: 376px; width: 34px;  height: 34px;  z-index: 11; }
+    .layer--icogram { left: 142px; top: 548px; width: 229px; height: 167px; z-index: 9; }
+    .layer--nav          { left: 8px;   top: 746px; width: 378px; height: 128px; z-index: 15; }
+    .layer--nav-dot      { left: 41px;  top: 778px; width: 67px;  height: 65px;  z-index: 16; }
+    .layer--nav-home     { left: 61px;  top: 796px; width: 28.67px; height: 26.88px; z-index: 17; }
+    .layer--nav-settings { left: 147px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-garage   { left: 228px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-user     { left: 309px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label { font-size: var(--fs-label); line-height: var(--lh-label); color: #fff; }
+    .text--value { font-size: var(--fs-value); line-height: var(--lh-value); color: #fff; letter-spacing: -0.02em; }
+    .text--title { font-size: var(--fs-title); line-height: var(--lh-title); color: #fff; }
+    .text--tiny  { font-size: var(--fs-tiny); line-height: var(--lh-tiny); color: #fff; }
+    .text--dark  { color: #000; }
+    .text--pre   { white-space: pre-line; }
+
+    .text--tod          { left: 93px;    top: 93px;    width: 57px;  height: 38px; }
+    .text--heart-rate   { left: 46px;    top: 191px;   width: 60px;  height: 12px; }
+    .text--hr-value     { left: 46px;    top: 206px;   width: 76px;  height: 38px; }
+    .text--bpm          { left: 130px;   top: 223px;   width: 8px;   height: 4px;  }
+    .text--over-all     { left: 214px;   top: 191px;   width: 42px;  height: 12px; }
+    .text--good         { left: 214px;   top: 206px;   width: 141px; height: 38px; font-weight: var(--fw-bold); }
+    .text--respiratory  { left: 46px;    top: 261px;   width: 60px;  height: 12px; }
+    .text--resp-value   { left: 46px;    top: 276px;   width: 84px;  height: 38px; }
+    .text--temperature  { left: 214px;   top: 261px;   width: 67px;  height: 12px; }
+    .text--temp-value   { left: 214px;   top: 276px;   width: 64px;  height: 38px; }
+    .text--mood-label   { left: 24px;    top: 438px;   width: 43px;  height: 26px; }
+    .text--mood-score   {
+      left: 93px; top: 480px; width: 77px; height: 38px;
+      display: flex; align-items: flex-end; justify-content: center;
+      font-size: 48px; line-height: 40px; letter-spacing: 0;
+    }
+    .text--sleep-label  { left: 223.89px; top: 433.65px; width: 43px; height: 26px; }
+    .text--sleep-value  {
+      left: 273.65px; top: 480.45px; width: 88.97px; height: 38px;
+      display: flex; align-items: flex-end; justify-content: center;
+      font-size: 48px; line-height: 40px; letter-spacing: 0;
+    }
+    .score-main { font-size: 48px; line-height: 40px; }
+    .score-sub  { font-size: 12px; line-height: 13px; }
+    .text--hospital     { left: 23px;    top: 560px;   width: 81px;  height: 52px; }
+    .text--arriving     { left: 23px;    top: 677px;   width: 143px; height: 38px; letter-spacing: 0.04em; }</script>
+    <template id="ix-embed-001-device"><img class="layer layer--header"      data-asset="section-header.png" alt="" />
+        <img class="layer layer--metrics"     data-asset="section-metrics.png" alt="" />
+        <img class="layer layer--bottom"      data-asset="section-bottom.png" alt="" />
+        <img class="layer layer--mood-panel"  data-asset="mood-panel.png" alt="" />
+        <img class="layer layer--sleep-panel" data-asset="sleep-panel.png" alt="" />
+        <img class="layer layer--avatar" data-asset="avatar.png" alt="" />
+        <img class="layer layer--heart" data-asset="icon-heart.png" alt="" />
+        <img class="layer layer--glass-smile" data-asset="glass-smile.png" alt="" />
+        <img class="layer layer--icon-smile"  data-asset="icon-smile.png" alt="" />
+        <img class="layer layer--glass-moon" data-asset="glass-moon.png" alt="" />
+        <img class="layer layer--icon-moon"  data-asset="icon-moon.png" alt="" />
+        <img class="layer layer--icogram" data-asset="icogram.png" alt="" />
+        <img class="layer layer--nav"          data-asset="nav-bar.png" alt="" />
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+        <span class="text text--title text--tod">Tod</span>
+        <span class="text text--label text--heart-rate">Heart Rate</span>
+        <span class="text text--value text--hr-value">110</span>
+        <span class="text text--tiny text--bpm">BPM</span>
+        <span class="text text--label text--over-all">Over All</span>
+        <span class="text text--value text--good">GOOD</span>
+        <span class="text text--label text--respiratory">Respiratory</span>
+        <span class="text text--value text--resp-value">22/min</span>
+        <span class="text text--label text--temperature">Temperature</span>
+        <span class="text text--value text--temp-value">38℃</span>
+        <span class="text text--label text--dark text--pre text--mood-label">MOOD
+RATING</span>
+        <span class="text text--value text--dark text--mood-score"><span class="score-main">93</span><span class="score-sub">/100</span></span>
+        <span class="text text--label text--pre text--sleep-label">SLEEP
+INDEX</span>
+        <span class="text text--value text--sleep-value"><span class="score-main">! 76</span><span class="score-sub">%</span></span>
+        <span class="text text--label text--pre text--hospital">COMMUNITY
+PET
+HOSPITAL
+DATA</span>
+        <span class="text text--title text--arriving">ARRIVING</span></template>
+    <script type="text/plain" id="ix-embed-001-1-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fw-bold: 700;
+      --fs-label: 12px;
+      --fs-label-sm: 10px;
+      --fs-value: 48px;
+      --fs-title: 32px;
+      --fs-tiny: 4px;
+      --lh-label: 13px;
+      --lh-value: 40px;
+      --lh-title: 40px;
+      --lh-tiny: 4px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(19.965px) saturate(1.12);
+      -webkit-backdrop-filter: blur(19.965px) saturate(1.12);
+      border: 0.5px solid rgba(255, 255, 255, 0.35);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.38),
+        inset 1px 2px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    /* 渐变背景区块 Figma 2365:2100 / 2365:2101 */
+    .layer--header  { left: 3px;  top: 69px;  width: 393px; height: 84px;  z-index: 1; border-radius: 42px; }
+    .layer--metrics { left: 3px;  top: 158px; width: 393px; height: 429px; z-index: 2; border-radius: 42px; }
+
+    /* 心情 / 睡眠底框 Figma 2365:2103 / 2365:2104 */
+    .layer--mood-panel {
+      left: 4px; top: 593px; width: 194px; height: 174px; z-index: 4;
+      border-radius: 33.6px;
+      background: rgb(197, 197, 197);
+    }
+    .layer--sleep-panel {
+      left: 203px; top: 593px; width: 194px; height: 174px; z-index: 4;
+      border-radius: 33.6px;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* 头像 Figma 2365:2105 */
+    .layer--avatar { left: 12px; top: 77px; width: 69px; height: 69px; z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 返回圆形玻璃 — Shape bbox Figma 2365:2162 */
+    .layer--glass-back {
+      left: 12px; top: 167px; width: 64px; height: 65px;
+      z-index: 10; border-radius: 50%;
+    }
+    .layer--icon-back { left: 26px; top: 186px; width: 35px; height: 25px; z-index: 11; }
+
+    /* 心率图标 Figma 2365:2118 */
+    .layer--heart { left: 135px; top: 285px; width: 16px; height: 16px; z-index: 12; }
+
+    /* 历史 AVG 圆环 Figma 2365:2708–2716 */
+    .chart-ring {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.75;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .chart-ring--cyan-outer {
+      left: 12px; top: 443px; width: 103.83px; height: 103.83px;
+      background: radial-gradient(circle, transparent 0%, rgb(44, 198, 210) 100%);
+    }
+    .chart-ring--cyan-inner {
+      left: 35.57px; top: 466.57px; width: 56.69px; height: 56.69px;
+      background: radial-gradient(circle, rgba(44, 196, 210, 0.7) 0%, rgb(44, 196, 210) 100%);
+    }
+    .chart-ring--orange-outer {
+      left: 145px; top: 443px; width: 103.83px; height: 103.83px;
+      background: radial-gradient(circle, transparent 0%, rgb(234, 169, 80) 100%);
+    }
+    .chart-ring--orange-inner {
+      left: 174.24px; top: 472.24px; width: 45.35px; height: 45.35px;
+      background: radial-gradient(circle, rgba(235, 168, 80, 0.05) 0%, rgb(255, 168, 16) 100%);
+    }
+    .chart-ring--white-outer {
+      left: 278px; top: 443px; width: 103.83px; height: 103.83px;
+      background: radial-gradient(circle, transparent 0%, rgb(255, 255, 255) 100%);
+    }
+    .chart-ring--white-inner {
+      left: 285.7px; top: 450.7px; width: 88.44px; height: 88.44px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgb(255, 255, 255) 100%);
+    }
+
+    /* MOOD 玻璃 — blur bbox Figma 2365:2121 */
+    .layer--glass-smile { left: -19px; top: 570px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-smile  { left: 22px;  top: 611px; width: 34px;  height: 34px;  z-index: 11; }
+
+    /* SLEEP 玻璃 — blur bbox Figma 2365:2125 */
+    .layer--glass-moon { left: 184px; top: 571px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-moon  { left: 225px; top: 612px; width: 34px;  height: 34px;  z-index: 11; }
+
+    /* 导航跑道玻璃 — Shape bbox Figma 2365:2130 / 2365:2134–2135 */
+    .layer--nav {
+      left: 34px; top: 772px; width: 326px; height: 77px;
+      z-index: 15; border-radius: 999px;
+    }
+    .layer--nav-dot { left: 41px; top: 778px; width: 67px; height: 65px; z-index: 16; }
+    .layer--nav-home     { left: 61px;  top: 796px; width: 28.67px; height: 26.88px; z-index: 17; }
+    .layer--nav-settings { left: 147px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-garage   { left: 228px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-user     { left: 309px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label {
+      font-size: var(--fs-label);
+      line-height: var(--lh-label);
+    }
+
+    .text--label-sm {
+      font-size: var(--fs-label-sm);
+      line-height: var(--lh-label);
+    }
+
+    .text--value {
+      font-size: var(--fs-value);
+      line-height: var(--lh-value);
+      letter-spacing: -0.02em;
+    }
+
+    .text--title {
+      font-size: var(--fs-title);
+      line-height: var(--lh-title);
+    }
+
+    .text--tiny {
+      font-size: var(--fs-tiny);
+      line-height: var(--lh-tiny);
+    }
+
+    .text--dark { color: #000; }
+    .text--dark-soft { color: rgb(31, 31, 31); }
+    .text--pre { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2365:2099 */
+    .text--tod            { left: 93px;     top: 93px;     width: 57px;  height: 38px; }
+    .text--history        { left: 12px;     top: 393px;    width: 100px; height: 38px; }
+    .text--heart-rate     { left: 55px;     top: 248px;    width: 60px;  height: 12px; }
+    .text--hr-value       { left: 55px;     top: 263px;    width: 76px;  height: 38px; }
+    .text--bpm            { left: 139px;    top: 280px;    width: 8px;   height: 4px;  }
+    .text--over-all       { left: 205px;    top: 248px;    width: 42px;  height: 12px; }
+    .text--good           { left: 205px;    top: 263px;    width: 141px; height: 38px; font-weight: var(--fw-bold); }
+    .text--respiratory    { left: 55px;     top: 318px;    width: 60px;  height: 12px; }
+    .text--resp-value {
+      left: 55px; top: 333px; width: 84px; height: 38px;
+      display: flex; align-items: flex-end;
+    }
+    .text--temperature    { left: 205px;    top: 318px;    width: 67px;  height: 12px; }
+    .text--temp-value {
+      left: 205px; top: 333px; width: 64px; height: 38px;
+      display: flex; align-items: flex-end;
+    }
+
+    .text--avg-hr-label   { left: 28px;     top: 467px;    width: 71px;  height: 12px; }
+    .text--avg-hr-value   { left: 26px;     top: 484px;    width: 76px;  height: 38px; }
+    .text--avg-resp-label { left: 154px;    top: 467px;    width: 86px;  height: 12px; }
+    .text--avg-resp-value {
+      left: 155px; top: 484px; width: 84px; height: 38px;
+      display: flex; align-items: flex-end;
+    }
+    .text--avg-state-label { left: 300px;   top: 467px;    width: 59px;  height: 12px; }
+    .text--avg-state-value { left: 287px;   top: 484px;    width: 85px;  height: 38px; }
+
+    .text--mood-label     { left: 24px;     top: 674px;    width: 43px;  height: 26px; }
+    .text--mood-score {
+      left: 93px; top: 716px; width: 77px; height: 38px;
+      display: flex; align-items: flex-end; justify-content: center;
+      font-size: var(--fs-value); line-height: var(--lh-value); letter-spacing: 0;
+    }
+
+    .text--sleep-label { left: 223.89px; top: 669.65px; width: 43px; height: 26px; }
+    .text--sleep-value {
+      left: 273.65px; top: 716.45px; width: 88.97px; height: 38px;
+      display: flex; align-items: flex-end; justify-content: center;
+      font-size: var(--fs-value); line-height: var(--lh-value); letter-spacing: 0;
+    }
+
+    .score-main { font-size: 48px; line-height: 40px; font-weight: var(--fw-regular); }
+    .score-sub  { font-size: 12px; line-height: 13px; font-weight: var(--fw-regular); }
+    .value-main { font-size: 48px; line-height: 40px; font-weight: var(--fw-regular); letter-spacing: -0.02em; }
+    .value-sub  { font-size: 12px; line-height: 13px; font-weight: var(--fw-regular); letter-spacing: 0; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-001-1-device"><img class="layer layer--header"  data-asset="section-header.png" alt="" />
+        <img class="layer layer--metrics" data-asset="section-metrics.png" alt="" />
+
+        <div class="layer layer--mood-panel" aria-hidden="true"></div>
+        <div class="layer layer--sleep-panel" aria-hidden="true"></div>
+
+        <div class="chart-ring chart-ring--cyan-outer" aria-hidden="true"></div>
+        <div class="chart-ring chart-ring--cyan-inner" aria-hidden="true"></div>
+        <div class="chart-ring chart-ring--orange-outer" aria-hidden="true"></div>
+        <div class="chart-ring chart-ring--orange-inner" aria-hidden="true"></div>
+        <div class="chart-ring chart-ring--white-outer" aria-hidden="true"></div>
+        <div class="chart-ring chart-ring--white-inner" aria-hidden="true"></div>
+
+        <img class="layer layer--avatar" data-asset="avatar.png" alt="" />
+
+        <div class="layer layer--glass-back glass" aria-hidden="true"></div>
+        <img class="layer layer--icon-back" data-asset="icon-back.png" alt="" />
+
+        <img class="layer layer--heart" data-asset="icon-heart.png" alt="" />
+
+        <img class="layer layer--glass-smile" data-asset="glass-smile.png" alt="" />
+        <img class="layer layer--icon-smile"  data-asset="icon-smile.png" alt="" />
+
+        <img class="layer layer--glass-moon" data-asset="glass-moon.png" alt="" />
+        <img class="layer layer--icon-moon"  data-asset="icon-moon.png" alt="" />
+
+        <div class="layer layer--nav glass" aria-hidden="true"></div>
+        <img class="layer layer--nav-dot" data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod">Tod</span>
+        <span class="text text--title text--history">History</span>
+
+        <span class="text text--label text--heart-rate">Heart Rate</span>
+        <span class="text text--value text--hr-value">110</span>
+        <span class="text text--tiny text--bpm">BPM</span>
+        <span class="text text--label text--over-all">Over All</span>
+        <span class="text text--value text--good">GOOD</span>
+        <span class="text text--label text--respiratory">Respiratory</span>
+        <span class="text text--resp-value"><span class="value-main">22</span><span class="value-sub">/min</span></span>
+        <span class="text text--label text--temperature">Temperature</span>
+        <span class="text text--temp-value"><span class="value-main">38</span><span class="value-sub">°C</span></span>
+
+        <span class="text text--label-sm text--avg-hr-label">AVG Heart Rate</span>
+        <span class="text text--value text--avg-hr-value">102</span>
+        <span class="text text--label text--avg-resp-label">AVG Respiratory</span>
+        <span class="text text--avg-resp-value"><span class="value-main">23</span><span class="value-sub">/min</span></span>
+        <span class="text text--label text--dark text--avg-state-label">AVG STATE</span>
+        <span class="text text--value text--dark-soft text--avg-state-value">Fine</span>
+
+        <span class="text text--label text--dark text--pre text--mood-label">MOOD
+RATING</span>
+        <span class="text text--dark text--mood-score"><span class="score-main">93</span><span class="score-sub">/100</span></span>
+
+        <span class="text text--label text--pre text--sleep-label">SLEEP
+INDEX</span>
+        <span class="text text--sleep-value"><span class="score-main">! 76</span><span class="score-sub">%</span></span></template>
+    <script type="text/plain" id="ix-embed-001-2-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fw-bold: 700;
+      --fs-label: 12px;
+      --fs-value: 48px;
+      --fs-title: 32px;
+      --fs-bravo: 40px;
+      --fs-tiny: 4px;
+      --lh-label: 13px;
+      --lh-value: 40px;
+      --lh-title: 40px;
+      --lh-bravo: 40px;
+      --lh-tiny: 4px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(19.965px) saturate(1.12);
+      -webkit-backdrop-filter: blur(19.965px) saturate(1.12);
+      border: 0.5px solid rgba(255, 255, 255, 0.35);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.38),
+        inset 1px 2px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    /* 渐变背景区块 Figma 2365:2727 / 2728 / 2729 */
+    .layer--header  { left: 4px; top: 69px;  width: 393px; height: 84px;  z-index: 1; border-radius: 42px; }
+    .layer--metrics { left: 4px; top: 158px; width: 393px; height: 194px; z-index: 2; border-radius: 42px; }
+    .layer--bottom  { left: 4px; top: 536px; width: 393px; height: 323px; z-index: 3; border-radius: 42px; }
+
+    /* 心情全宽底框 Figma 2365:2730 */
+    .layer--mood-panel { left: 4px; top: 357px; width: 393px; height: 174px; z-index: 4; border-radius: 33.6px; }
+
+    /* 头像 Figma 2365:2732 */
+    .layer--avatar { left: 13px; top: 77px; width: 69px; height: 69px; z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 心率图标 Figma 2365:2745 */
+    .layer--heart { left: 127px; top: 228px; width: 16px; height: 16px; z-index: 12; }
+
+    /* 心情区返回圆形玻璃 — Shape bbox Figma 2365:2748 */
+    .layer--glass-back {
+      left: 7px; top: 360px; width: 64px; height: 64px;
+      z-index: 10; border-radius: 50%;
+    }
+    .layer--icon-back { left: 21px; top: 379px; width: 35px; height: 25px; z-index: 11; }
+
+    /* 底部插图 Figma 2365:2756 */
+    .layer--icogram { left: 143px; top: 548px; width: 229px; height: 167px; z-index: 9; }
+
+    /* 导航跑道玻璃 — Shape bbox Figma 2365:2757 / 2365:2761–2762 */
+    .layer--nav {
+      left: 35px; top: 772px; width: 326px; height: 77px;
+      z-index: 15; border-radius: 999px;
+    }
+    .layer--nav-dot      { left: 42px;  top: 778px; width: 67px;  height: 65px;  z-index: 16; }
+    .layer--nav-home     { left: 62px;  top: 796px; width: 28.67px; height: 26.88px; z-index: 17; }
+    .layer--nav-settings { left: 148px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-garage   { left: 229px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-user     { left: 310px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label  { font-size: var(--fs-label);  line-height: var(--lh-label); }
+    .text--value  { font-size: var(--fs-value);  line-height: var(--lh-value); letter-spacing: -0.02em; }
+    .text--title  { font-size: var(--fs-title);  line-height: var(--lh-title); }
+    .text--bravo  { font-size: var(--fs-bravo);  line-height: var(--lh-bravo); }
+    .text--tiny   { font-size: var(--fs-tiny);   line-height: var(--lh-tiny); }
+    .text--dark   { color: #000; }
+    .text--pre    { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2365:2726 */
+    .text--tod          { left: 94px;  top: 93px;  width: 57px;  height: 38px; }
+    .text--heart-rate   { left: 47px;  top: 191px; width: 60px;  height: 12px; }
+    .text--hr-value     { left: 47px;  top: 206px; width: 76px;  height: 38px; }
+    .text--bpm          { left: 131px; top: 223px; width: 8px;   height: 4px;  }
+    .text--over-all     { left: 215px; top: 191px; width: 42px;  height: 12px; }
+    .text--good         { left: 215px; top: 206px; width: 141px; height: 38px; font-weight: var(--fw-bold); }
+    .text--respiratory  { left: 47px;  top: 261px; width: 60px;  height: 12px; }
+    .text--resp-value   {
+      left: 47px; top: 276px; width: 84px; height: 38px;
+      display: flex; align-items: flex-end;
+    }
+    .text--temperature  { left: 215px; top: 261px; width: 67px;  height: 12px; }
+    .text--temp-value   {
+      left: 215px; top: 276px; width: 64px; height: 38px;
+      display: flex; align-items: flex-end;
+    }
+
+    .text--mood-label   { left: 24px; top: 438px; width: 43px; height: 26px; }
+    .text--mood-score   {
+      left: 23px; top: 480px; width: 77px; height: 38px;
+      display: flex; align-items: flex-end; justify-content: center;
+      letter-spacing: 0;
+    }
+    .text--bravo-title  { left: 227px; top: 404px; width: 145px; height: 44px; }
+    .text--bravo-sub    { left: 218px; top: 451px; width: 151px; height: 29px; line-height: var(--lh-label); }
+
+    .text--hospital     { left: 24px; top: 560px; width: 81px; height: 52px; }
+    .text--arriving     { left: 24px; top: 677px; width: 143px; height: 38px; letter-spacing: 0.04em; }
+
+    .score-main { font-size: 48px; line-height: 40px; font-weight: var(--fw-regular); }
+    .score-sub  { font-size: 12px; line-height: 13px; font-weight: var(--fw-regular); }
+    .value-main { font-size: 48px; line-height: 40px; font-weight: var(--fw-regular); letter-spacing: -0.02em; }
+    .value-sub  { font-size: 12px; line-height: 13px; font-weight: var(--fw-regular); letter-spacing: 0; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-001-2-device"><img class="layer layer--header"     data-asset="section-header.png" alt="" />
+        <img class="layer layer--metrics"    data-asset="section-metrics.png" alt="" />
+        <img class="layer layer--bottom"     data-asset="section-bottom.png" alt="" />
+        <img class="layer layer--mood-panel" data-asset="mood-panel.png" alt="" />
+
+        <img class="layer layer--avatar" data-asset="avatar.png" alt="" />
+        <img class="layer layer--heart"  data-asset="icon-heart.png" alt="" />
+
+        <div class="layer layer--glass-back glass" aria-hidden="true"></div>
+        <img class="layer layer--icon-back" data-asset="icon-back.png" alt="" />
+
+        <img class="layer layer--icogram" data-asset="icogram.png" alt="" />
+
+        <div class="layer layer--nav glass" aria-hidden="true"></div>
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod">Tod</span>
+
+        <span class="text text--label text--heart-rate">Heart Rate</span>
+        <span class="text text--value text--hr-value">110</span>
+        <span class="text text--tiny text--bpm">BPM</span>
+        <span class="text text--label text--over-all">Over All</span>
+        <span class="text text--value text--good">GOOD</span>
+        <span class="text text--label text--respiratory">Respiratory</span>
+        <span class="text text--resp-value"><span class="value-main">22</span><span class="value-sub">/min</span></span>
+        <span class="text text--label text--temperature">Temperature</span>
+        <span class="text text--temp-value"><span class="value-main">38</span><span class="value-sub">°C</span></span>
+
+        <span class="text text--label text--dark text--pre text--mood-label">MOOD
+RATING</span>
+        <span class="text text--dark text--mood-score"><span class="score-main">93</span><span class="score-sub">/100</span></span>
+
+        <span class="text text--bravo text--dark text--bravo-title">Bravo!</span>
+        <span class="text text--label text--dark text--bravo-sub">Your Pet is In Excellent State,Keep that way!</span>
+
+        <span class="text text--label text--pre text--hospital">COMMUNITY
+PET
+HOSPITAL
+DATA</span>
+        <span class="text text--title text--arriving">ARRIVING</span></template>
+    <script type="text/plain" id="ix-embed-001-3-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fw-bold: 700;
+      --fs-label: 12px;
+      --fs-value: 48px;
+      --fs-title: 32px;
+      --fs-heading: 40px;
+      --fs-tiny: 4px;
+      --lh-label: 13px;
+      --lh-value: 40px;
+      --lh-title: 40px;
+      --lh-heading: 40px;
+      --lh-tiny: 4px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(19.965px) saturate(1.12);
+      -webkit-backdrop-filter: blur(19.965px) saturate(1.12);
+      border: 0.5px solid rgba(255, 255, 255, 0.35);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.38),
+        inset 1px 2px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    /* 渐变背景区块 Figma 2365:2790 / 2791 / 2792 */
+    .layer--header  { left: 4px; top: 69px;  width: 393px; height: 84px;  z-index: 1; border-radius: 42px; }
+    .layer--metrics { left: 4px; top: 158px; width: 393px; height: 194px; z-index: 2; border-radius: 42px; }
+    .layer--bottom  { left: 4px; top: 536px; width: 393px; height: 323px; z-index: 3; border-radius: 42px; }
+
+    /* 睡眠全宽底框 Figma 2365:2794 */
+    .layer--sleep-panel { left: 4px; top: 357px; width: 393px; height: 174px; z-index: 4; border-radius: 33.6px; }
+
+    /* 头像 Figma 2365:2795 */
+    .layer--avatar { left: 13px; top: 77px; width: 69px; height: 69px; z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 心率图标 Figma 2365:2808 */
+    .layer--heart { left: 127px; top: 228px; width: 16px; height: 16px; z-index: 12; }
+
+    /* 睡眠区返回圆形玻璃 — Shape bbox Figma 2365:2815 */
+    .layer--glass-back {
+      left: 9px; top: 361px; width: 64px; height: 64px;
+      z-index: 10; border-radius: 50%;
+    }
+    .layer--icon-back { left: 23px; top: 380px; width: 35px; height: 25px; z-index: 11; }
+
+    /* 底部插图 Figma 2365:2819 */
+    .layer--icogram { left: 143px; top: 548px; width: 229px; height: 167px; z-index: 9; }
+
+    /* 导航跑道玻璃 — Shape bbox Figma 2365:2820 / 2365:2824–2825 */
+    .layer--nav {
+      left: 35px; top: 772px; width: 326px; height: 77px;
+      z-index: 15; border-radius: 999px;
+    }
+    .layer--nav-dot      { left: 42px;  top: 778px; width: 67px;  height: 65px;  z-index: 16; }
+    .layer--nav-home     { left: 62px;  top: 796px; width: 28.67px; height: 26.88px; z-index: 17; }
+    .layer--nav-settings { left: 148px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-garage   { left: 229px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-user     { left: 310px; top: 799px; width: 24px;  height: 24px;  z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label   { font-size: var(--fs-label);   line-height: var(--lh-label); }
+    .text--value   { font-size: var(--fs-value);   line-height: var(--lh-value); letter-spacing: -0.02em; }
+    .text--title   { font-size: var(--fs-title);   line-height: var(--lh-title); }
+    .text--heading { font-size: var(--fs-heading); line-height: var(--lh-heading); }
+    .text--tiny    { font-size: var(--fs-tiny);    line-height: var(--lh-tiny); }
+    .text--pre     { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2365:2789 */
+    .text--tod          { left: 94px;  top: 93px;  width: 57px;  height: 38px; }
+    .text--heart-rate   { left: 47px;  top: 191px; width: 60px;  height: 12px; }
+    .text--hr-value     { left: 47px;  top: 206px; width: 76px;  height: 38px; }
+    .text--bpm          { left: 131px; top: 223px; width: 8px;   height: 4px;  }
+    .text--over-all     { left: 215px; top: 191px; width: 42px;  height: 12px; }
+    .text--good         { left: 215px; top: 206px; width: 141px; height: 38px; font-weight: var(--fw-bold); }
+    .text--respiratory  { left: 47px;  top: 261px; width: 60px;  height: 12px; }
+    .text--resp-value   {
+      left: 47px; top: 276px; width: 84px; height: 38px;
+      display: flex; align-items: flex-end;
+    }
+    .text--temperature  { left: 215px; top: 261px; width: 67px;  height: 12px; }
+    .text--temp-value   {
+      left: 215px; top: 276px; width: 64px; height: 38px;
+      display: flex; align-items: flex-end;
+    }
+
+    .text--sleep-label  { left: 22.89px; top: 433.65px; width: 43px; height: 26px; }
+    .text--sleep-value  {
+      left: 21px; top: 480.45px; width: 88.97px; height: 38px;
+      display: flex; align-items: flex-end; justify-content: center;
+      letter-spacing: 0;
+    }
+    .text--sleep-title  { left: 138px; top: 401px; width: 237px; height: 44px; }
+    .text--sleep-sub    { left: 224px; top: 445px; width: 151px; height: 41px; line-height: var(--lh-label); }
+
+    .text--hospital     { left: 24px; top: 560px; width: 81px; height: 52px; }
+    .text--arriving     { left: 24px; top: 677px; width: 143px; height: 38px; letter-spacing: 0.04em; }
+
+    .score-main { font-size: 48px; line-height: 40px; font-weight: var(--fw-regular); }
+    .score-sub  { font-size: 12px; line-height: 13px; font-weight: var(--fw-regular); }
+    .value-main { font-size: 48px; line-height: 40px; font-weight: var(--fw-regular); letter-spacing: -0.02em; }
+    .value-sub  { font-size: 12px; line-height: 13px; font-weight: var(--fw-regular); letter-spacing: 0; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-001-3-device"><img class="layer layer--header"      data-asset="section-header.png" alt="" />
+        <img class="layer layer--metrics"     data-asset="section-metrics.png" alt="" />
+        <img class="layer layer--bottom"      data-asset="section-bottom.png" alt="" />
+        <img class="layer layer--sleep-panel" data-asset="sleep-panel.png" alt="" />
+
+        <img class="layer layer--avatar" data-asset="avatar.png" alt="" />
+        <img class="layer layer--heart"  data-asset="icon-heart.png" alt="" />
+
+        <div class="layer layer--glass-back glass" aria-hidden="true"></div>
+        <img class="layer layer--icon-back" data-asset="icon-back.png" alt="" />
+
+        <img class="layer layer--icogram" data-asset="icogram.png" alt="" />
+
+        <div class="layer layer--nav glass" aria-hidden="true"></div>
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod">Tod</span>
+
+        <span class="text text--label text--heart-rate">Heart Rate</span>
+        <span class="text text--value text--hr-value">110</span>
+        <span class="text text--tiny text--bpm">BPM</span>
+        <span class="text text--label text--over-all">Over All</span>
+        <span class="text text--value text--good">GOOD</span>
+        <span class="text text--label text--respiratory">Respiratory</span>
+        <span class="text text--resp-value"><span class="value-main">22</span><span class="value-sub">/min</span></span>
+        <span class="text text--label text--temperature">Temperature</span>
+        <span class="text text--temp-value"><span class="value-main">38</span><span class="value-sub">°C</span></span>
+
+        <span class="text text--label text--pre text--sleep-label">SLEEP
+INDEX</span>
+        <span class="text text--sleep-value"><span class="score-main">! 76</span><span class="score-sub">%</span></span>
+
+        <span class="text text--heading text--sleep-title">Sleep too late</span>
+        <span class="text text--label text--sleep-sub">Advised Sleeping Time is Around 8-9pm,Try To Let Your Pet Sleep Earlier</span>
+
+        <span class="text text--label text--pre text--hospital">COMMUNITY
+PET
+HOSPITAL
+DATA</span>
+        <span class="text text--title text--arriving">ARRIVING</span></template>
+    <script type="text/plain" id="ix-embed-002-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fs-label: 12px;
+      --fs-title: 32px;
+      --fs-quote-lg: 32px;
+      --fs-quote-md: 24px;
+      --fs-quote-sm: 20px;
+      --lh-label: 13px;
+      --lh-title: 40px;
+      --lh-quote: 40px;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .layer--header { left: 4px;   top: 67px;  width: 393px; height: 283px; z-index: 1; border-radius: 42px; }
+    .layer--chat   { left: 4px;   top: 355px; width: 393px; height: 174px; z-index: 2; border-radius: 42px; }
+    .layer--mechanical, .layer--location { width: 194px; height: 323px; top: 534px; z-index: 3; border-radius: 42px; overflow: hidden; }
+    .layer--mechanical { left: 4px; background: linear-gradient(180deg, rgb(236 167 80 / 100%) 0%, rgb(236 167 80 / 70%) 29.33%, rgb(235 168 80 / 5%) 85.58%); }
+    .layer--location { left: 203px; background: linear-gradient(180deg, rgb(44 196 210 / 100%) 0%, rgb(44 196 210 / 70%) 29.33%, rgb(44 196 210 / 5%) 85.58%); }
+    .layer--avatar { left: 16px; top: 82px; width: 69px; height: 69px; z-index: 8; border-radius: 50%; object-fit: cover; }
+    .layer--recording { left: 171px; top: 127px; width: 15px; height: 12px; z-index: 12; }
+    .layer--glass-radial { left: -17px; top: 333px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-radial  { left: 23px;  top: 373px; width: 35px;  height: 35px;  z-index: 11; }
+    .layer--icon-chat { left: 190px; top: 492px; width: 22px; height: 22px; z-index: 12; }
+    .layer--glass-settings { left: -14px; top: 514px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-settings  { left: 26px;  top: 554px; width: 35px; height: 35px; z-index: 11; }
+    .layer--glass-map { left: 185px; top: 514px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-map  { left: 226px; top: 555px; width: 34px;  height: 34px;  z-index: 11; }
+    .layer--icogram { left: 255px; top: 636px; width: 128px; height: 120px; z-index: 9; }
+    .layer--icon-motor { left: 17px; top: 623px; width: 24px; height: 24px; z-index: 11; }
+    .layer--icon-battery { left: 17px; top: 656px; width: 24px; height: 24px; z-index: 11; }
+    .layer--icon-ventilation { left: 17px; top: 689px; width: 24px; height: 24px; z-index: 11; }
+    .layer--icon-temp { left: 17px; top: 722px; width: 24px; height: 24px; z-index: 11; }
+    .layer--divider { height: 1px; z-index: 11; }
+    .layer--divider-1 { left: 44.5px; top: 646.5px; width: 135px; }
+    .layer--divider-2 { left: 44.5px; top: 679.5px; width: 135px; }
+    .layer--divider-3 { left: 44.5px; top: 710.5px; width: 135px; }
+    .layer--divider-4 { left: 44.5px; top: 743.5px; width: 135px; }
+    .layer--nav { left: 12px;  top: 744px; width: 378px; height: 129px; z-index: 15; }
+    .layer--nav-dot { left: 210px; top: 776px; width: 67px;  height: 65px;  z-index: 16; }
+    .layer--nav-home { left: 67px;  top: 796.88px; width: 23px; height: 22px; z-index: 17; }
+    .layer--nav-settings { left: 151px; top: 797px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-garage { left: 228px; top: 789px; width: 32px;  height: 32px;  z-index: 17; }
+    .layer--nav-user { left: 313px; top: 797px; width: 24px;  height: 24px;  z-index: 17; }
+    .text { position: absolute; font-family: var(--font); font-weight: var(--fw-regular); color: #fff; z-index: 14; pointer-events: none; margin: 0; padding: 0; }
+    .text--label { font-size: var(--fs-label); line-height: var(--lh-label); }
+    .text--title { font-size: var(--fs-title); line-height: var(--lh-title); }
+    .text--pre { white-space: pre-line; }
+    .text--tod { left: 98px;  top: 89px;  width: 57px;  height: 38px; text-align: center; }
+    .text--recording { left: 98px;  top: 127px; width: 67px;  height: 12px; text-align: center; }
+    .text--ai-steward { left: 89px;  top: 378px; width: 55px;  height: 26px; }
+    .text--quote { left: 137px; top: 454px; width: 236px; height: 38px; display: flex; align-items: flex-end; justify-content: flex-end; line-height: var(--lh-quote); }
+    .quote-lg { font-size: var(--fs-quote-lg); line-height: 40px; }
+    .quote-sm { font-size: var(--fs-quote-sm); line-height: 40px; }
+    .text--measurements { left: 217px; top: 496px; width: 156px; height: 13px; text-align: right; }
+    .text--mechanical { left: 89px;  top: 559px; width: 73px;  height: 26px; }
+    .text--location { left: 288px; top: 566px; width: 60px;  height: 12px; }
+    .text--hospital { left: 214px; top: 616px; width: 81px;  height: 39px; }
+    .text--motor { left: 45px;  top: 629px; width: 44px;  height: 12px; }
+    .text--motor-val { left: 161px; top: 629px; width: 18px;  height: 12px; text-align: right; }
+    .text--battery { left: 45px;  top: 662px; width: 52px;  height: 12px; }
+    .text--battery-val { left: 159px; top: 662px; width: 20px;  height: 12px; text-align: right; }
+    .text--ventilation { left: 45px;  top: 695px; width: 72px;  height: 12px; }
+    .text--vent-val { left: 161px; top: 695px; width: 18px;  height: 12px; text-align: right; }
+    .text--temp { left: 45px;  top: 728px; width: 58px;  height: 12px; }
+    .text--temp-val { left: 154px; top: 728px; width: 25px;  height: 12px; text-align: right; }</script>
+    <template id="ix-embed-002-device"><img class="layer layer--header" data-asset="section-header.png" alt="" />
+        <img class="layer layer--chat"   data-asset="section-chat.png" alt="" />
+        <div class="layer layer--mechanical" aria-hidden="true"></div>
+        <div class="layer layer--location" aria-hidden="true"></div>
+        <img class="layer layer--avatar" data-asset="avatar.png" alt="" />
+        <img class="layer layer--recording" data-asset="icon-recording.png" alt="" />
+        <img class="layer layer--glass-radial" data-asset="glass-radial.png" alt="" />
+        <img class="layer layer--icon-radial"  data-asset="icon-radial-blur.png" alt="" />
+        <img class="layer layer--icon-chat" data-asset="icon-chat.png" alt="" />
+        <img class="layer layer--glass-settings" data-asset="glass-settings.png" alt="" />
+        <img class="layer layer--icon-settings"  data-asset="icon-settings.png" alt="" />
+        <img class="layer layer--glass-map" data-asset="glass-map.png" alt="" />
+        <img class="layer layer--icon-map"  data-asset="icon-map.png" alt="" />
+        <img class="layer layer--icogram" data-asset="icogram.png" alt="" />
+        <img class="layer layer--icon-motor"       data-asset="icon-motor.png" alt="" />
+        <img class="layer layer--icon-battery"     data-asset="icon-battery.png" alt="" />
+        <img class="layer layer--icon-ventilation" data-asset="icon-ventilation.png" alt="" />
+        <img class="layer layer--icon-temp"        data-asset="icon-temp.png" alt="" />
+        <img class="layer layer--divider layer--divider-1" data-asset="divider-1.png" alt="" />
+        <img class="layer layer--divider layer--divider-2" data-asset="divider-2.png" alt="" />
+        <img class="layer layer--divider layer--divider-3" data-asset="divider-3.png" alt="" />
+        <img class="layer layer--divider layer--divider-4" data-asset="divider-4.png" alt="" />
+        <img class="layer layer--nav"          data-asset="nav-bar.png" alt="" />
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+        <span class="text text--title text--tod">Tod</span>
+        <span class="text text--label text--recording">RECORDING</span>
+        <span class="text text--label text--pre text--ai-steward">AI
+STEWARD</span>
+        <span class="text text--quote"><span class="quote-lg">“It’s</span><span class="quote-sm"> fine now don’t worry</span></span>
+        <span class="text text--label text--measurements">MEASUREMENTS ALL GOOD</span>
+        <span class="text text--label text--pre text--mechanical">MECHANICAL
+CONDITION</span>
+        <span class="text text--label text--location">LOCATION</span>
+        <span class="text text--label text--pre text--hospital">COMMUNITY
+PET
+HOSPITAL</span>
+        <span class="text text--label text--motor">MOTOR</span>
+        <span class="text text--label text--motor-val">OK</span>
+        <span class="text text--label text--battery">BATTERY</span>
+        <span class="text text--label text--battery-val">99%</span>
+        <span class="text text--label text--ventilation">VENTILATION</span>
+        <span class="text text--label text--vent-val">ON</span>
+        <span class="text text--label text--temp">INER TEMP</span>
+        <span class="text text--label text--temp-val">23℃</span></template>
+    <script type="text/plain" id="ix-embed-002-1-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fw-bold: 700;
+      --fs-label: 12px;
+      --fs-label-sm: 11.979px;
+      --fs-title: 32px;
+      --fs-title-md: 24.192px;
+      --fs-distance: 32.256px;
+      --fs-quote-lg: 31.944px;
+      --fs-quote-mid: 23.958px;
+      --fs-quote-sm: 19.965px;
+      --lh-label: 13px;
+      --lh-label-sm: 12.977px;
+      --lh-title: 40px;
+      --lh-title-md: 20.16px;
+      --lh-distance: 25.2px;
+      --lh-quote: 39.93px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* 背景区块 Figma 2364:2082 / 2364:2042 / 2364:2102 */
+    .layer--section-header   { left: 4px;    top: 67px;  width: 393px; height: 283px;   z-index: 1; border-radius: 42px; }
+    .layer--section-tracking { left: 4px;    top: 355px; width: 393.14px; height: 277px; z-index: 2; border-radius: 37.3px; }
+    .layer--section-ai       { left: 4px;    top: 637px; width: 393px; height: 125px;   z-index: 2; border-radius: 31px; }
+
+    /* 地图元素 Figma 2364:2056–2364:2061 */
+    .layer--map-ellipse-1  { left: 75px;    top: 504px;   width: 252.95px; height: 127.44px; z-index: 3; }
+    .layer--map-ellipse-2  { left: 201.48px; top: 507.92px; width: 98.85px;  height: 123.52px; z-index: 4; }
+    .layer--map-highlight  { left: 165.03px; top: 594.72px; width: 72.88px;  height: 36.72px;  z-index: 5; }
+
+    /* 追踪区玻璃底框 — Figma 层级 14→15→16 */
+    .layer--glass-tod-pill { left: 220.79px; top: 374.79px; width: 160.42px; height: 110.42px; z-index: 8; }
+    .layer--glass-tracking { left: 0px;     top: 394.31px; width: 122.71px; height: 95.42px;  z-index: 9; }
+
+    /* 纸飞机下方圆形玻璃底框 Figma 2364:2055 */
+    .layer--map-dot-start  { left: 26.51px;  top: 425.56px; width: 32.51px;  height: 32.76px;  z-index: 13; border-radius: 50%; }
+
+    /* 23m 上方头像 + 爪印底圆 Figma 2364:2045 / 2364:2054 / 2364:2058 */
+    .layer--avatar-sm    { left: 250.74px; top: 404.48px; width: 50.37px; height: 50.75px; z-index: 11; border-radius: 50%; object-fit: cover; }
+    .layer--map-dot-end  { left: 279.6px;  top: 438.6px;  width: 30.01px;  height: 30.24px;  z-index: 12; border-radius: 50%; }
+    .layer--map-marker   { left: 284.6px;  top: 446.16px; width: 20.01px;  height: 15.12px;  z-index: 13; }
+
+    /* 顶部头像 Figma 2363:1871 */
+    .layer--avatar    { left: 16px;    top: 82px;   width: 69px;  height: 69px;  z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 顶部返回 — 116×116 以 bbox 中心对齐 Figma 2364:1989 / 2364:1990 */
+    .layer--glass-share  { left: 296px; top: 60.25px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-share   { left: 336px; top: 105px; width: 35.01px; height: 25.2px; z-index: 11; }
+
+    /* AI 区玻璃 — 116×116 以 bbox 中心对齐 Figma 2364:2104 / 2364:2105 */
+    .layer--glass-radial { left: -12px; top: 621px; width: 116px; height: 116px; z-index: 10; }
+
+    /* 图标 Figma 2363:1875 / 2364:2053–2364:2060 / 2364:2105 / 2364:2107 */
+    .layer--icon-recording { left: 171px;   top: 127px;   width: 15px;  height: 12px;  z-index: 12; }
+    .layer--icon-routing   { left: 83.44px; top: 401.4px;  width: 15.01px; height: 15.12px; z-index: 12; }
+    .layer--icon-send      { left: 34.01px; top: 435.64px; width: 15.01px; height: 15.12px; z-index: 15; }
+    .layer--icon-map       { left: 69.02px; top: 435.64px; width: 15.01px; height: 15.12px; z-index: 15; }
+    .layer--icon-radial    { left: 28px;    top: 660.98px; width: 35px;   height: 34.94px; z-index: 11; }
+    .layer--icon-chat      { left: 357px;   top: 724.98px; width: 22px;   height: 21.96px; z-index: 12; }
+
+    /* 导航 — renderBounds Figma 2363:1862–2363:1867 */
+    .layer--nav          { left: 12px;  top: 744px; width: 378px; height: 129px; z-index: 15; }
+    .layer--nav-dot      { left: 210px; top: 776px; width: 67px;  height: 65px;  z-index: 16; }
+    .layer--nav-home     { left: 67px;  top: 796.88px; width: 23px; height: 22px; z-index: 17; }
+    .layer--nav-settings { left: 151px; top: 797px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-garage   { left: 228px; top: 789px; width: 32px;  height: 32px;  z-index: 17; }
+    .layer--nav-user     { left: 313px; top: 797px; width: 24px;  height: 24px;  z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label {
+      font-size: var(--fs-label);
+      line-height: var(--lh-label);
+    }
+
+    .text--label-sm {
+      font-size: var(--fs-label-sm);
+      line-height: var(--lh-label-sm);
+    }
+
+    .text--title {
+      font-size: var(--fs-title);
+      line-height: var(--lh-title);
+    }
+
+    .text--title-md {
+      font-size: var(--fs-title-md);
+      line-height: var(--lh-title-md);
+    }
+
+    .text--distance {
+      font-size: var(--fs-distance);
+      line-height: var(--lh-distance);
+    }
+
+    .text--pre { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2363:1852 */
+    .text--tod-header   { left: 98px;   top: 89px;   width: 57px;  height: 38px; text-align: center; }
+    .text--recording    { left: 98px;   top: 127px;  width: 67px;  height: 12px; text-align: center; }
+
+    .text--tod-tracking { left: 21.51px; top: 365.08px; width: 57.02px; height: 38.3px; text-align: center; font-weight: var(--fw-bold); font-size: var(--fs-distance); line-height: 40.32px; }
+    .text--tracking     { left: 16.5px;  top: 403.38px; width: 67.02px; height: 12.1px; text-align: center; font-size: 12.096px; line-height: 13.104px; }
+    .text--tod-pill     { left: 305px;   top: 418px;  width: 42px;  height: 21px; text-align: center; }
+    .text--distance     { left: 263.52px; top: 474.6px; width: 62.52px; height: 25.2px; text-align: center; }
+    .text--ahead        { left: 266.02px; top: 499.8px; width: 32.51px; height: 12.6px; text-align: left; font-size: 12.096px; line-height: 13.104px; }
+
+    .text--ai-steward   { left: 94px; top: 665.97px; width: 55px; height: 25.95px; }
+
+    .text--quote {
+      left: 138px; top: 712px; width: 208px; height: 37.93px;
+      display: flex; align-items: flex-end; justify-content: flex-end;
+      line-height: var(--lh-quote); letter-spacing: 0;
+    }
+    .quote-lg  { font-size: var(--fs-quote-lg);  line-height: var(--lh-quote); }
+    .quote-mid { font-size: var(--fs-quote-mid); line-height: var(--lh-quote); }
+    .quote-sm  { font-size: var(--fs-quote-sm);  line-height: var(--lh-quote); }
+
+    .distance-m { opacity: 0.4; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-002-1-device"><img class="layer layer--section-header"   data-asset="section-header.png" alt="" />
+        <img class="layer layer--section-tracking" data-asset="section-tracking.png" alt="" />
+        <img class="layer layer--section-ai"       data-asset="section-ai.png" alt="" />
+
+        <img class="layer layer--map-ellipse-1"  data-asset="map-ellipse-1.png" alt="" />
+        <img class="layer layer--map-ellipse-2"  data-asset="map-ellipse-2.png" alt="" />
+        <img class="layer layer--map-highlight"  data-asset="map-highlight.png" alt="" />
+
+        <img class="layer layer--avatar"    data-asset="avatar.png" alt="" />
+        <img class="layer layer--glass-share"    data-asset="glass-share.png" alt="" />
+        <img class="layer layer--icon-share"     data-asset="icon-share.png" alt="" />
+        <img class="layer layer--icon-recording" data-asset="icon-recording.png" alt="" />
+
+        <img class="layer layer--glass-tod-pill" data-asset="glass-tod-pill.png" alt="" />
+        <img class="layer layer--glass-tracking" data-asset="glass-tracking.png" alt="" />
+        <img class="layer layer--avatar-sm" data-asset="avatar-small.png" alt="" />
+        <img class="layer layer--map-dot-end"    data-asset="map-dot-end.png" alt="" />
+        <img class="layer layer--map-marker"     data-asset="map-marker.png" alt="" />
+        <img class="layer layer--icon-routing"   data-asset="icon-routing.png" alt="" />
+        <img class="layer layer--map-dot-start"  data-asset="map-dot-start.png" alt="" />
+        <img class="layer layer--icon-send"      data-asset="icon-send.png" alt="" />
+        <img class="layer layer--icon-map"       data-asset="icon-map.png" alt="" />
+
+        <img class="layer layer--glass-radial"   data-asset="glass-radial.png" alt="" />
+        <img class="layer layer--icon-radial"    data-asset="icon-radial.png" alt="" />
+        <img class="layer layer--icon-chat"      data-asset="icon-chat.png" alt="" />
+
+        <img class="layer layer--nav"          data-asset="nav-bar.png" alt="" />
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod-header">Tod</span>
+        <span class="text text--label text--recording">RECORDING</span>
+
+        <span class="text text--tod-tracking">Tod</span>
+        <span class="text text--tracking">TRACKING</span>
+        <span class="text text--title-md text--tod-pill">Tod</span>
+        <span class="text text--distance text--distance-val">23<span class="distance-m">m</span></span>
+        <span class="text text--ahead">ahead</span>
+
+        <span class="text text--label-sm text--pre text--ai-steward">AI
+STEWARD</span>
+        <span class="text text--quote"><span class="quote-lg">“Try</span><span class="quote-mid"> </span><span class="quote-sm">audio editing?</span></span></template>
+    <script type="text/plain" id="ix-embed-002-2-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fs-label: 12px;
+      --fs-label-sm: 10.8px;
+      --fs-title: 32px;
+      --fs-listening: 25px;
+      --fs-quote-lg: 21.6px;
+      --fs-quote-sm: 18px;
+      --lh-label: 13px;
+      --lh-label-sm: 11.7px;
+      --lh-title: 40px;
+      --lh-listening: 40.25px;
+      --lh-quote: 36px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* 背景区块 Figma 2363:1980 / 2363:1965 */
+    .layer--section-header { left: 4px; top: 67px;  width: 393px; height: 92px;  z-index: 2; border-radius: 42px; }
+    .layer--section-ai     { left: 4px; top: 164px; width: 393px; height: 365px; z-index: 1; border-radius: 31px; }
+
+    /* 底部双栏 — Figma 2363:1966 / 2363:1967 */
+    .layer--mechanical,
+    .layer--location {
+      width: 194px;
+      height: 323px;
+      top: 534px;
+      z-index: 3;
+      border-radius: 42px;
+      overflow: hidden;
+    }
+    .layer--mechanical {
+      left: 4px;
+      background: linear-gradient(
+        180deg,
+        rgb(236 167 80 / 100%) 0%,
+        rgb(236 167 80 / 70%) 29.33%,
+        rgb(235 168 80 / 5%) 85.58%
+      );
+    }
+    .layer--location {
+      left: 203px;
+      background: linear-gradient(
+        180deg,
+        rgb(44 196 210 / 100%) 0%,
+        rgb(44 196 210 / 70%) 29.33%,
+        rgb(44 196 210 / 5%) 85.58%
+      );
+    }
+
+    /* AI 区装饰 — 椭圆仅可见上半 renderBounds 146.5px Figma 2364:2119 / 2364:2121 */
+    .layer--ellipse-glow {
+      left: 32px; top: 382px; width: 339px; height: 146.5px;
+      object-fit: cover; object-position: top center;
+      z-index: 3;
+    }
+    .layer--icon-chat { left: 169px; top: 287px; width: 66px; height: 66px; z-index: 12; }
+
+    /* 头像 Figma 2363:1983 */
+    .layer--avatar { left: 16px; top: 82px; width: 69px; height: 69px; z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 录音图标 Figma 2363:1987 */
+    .layer--icon-recording { left: 171px; top: 127px; width: 15px; height: 12px; z-index: 12; }
+
+    /* AI 区玻璃 — 116×116 以 bbox 中心 (41,200) 对齐 Figma 2363:1970 / 2364:2117 */
+    .layer--glass-radial { left: -17px; top: 142px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-radial  { left: 26px;  top: 185px; width: 30px;  height: 29px;  z-index: 11; }
+
+    /* 左下/右下玻璃 — 实时模糊反射橙/蓝底框，64×64 bbox Figma 2363:1972 / 2363:1971 */
+    .layer--glass-settings,
+    .layer--glass-map {
+      border-radius: 50%;
+      backdrop-filter: blur(19.965px) saturate(1.12);
+      -webkit-backdrop-filter: blur(19.965px) saturate(1.12);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.38),
+        inset 1px 2px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+    }
+    .layer--glass-settings { left: 12px;  top: 540px; width: 64px; height: 64px; z-index: 10; }
+    .layer--icon-settings  { left: 26px;  top: 554px; width: 35px; height: 35px; z-index: 11; }
+
+    .layer--glass-map { left: 211px; top: 540px; width: 64px; height: 64px; z-index: 10; }
+    .layer--icon-map  { left: 226px; top: 555px; width: 34px; height: 34px; z-index: 11; }
+
+    /* 右下插图 Figma 2363:2000 */
+    .layer--icogram { left: 255px; top: 636px; width: 128px; height: 120px; z-index: 9; }
+
+    /* 机械状态图标 Figma 2363:2002–2363:2006 */
+    .layer--icon-motor       { left: 17px; top: 623px; width: 24px; height: 24px; z-index: 11; }
+    .layer--icon-battery     { left: 17px; top: 656px; width: 24px; height: 24px; z-index: 11; }
+    .layer--icon-ventilation { left: 17px; top: 689px; width: 24px; height: 24px; z-index: 11; }
+    .layer--icon-temp        { left: 17px; top: 722px; width: 24px; height: 24px; z-index: 11; }
+
+    /* 分隔线 Figma 2363:2007–2363:2010 renderBounds */
+    .layer--divider { height: 1px; z-index: 11; }
+    .layer--divider-1 { left: 44.5px; top: 646.5px; width: 135px; }
+    .layer--divider-2 { left: 44.5px; top: 679.5px; width: 135px; }
+    .layer--divider-3 { left: 44.5px; top: 710.5px; width: 135px; }
+    .layer--divider-4 { left: 44.5px; top: 743.5px; width: 135px; }
+
+    /* 导航 — renderBounds Figma 2363:1974–2363:1979 */
+    .layer--nav          { left: 12px;  top: 744px; width: 378px; height: 129px; z-index: 15; }
+    .layer--nav-dot      { left: 210px; top: 776px; width: 67px;  height: 65px;  z-index: 16; }
+    .layer--nav-home     { left: 67px;  top: 796.88px; width: 23px; height: 22px; z-index: 17; }
+    .layer--nav-settings { left: 151px; top: 797px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-garage   { left: 228px; top: 789px; width: 32px;  height: 32px;  z-index: 17; }
+    .layer--nav-user     { left: 313px; top: 797px; width: 24px;  height: 24px;  z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label {
+      font-size: var(--fs-label);
+      line-height: var(--lh-label);
+    }
+
+    .text--label-sm {
+      font-size: var(--fs-label-sm);
+      line-height: var(--lh-label-sm);
+    }
+
+    .text--title {
+      font-size: var(--fs-title);
+      line-height: var(--lh-title);
+    }
+
+    .text--pre { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2363:1964 */
+    .text--tod         { left: 98px;  top: 89px;  width: 57px;  height: 38px; text-align: center; }
+    .text--recording   { left: 98px;  top: 127px; width: 67px;  height: 12px; text-align: center; }
+
+    .text--ai-steward  { left: 89px; top: 187px; width: 55px; height: 26px; }
+
+    .text--listening {
+      left: 62px; top: 366px; width: 277px; height: 40px;
+      font-size: var(--fs-listening);
+      line-height: var(--lh-listening);
+      text-align: right;
+    }
+
+    .text--quote {
+      left: 103px; top: 414px; width: 195px; height: 34px;
+      display: flex; align-items: flex-end; justify-content: flex-end;
+      line-height: var(--lh-quote); letter-spacing: 0;
+    }
+    .quote-lg { font-size: var(--fs-quote-lg); line-height: var(--lh-quote); }
+    .quote-sm { font-size: var(--fs-quote-sm); line-height: var(--lh-quote); }
+
+    .text--measurements { left: 131px; top: 448px; width: 140.4px; height: 11.7px; text-align: right; }
+
+    .text--mechanical   { left: 89px;  top: 559px; width: 73px;  height: 26px; }
+    .text--location     { left: 288px; top: 566px; width: 60px;  height: 12px; }
+    .text--hospital     { left: 214px; top: 616px; width: 81px;  height: 39px; }
+
+    .text--motor        { left: 45px;  top: 629px; width: 44px;  height: 12px; }
+    .text--motor-val    { left: 161px; top: 629px; width: 18px;  height: 12px; text-align: right; }
+    .text--battery      { left: 45px;  top: 662px; width: 52px;  height: 12px; }
+    .text--battery-val  { left: 159px; top: 662px; width: 20px;  height: 12px; text-align: right; }
+    .text--ventilation  { left: 45px;  top: 695px; width: 72px;  height: 12px; }
+    .text--vent-val     { left: 161px; top: 695px; width: 18px;  height: 12px; text-align: right; }
+    .text--temp         { left: 45px;  top: 728px; width: 58px;  height: 12px; }
+    .text--temp-val     { left: 154px; top: 728px; width: 25px;  height: 12px; text-align: right; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-002-2-device"><img class="layer layer--section-ai"     data-asset="section-ai.png" alt="" />
+        <div class="layer layer--mechanical" aria-hidden="true"></div>
+        <div class="layer layer--location" aria-hidden="true"></div>
+
+        <img class="layer layer--section-header" data-asset="section-header.png" alt="" />
+
+        <img class="layer layer--ellipse-glow" data-asset="ellipse-glow.png" alt="" />
+        <img class="layer layer--icon-chat"    data-asset="icon-chat.png" alt="" />
+
+        <img class="layer layer--avatar" data-asset="avatar.png" alt="" />
+        <img class="layer layer--icon-recording" data-asset="icon-recording.png" alt="" />
+
+        <img class="layer layer--glass-radial"   data-asset="glass-radial.png" alt="" />
+        <img class="layer layer--icon-radial"  data-asset="icon-radial.png" alt="" />
+
+        <div class="layer layer--glass-settings" aria-hidden="true"></div>
+        <img class="layer layer--icon-settings"  data-asset="icon-settings.png" alt="" />
+
+        <div class="layer layer--glass-map" aria-hidden="true"></div>
+        <img class="layer layer--icon-map"  data-asset="icon-map.png" alt="" />
+
+        <img class="layer layer--icogram" data-asset="icogram.png" alt="" />
+
+        <img class="layer layer--icon-motor"       data-asset="icon-motor.png" alt="" />
+        <img class="layer layer--icon-battery"     data-asset="icon-battery.png" alt="" />
+        <img class="layer layer--icon-ventilation" data-asset="icon-ventilation.png" alt="" />
+        <img class="layer layer--icon-temp"        data-asset="icon-temp.png" alt="" />
+
+        <img class="layer layer--divider layer--divider-1" data-asset="divider-1.png" alt="" />
+        <img class="layer layer--divider layer--divider-2" data-asset="divider-2.png" alt="" />
+        <img class="layer layer--divider layer--divider-3" data-asset="divider-3.png" alt="" />
+        <img class="layer layer--divider layer--divider-4" data-asset="divider-4.png" alt="" />
+
+        <img class="layer layer--nav"          data-asset="nav-bar.png" alt="" />
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod">Tod</span>
+        <span class="text text--label text--recording">RECORDING</span>
+
+        <span class="text text--label text--pre text--ai-steward">AI
+STEWARD</span>
+
+        <span class="text text--listening">“LISTENING......Please wait</span>
+        <span class="text text--quote"><span class="quote-lg">It’s </span><span class="quote-sm">fine now don’t worry</span></span>
+        <span class="text text--label-sm text--measurements">MEASUREMENTS ALL GOOD</span>
+
+        <span class="text text--label text--pre text--mechanical">MECHANICAL
+CONDITION</span>
+        <span class="text text--label text--location">LOCATION</span>
+        <span class="text text--label text--pre text--hospital">COMMUNITY
+PET
+HOSPITAL</span>
+
+        <span class="text text--label text--motor">MOTOR</span>
+        <span class="text text--label text--motor-val">OK</span>
+        <span class="text text--label text--battery">BATTERY</span>
+        <span class="text text--label text--battery-val">99%</span>
+        <span class="text text--label text--ventilation">VENTILATION</span>
+        <span class="text text--label text--vent-val">ON</span>
+        <span class="text text--label text--temp">INER TEMP</span>
+        <span class="text text--label text--temp-val">23℃</span></template>
+    <script type="text/plain" id="ix-embed-002-3-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fs-label: 12px;
+      --fs-title: 32px;
+      --fs-quote-lg: 31.944px;
+      --fs-quote-sm: 19.965px;
+      --lh-label: 13px;
+      --lh-title: 40px;
+      --lh-quote: 24.75px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* 背景区块 Figma 2365:1805 / 2365:1790 */
+    .layer--section-header { left: 4px; top: 67px;  width: 393px; height: 283px; z-index: 1; border-radius: 42px; }
+    .layer--section-chat   { left: 4px; top: 355px; width: 393px; height: 174px; z-index: 2; border-radius: 42px; }
+
+    /* 底部整栏 — Figma 2365:1902 */
+    .layer--section-bottom {
+      left: 4px;
+      top: 534px;
+      width: 393px;
+      height: 325.08px;
+      z-index: 3;
+      border-radius: 42px;
+      overflow: hidden;
+      background: linear-gradient(
+        180deg,
+        rgb(235 167 80 / 100%) 0%,
+        rgb(236 167 80 / 70%) 29.33%,
+        rgb(235 168 80 / 5%) 85.58%
+      );
+    }
+
+    /* 头像 Figma 2365:1808 */
+    .layer--avatar { left: 16px; top: 82px; width: 69px; height: 69px; z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 录音图标 Figma 2365:1812 */
+    .layer--icon-recording { left: 171px; top: 127px; width: 15px; height: 12px; z-index: 12; }
+
+    /* AI 区玻璃 — 116×116 以 bbox 中心 (41,391) 对齐 Figma 2365:1795 / 2365:1826 */
+    .layer--glass-radial { left: -17px; top: 333px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-radial  { left: 23px;  top: 373px; width: 35px;  height: 35px;  z-index: 11; }
+
+    /* 聊天气泡区图标 Figma 2365:1962 / 2365:1961 */
+    .layer--icon-turbine { left: 352px;    top: 460px;    width: 31.74px; height: 31.68px; z-index: 12; }
+    .layer--icon-chat    { left: 356.96px; top: 491.35px; width: 22px;    height: 21.96px; z-index: 12; }
+
+    /* 左下巢穴玻璃 — 实时模糊反射橙底框，64×64 bbox Figma 2365:1912 / 2365:1958 */
+    .layer--glass-nest {
+      left: 14px;
+      top: 544px;
+      width: 64px;
+      height: 64px;
+      z-index: 10;
+      border-radius: 50%;
+      backdrop-filter: blur(19.965px) saturate(1.12);
+      -webkit-backdrop-filter: blur(19.965px) saturate(1.12);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.38),
+        inset 1px 2px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+    }
+    .layer--icon-nest { left: 28px; top: 562px; width: 40px; height: 28px; z-index: 11; }
+
+    /* 插图 Figma 2365:1921 / 2365:1922 */
+    .layer--illust-nest { left: 26.33px; top: 670.22px; width: 121.09px; height: 85.02px; z-index: 9; }
+    .layer--illust-page { left: 226.97px; top: 559.38px; width: 135.22px; height: 108.33px; z-index: 9; }
+
+    /* 机械状态图标 Figma 2365:1911–2365:1916 */
+    .layer--icon-motor       { left: 26.53px; top: 634.80px; width: 24.03px; height: 24.19px; z-index: 11; }
+    .layer--icon-battery     { left: 219.27px; top: 672.60px; width: 24.03px; height: 24.19px; z-index: 11; }
+    .layer--icon-ventilation { left: 219.27px; top: 702.84px; width: 24.03px; height: 24.19px; z-index: 11; }
+    .layer--icon-temp        { left: 219.27px; top: 733.08px; width: 24.03px; height: 24.19px; z-index: 11; }
+
+    /* 分隔线 Figma 2365:1917–2365:1920 renderBounds */
+    .layer--divider { height: 1px; z-index: 11; }
+    .layer--divider-1 { left: 54.06px;  top: 658.49px; width: 116.15px; }
+    .layer--divider-2 { left: 246.81px; top: 696.29px; width: 116.15px; }
+    .layer--divider-3 { left: 246.81px; top: 724.77px; width: 116.15px; }
+    .layer--divider-4 { left: 246.81px; top: 755px;    width: 116.15px; }
+
+    /* 导航 — renderBounds Figma 2365:1799–2365:1804 */
+    .layer--nav          { left: 12px;  top: 744px; width: 378px; height: 129px; z-index: 15; }
+    .layer--nav-dot      { left: 210px; top: 776px; width: 67px;  height: 65px;  z-index: 16; }
+    .layer--nav-home     { left: 67px;  top: 796.88px; width: 23px; height: 22px; z-index: 17; }
+    .layer--nav-settings { left: 151px; top: 797px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-garage   { left: 228px; top: 789px; width: 32px;  height: 32px;  z-index: 17; }
+    .layer--nav-user     { left: 313px; top: 797px; width: 24px;  height: 24px;  z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label {
+      font-size: var(--fs-label);
+      line-height: var(--lh-label);
+    }
+
+    .text--title {
+      font-size: var(--fs-title);
+      line-height: var(--lh-title);
+    }
+
+    .text--pre { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2365:1789 */
+    .text--tod         { left: 98px;  top: 89px;  width: 57px;  height: 38px; text-align: center; }
+    .text--recording   { left: 98px;  top: 127px; width: 67px;  height: 12px; text-align: center; }
+
+    .text--ai-steward  { left: 89px; top: 378px; width: 55px; height: 26px; }
+
+    .text--quote {
+      left: 143px; top: 464.95px; width: 200px; height: 52.8px;
+      line-height: var(--lh-quote); letter-spacing: 0; text-align: right;
+    }
+    .quote-lg { font-size: var(--fs-quote-lg); line-height: var(--lh-quote); }
+    .quote-sm { font-size: var(--fs-quote-sm); line-height: var(--lh-quote); }
+
+    .text--nest-page { left: 91.11px; top: 563.23px; width: 73.09px; height: 26.21px; }
+
+    .text--motor        { left: 54.56px;  top: 640.85px; width: 44.06px; height: 12.1px; }
+    .text--motor-val    { left: 151.69px; top: 640.85px; width: 18.02px; height: 12.1px; text-align: right; }
+    .text--battery      { left: 247.31px; top: 678.65px; width: 52.07px; height: 12.1px; }
+    .text--battery-val  { left: 341.93px; top: 678.65px; width: 20.03px; height: 12.1px; text-align: right; }
+    .text--ventilation  { left: 247px;    top: 709px;    width: 76px;    height: 12px; }
+    .text--vent-val     { left: 341.93px; top: 708.89px; width: 18.02px; height: 12.1px; text-align: right; }
+    .text--temp         { left: 247.31px; top: 739.63px; width: 58.07px; height: 12.1px; }
+    .text--temp-val     { left: 341.93px; top: 739.63px; width: 25.03px; height: 12.1px; text-align: right; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-002-3-device"><img class="layer layer--section-header" data-asset="section-header.png" alt="" />
+        <img class="layer layer--section-chat"   data-asset="section-chat.png" alt="" />
+        <div class="layer layer--section-bottom" aria-hidden="true"></div>
+
+        <img class="layer layer--avatar" data-asset="avatar.png" alt="" />
+        <img class="layer layer--icon-recording" data-asset="icon-recording.png" alt="" />
+
+        <img class="layer layer--glass-radial" data-asset="glass-radial.png" alt="" />
+        <img class="layer layer--icon-radial"  data-asset="icon-radial.png" alt="" />
+
+        <img class="layer layer--icon-turbine" data-asset="icon-turbine.png" alt="" />
+        <img class="layer layer--icon-chat"    data-asset="icon-chat.png" alt="" />
+
+        <div class="layer layer--glass-nest" aria-hidden="true"></div>
+        <img class="layer layer--icon-nest" data-asset="icon-nest.png" alt="" />
+
+        <img class="layer layer--illust-page" data-asset="illust-page.png" alt="" />
+        <img class="layer layer--illust-nest" data-asset="illust-nest.png" alt="" />
+
+        <img class="layer layer--icon-motor"       data-asset="icon-motor.png" alt="" />
+        <img class="layer layer--icon-battery"     data-asset="icon-battery.png" alt="" />
+        <img class="layer layer--icon-ventilation" data-asset="icon-ventilation.png" alt="" />
+        <img class="layer layer--icon-temp"        data-asset="icon-temp.png" alt="" />
+
+        <img class="layer layer--divider layer--divider-1" data-asset="divider-1.png" alt="" />
+        <img class="layer layer--divider layer--divider-2" data-asset="divider-2.png" alt="" />
+        <img class="layer layer--divider layer--divider-3" data-asset="divider-3.png" alt="" />
+        <img class="layer layer--divider layer--divider-4" data-asset="divider-4.png" alt="" />
+
+        <img class="layer layer--nav"          data-asset="nav-bar.png" alt="" />
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod">Tod</span>
+        <span class="text text--label text--recording">RECORDING</span>
+
+        <span class="text text--label text--pre text--ai-steward">AI
+STEWARD</span>
+
+        <span class="text text--quote"><span class="quote-lg">“Ventilation </span><span class="quote-sm">is
+activated</span></span>
+
+        <span class="text text--label text--pre text--nest-page">NEST
+PAGE</span>
+
+        <span class="text text--label text--motor">MOTOR</span>
+        <span class="text text--label text--motor-val">OK</span>
+        <span class="text text--label text--battery">BATTERY</span>
+        <span class="text text--label text--battery-val">99%</span>
+        <span class="text text--label text--ventilation">VENTILATION</span>
+        <span class="text text--label text--vent-val">ON</span>
+        <span class="text text--label text--temp">INER TEMP</span>
+        <span class="text text--label text--temp-val">23℃</span></template>
+    <script type="text/plain" id="ix-embed-002-4-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fs-label: 12px;
+      --fs-title: 32px;
+      --fs-quote-lg: 31.944px;
+      --fs-quote-sm: 19.965px;
+      --lh-label: 13px;
+      --lh-title: 40px;
+      --lh-quote: 24.75px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* 背景区块 Figma 2365:1987 / 2365:1978 */
+    .layer--section-header { left: 4px; top: 67px;  width: 393px; height: 283px; z-index: 1; border-radius: 42px; }
+    .layer--section-chat   { left: 4px; top: 355px; width: 393px; height: 174px; z-index: 2; border-radius: 42px; }
+
+    /* 底部整栏（蓝）— Figma 2365:2087 */
+    .layer--section-bottom {
+      left: 4px;
+      top: 534px;
+      width: 393px;
+      height: 323px;
+      z-index: 3;
+      border-radius: 42px;
+      overflow: hidden;
+      background: linear-gradient(
+        180deg,
+        rgb(44 196 210 / 100%) 0%,
+        rgb(44 196 210 / 70%) 29.33%,
+        rgb(44 196 210 / 5%) 85.58%
+      );
+    }
+
+    /* 头像 Figma 2365:1990 */
+    .layer--avatar { left: 16px; top: 82px; width: 69px; height: 69px; z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 录音图标 Figma 2365:1994 */
+    .layer--icon-recording { left: 171px; top: 127px; width: 15px; height: 12px; z-index: 12; }
+
+    /* AI 区玻璃 — 116×116 以 bbox 中心 (41,391) 对齐 Figma 2365:1980 / 2365:1996 */
+    .layer--glass-radial { left: -17px; top: 333px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-radial  { left: 23px;  top: 373px; width: 35px;  height: 35px;  z-index: 11; }
+
+    /* 聊天气泡区图标 Figma 2365:2022 / 2365:2021 */
+    .layer--icon-turbine { left: 352px;    top: 460px;    width: 31.74px; height: 31.68px; z-index: 12; }
+    .layer--icon-chat    { left: 356.96px; top: 491.35px; width: 22px;    height: 21.96px; z-index: 12; }
+
+    /* 左下位置玻璃 — 实时模糊反射蓝底框，64×64 bbox Figma 2365:2008 / 2365:2019 */
+    .layer--glass-location {
+      left: 14px;
+      top: 544px;
+      width: 64px;
+      height: 64px;
+      z-index: 10;
+      border-radius: 50%;
+      backdrop-filter: blur(19.965px) saturate(1.12);
+      -webkit-backdrop-filter: blur(19.965px) saturate(1.12);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.38),
+        inset 1px 2px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+    }
+    .layer--icon-location { left: 28px; top: 562px; width: 40px; height: 28px; z-index: 11; }
+
+    /* 插图 Figma 2365:2091 / 2365:2098 */
+    .layer--icogram        { left: 55px;  top: 636px; width: 128px; height: 120px; z-index: 9; }
+    .layer--map-screenshot { left: 208px; top: 572px; width: 156px; height: 170px; z-index: 9; border-radius: 8px; object-fit: cover; }
+
+    /* 导航 — renderBounds Figma 2365:1981–2365:1986 */
+    .layer--nav          { left: 12px;  top: 744px; width: 378px; height: 129px; z-index: 15; }
+    .layer--nav-dot      { left: 210px; top: 776px; width: 67px;  height: 65px;  z-index: 16; }
+    .layer--nav-home     { left: 67px;  top: 796.88px; width: 23px; height: 22px; z-index: 17; }
+    .layer--nav-settings { left: 151px; top: 797px; width: 24px;  height: 24px;  z-index: 17; }
+    .layer--nav-garage   { left: 228px; top: 789px; width: 32px;  height: 32px;  z-index: 17; }
+    .layer--nav-user     { left: 313px; top: 797px; width: 24px;  height: 24px;  z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label {
+      font-size: var(--fs-label);
+      line-height: var(--lh-label);
+    }
+
+    .text--title {
+      font-size: var(--fs-title);
+      line-height: var(--lh-title);
+    }
+
+    .text--pre { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2365:1977 */
+    .text--tod         { left: 98px;  top: 89px;  width: 57px;  height: 38px; text-align: center; }
+    .text--recording   { left: 98px;  top: 127px; width: 67px;  height: 12px; text-align: center; }
+
+    .text--ai-steward  { left: 89px; top: 378px; width: 55px; height: 26px; }
+
+    .text--quote {
+      left: 143px; top: 464.95px; width: 200px; height: 52.8px;
+      line-height: var(--lh-quote); letter-spacing: 0; text-align: right;
+    }
+    .quote-lg { font-size: var(--fs-quote-lg); line-height: var(--lh-quote); }
+    .quote-sm { font-size: var(--fs-quote-sm); line-height: var(--lh-quote); }
+
+    .text--location { left: 88px; top: 566px; width: 60px; height: 12px; }
+    .text--hospital { left: 14px; top: 616px; width: 81px; height: 39px; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-002-4-device"><img class="layer layer--section-header" data-asset="section-header.png" alt="" />
+        <img class="layer layer--section-chat"   data-asset="section-chat.png" alt="" />
+        <div class="layer layer--section-bottom" aria-hidden="true"></div>
+
+        <img class="layer layer--avatar" data-asset="avatar.png" alt="" />
+        <img class="layer layer--icon-recording" data-asset="icon-recording.png" alt="" />
+
+        <img class="layer layer--glass-radial" data-asset="glass-radial.png" alt="" />
+        <img class="layer layer--icon-radial"  data-asset="icon-radial.png" alt="" />
+
+        <img class="layer layer--icon-turbine" data-asset="icon-turbine.png" alt="" />
+        <img class="layer layer--icon-chat"    data-asset="icon-chat.png" alt="" />
+
+        <div class="layer layer--glass-location" aria-hidden="true"></div>
+        <img class="layer layer--icon-location" data-asset="icon-location.png" alt="" />
+
+        <img class="layer layer--map-screenshot" data-asset="map-screenshot.png" alt="" />
+        <img class="layer layer--icogram"        data-asset="icogram.png" alt="" />
+
+        <img class="layer layer--nav"          data-asset="nav-bar.png" alt="" />
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod">Tod</span>
+        <span class="text text--label text--recording">RECORDING</span>
+
+        <span class="text text--label text--pre text--ai-steward">AI
+STEWARD</span>
+
+        <span class="text text--quote"><span class="quote-lg">"Ventilation </span><span class="quote-sm">is
+activated</span></span>
+
+        <span class="text text--label text--location">LOCATION</span>
+        <span class="text text--label text--pre text--hospital">COMMUNITY
+PET
+HOSPITAL</span></template>
+    <script type="text/plain" id="ix-embed-003-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fs-label: 12px;
+      --fs-title: 48px;
+      --fs-edit: 20px;
+      --fs-quote-lg: 32px;
+      --fs-quote-sm: 20px;
+      --fs-faceid: 20px;
+      --lh-label: 13px;
+      --lh-title: 40px;
+      --lh-edit: 24px;
+      --lh-quote: 40px;
+      --lh-faceid: 24px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* 背景区块 Figma 2362:1404 / 2362:1409 / 2363:1771 / 2362:1424 */
+    .layer--section-pet     { left: 4px; top:  71px; width: 393px; height: 192px; z-index: 1; border-radius: 42px; }
+    .layer--section-owner   { left: 4px; top: 268px; width: 393px; height: 192px; z-index: 2; border-radius: 43px; }
+    .layer--section-ai      { left: 4px; top: 465px; width: 393px; height: 146px; z-index: 3; border-radius: 31px; }
+    .layer--section-payment { left: 4px; top: 616px; width: 393px; height: 245px; z-index: 4; border-radius: 37px; }
+
+    /* 头像 Figma 2362:1405 / 2362:1411 */
+    .layer--avatar-tod  { left: 12px; top:  78px; width: 85px; height: 85px; z-index: 8; border-radius: 50%; object-fit: cover; }
+    .layer--avatar-abby { left: 12px; top: 275px; width: 85px; height: 85px; z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 宠物徽章 Figma 2362:1417 */
+    .layer--pet-badge { left: 200px; top: 94px; width: 34px; height: 34px; z-index: 9; }
+
+    /* AI 区玻璃 — 116×116 以 bbox 中心 (41,501) 对齐 Figma 2362:1400/1401 */
+    .layer--glass-radial { left: -17px; top: 443px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-radial  { left:  23px; top: 483px; width:  35px; height:  35px; z-index: 11; }
+
+    /* 编辑按钮玻璃 — bbox 中心 (354,221) / (354,417) Figma 2362:1414/1415 */
+    .layer--glass-edit-top    { left: 296px; top: 163px; width: 116px; height: 116px; z-index: 10; }
+    .layer--glass-edit-bottom { left: 296px; top: 359px; width: 116px; height: 116px; z-index: 10; }
+
+    /* 用户图标 Figma 2362:1416 */
+    .layer--icon-user { left: 225px; top: 290px; width: 42px; height: 42px; z-index: 11; }
+
+    /* 聊天气泡 Figma 2362:1403 */
+    .layer--icon-chat { left: 352px; top: 572px; width: 22px; height: 22px; z-index: 12; }
+
+    /* 账单区玻璃 — bbox 中心 (41,652) Figma 2362:1431/1432 */
+    .layer--glass-bill { left: -17px; top: 594px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-bill  { left:  23px; top: 634px; width:  35px; height:  35px; z-index: 11; }
+
+    /* Face ID 锁图标 Figma 2362:1435 */
+    .layer--icon-lock { left: 105px; top: 715px; width: 24px; height: 24px; z-index: 12; }
+
+    /* 导航 — renderBounds Figma 2362:1425–2362:1430 */
+    .layer--nav          { left: 12px;  top: 744px; width: 378px; height: 129px; z-index: 15; }
+    .layer--nav-dot      { left: 291px; top: 776px; width:  67px; height:  65px; z-index: 16; }
+    .layer--nav-home     { left:  67px; top: 796.88px; width: 23px; height: 22px; z-index: 17; }
+    .layer--nav-settings { left: 151px; top: 797px; width: 24px; height: 24px; z-index: 17; }
+    .layer--nav-garage   { left: 231px; top: 797px; width: 22px; height: 22px; z-index: 17; }
+    .layer--nav-user     { left: 311px; top: 795px; width: 27px; height: 27px; z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label {
+      font-size: var(--fs-label);
+      line-height: var(--lh-label);
+    }
+
+    .text--title {
+      font-size: var(--fs-title);
+      line-height: var(--lh-title);
+    }
+
+    .text--edit {
+      font-size: var(--fs-edit);
+      line-height: var(--lh-edit);
+    }
+
+    .text--faceid {
+      font-size: var(--fs-faceid);
+      line-height: var(--lh-faceid);
+    }
+
+    .text--dark { color: #000; }
+    .text--pre  { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2362:1279 */
+    .text--tod          { left: 112px; top:  92px; width:  81px; height: 38px; }
+    .text--the-pet      { left: 112px; top: 137px; width:  71px; height: 13px; }
+    .text--edit-top     { left: 334px; top: 209px; width:  40px; height: 24px; }
+
+    .text--abby         { left: 112px; top: 290px; width: 109px; height: 38px; }
+    .text--the-owner    { left: 112px; top: 332px; width:  71px; height: 13px; }
+    .text--edit-bottom  { left: 334px; top: 405px; width:  40px; height: 24px; }
+
+    .text--ai-steward   { left: 89px; top: 488px; width: 55px; height: 26px; }
+
+    .text--quote {
+      left: 133px; top: 559px; width: 208px; height: 38px;
+      display: flex; align-items: flex-end; justify-content: flex-end;
+      line-height: var(--lh-quote); letter-spacing: 0;
+    }
+    .quote-lg { font-size: var(--fs-quote-lg); line-height: 40px; }
+    .quote-sm { font-size: var(--fs-quote-sm); line-height: 40px; }
+
+    .text--address      { left: 89px;  top: 639px; width: 64px;  height: 26px; }
+    .text--faceid       { left: 136px; top: 715px; width: 161px; height: 24px; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-003-device"><img class="layer layer--section-pet"     data-asset="section-pet.png" alt="" />
+        <img class="layer layer--section-owner"   data-asset="section-owner.png" alt="" />
+        <img class="layer layer--section-ai"      data-asset="section-ai.png" alt="" />
+        <img class="layer layer--section-payment" data-asset="section-payment.png" alt="" />
+
+        <img class="layer layer--avatar-tod"  data-asset="avatar-tod.png" alt="" />
+        <img class="layer layer--avatar-abby" data-asset="avatar-abby.png" alt="" />
+        <img class="layer layer--pet-badge"   data-asset="icon-pet-badge.png" alt="" />
+
+        <img class="layer layer--glass-radial" data-asset="glass-radial.png" alt="" />
+        <img class="layer layer--icon-radial"  data-asset="icon-radial.png" alt="" />
+
+        <img class="layer layer--glass-edit-top"    data-asset="glass-edit-top.png" alt="" />
+        <img class="layer layer--glass-edit-bottom" data-asset="glass-edit-bottom.png" alt="" />
+
+        <img class="layer layer--icon-user" data-asset="icon-user.png" alt="" />
+
+        <img class="layer layer--icon-chat" data-asset="icon-chat.png" alt="" />
+
+        <img class="layer layer--glass-bill" data-asset="glass-bill.png" alt="" />
+        <img class="layer layer--icon-bill"  data-asset="icon-bill.png" alt="" />
+
+        <img class="layer layer--icon-lock" data-asset="icon-lock.png" alt="" />
+
+        <img class="layer layer--nav"          data-asset="nav-bar.png" alt="" />
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod">Tod</span>
+        <span class="text text--label text--the-pet">THE PET</span>
+        <span class="text text--edit text--dark text--edit-top">EDIT</span>
+
+        <span class="text text--title text--abby">Abby</span>
+        <span class="text text--label text--the-owner">THE OWNER</span>
+        <span class="text text--edit text--edit-bottom">EDIT</span>
+
+        <span class="text text--label text--pre text--ai-steward">AI
+STEWARD</span>
+        <span class="text text--quote"><span class="quote-lg">“Try</span><span class="quote-sm">&nbsp;audio editing?</span></span>
+
+        <span class="text text--label text--pre text--address">ADDRESS
+&amp;PAYMENT</span>
+        <span class="text text--faceid text--faceid">Face ID TO CHECK</span></template>
+    <script type="text/plain" id="ix-embed-003-1-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fs-label: 12px;
+      --fs-title: 48px;
+      --fs-info: 20px;
+      --lh-label: 13px;
+      --lh-title: 40px;
+      --lh-info: 25px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* 背景区块 Figma 2363:1575 / 2363:1580 */
+    .layer--section-pet   { left: 4px; top:  71px; width: 393px; height: 540px; z-index: 1; border-radius: 42px; }
+    .layer--section-owner { left: 4px; top: 617px; width: 393px; height: 243px; z-index: 2; border-radius: 43px; }
+
+    /* 头像 Figma 2363:1576 / 2363:1582 */
+    .layer--avatar-tod  { left: 12px; top:  78px; width: 85px; height: 85px; z-index: 8; border-radius: 50%; object-fit: cover; }
+    .layer--avatar-abby { left: 12px; top: 624px; width: 85px; height: 85px; z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 宠物徽章 Figma 2363:1588 */
+    .layer--pet-badge { left: 200px; top: 94px; width: 34px; height: 34px; z-index: 9; }
+
+    /* 确认按钮玻璃 — bbox 中心 (354,566) Figma 2363:1585 */
+    .layer--glass-edit { left: 296px; top: 508px; width: 116px; height: 116px; z-index: 10; }
+
+    /* 勾选图标 Figma 2363:1824 */
+    .layer--icon-check { left: 335px; top: 547px; width: 37.55px; height: 37.42px; z-index: 11; }
+
+    /* 信息行勾选框 Figma 2363:1836–2363:1848 */
+    .layer--checkbox { width: 20px; height: 20px; z-index: 11; }
+    .layer--checkbox-1 { left: 348px; top: 236px; }
+    .layer--checkbox-2 { left: 348px; top: 286px; }
+    .layer--checkbox-3 { left: 348px; top: 336px; }
+    .layer--checkbox-4 { left: 348px; top: 386px; }
+    .layer--checkbox-5 { left: 348px; top: 436px; }
+
+    /* 用户图标 Figma 2363:1587 */
+    .layer--icon-user { left: 225px; top: 639px; width: 42px; height: 42px; z-index: 11; }
+
+    /* 导航 — renderBounds Figma 2363:1596–2363:1601 */
+    .layer--nav          { left: 12px;  top: 744px; width: 378px; height: 129px; z-index: 15; }
+    .layer--nav-dot      { left: 291px; top: 776px; width:  67px; height:  65px; z-index: 16; }
+    .layer--nav-home     { left:  67px; top: 796.88px; width: 23px; height: 22px; z-index: 17; }
+    .layer--nav-settings { left: 151px; top: 797px; width: 24px; height: 24px; z-index: 17; }
+    .layer--nav-garage   { left: 231px; top: 797px; width: 22px; height: 22px; z-index: 17; }
+    .layer--nav-user     { left: 311px; top: 795px; width: 27px; height: 27px; z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label {
+      font-size: var(--fs-label);
+      line-height: var(--lh-label);
+    }
+
+    .text--title {
+      font-size: var(--fs-title);
+      line-height: var(--lh-title);
+    }
+
+    .text--info {
+      font-size: var(--fs-info);
+      line-height: var(--lh-info);
+    }
+
+    .text--pre { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2363:1568 */
+    .text--tod        { left: 112px; top:  92px; width:  81px; height: 38px; }
+    .text--the-pet    { left: 112px; top: 137px; width:  71px; height: 13px; }
+    .text--pet-info   { left:  33px; top: 236px; width: 278px; height: 226px; }
+
+    .text--abby       { left: 112px; top: 639px; width: 109px; height: 38px; }
+    .text--the-owner  { left: 112px; top: 681px; width:  71px; height: 13px; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-003-1-device"><img class="layer layer--section-pet"   data-asset="section-pet.png" alt="" />
+        <img class="layer layer--section-owner" data-asset="section-owner.png" alt="" />
+
+        <img class="layer layer--avatar-tod"  data-asset="avatar-tod.png" alt="" />
+        <img class="layer layer--avatar-abby" data-asset="avatar-abby.png" alt="" />
+        <img class="layer layer--pet-badge"   data-asset="icon-pet-badge.png" alt="" />
+
+        <img class="layer layer--glass-edit" data-asset="glass-edit.png" alt="" />
+        <img class="layer layer--icon-check" data-asset="icon-check-circle.png" alt="" />
+
+        <img class="layer layer--checkbox layer--checkbox-1" data-asset="icon-checkbox-1.png" alt="" />
+        <img class="layer layer--checkbox layer--checkbox-2" data-asset="icon-checkbox-2.png" alt="" />
+        <img class="layer layer--checkbox layer--checkbox-3" data-asset="icon-checkbox-3.png" alt="" />
+        <img class="layer layer--checkbox layer--checkbox-4" data-asset="icon-checkbox-4.png" alt="" />
+        <img class="layer layer--checkbox layer--checkbox-5" data-asset="icon-checkbox-5.png" alt="" />
+
+        <img class="layer layer--icon-user" data-asset="icon-user.png" alt="" />
+
+        <img class="layer layer--nav"          data-asset="nav-bar.png" alt="" />
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod">Tod</span>
+        <span class="text text--label text--the-pet">THE PET</span>
+        <span class="text text--info text--pre text--pet-info">NAME: TOD
+
+VARIETY: ITALIAN GREYHOUND
+
+SEX: MALE (CASTRATED)
+
+AGE: 3.5 YEARS OLD
+
+WEIGHT: 4.8KG
+</span>
+
+        <span class="text text--title text--abby">Abby</span>
+        <span class="text text--label text--the-owner">THE OWNER</span></template>
+    <script type="text/plain" id="ix-embed-003-2-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fs-label: 12px;
+      --fs-title: 48px;
+      --fs-info: 20px;
+      --lh-label: 13px;
+      --lh-title: 40px;
+      --lh-info: 25px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* 背景区块 Figma 2363:1665 / 2363:1670 */
+    .layer--section-pet   { left: 4px; top:  71px; width: 393px; height:  99px; z-index: 1; border-radius: 42px; }
+    .layer--section-owner { left: 4px; top: 177px; width: 393px; height: 681px; z-index: 2; border-radius: 43px; }
+
+    /* 头像 Figma 2363:1666 / 2363:1672 */
+    .layer--avatar-tod  { left: 12px; top:  78px; width: 85px; height: 85px; z-index: 8; border-radius: 50%; object-fit: cover; }
+    .layer--avatar-abby { left: 12px; top: 184px; width: 85px; height: 85px; z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 宠物徽章 Figma 2363:1678 */
+    .layer--pet-badge { left: 200px; top: 94px; width: 34px; height: 34px; z-index: 9; }
+
+    /* 确认按钮玻璃 — bbox 中心 (354,219) Figma 2363:1676 */
+    .layer--glass-edit { left: 296px; top: 161px; width: 116px; height: 116px; z-index: 10; }
+
+    /* 勾选图标 Figma 2363:1827 */
+    .layer--icon-check { left: 335px; top: 200px; width: 37.55px; height: 37.42px; z-index: 11; }
+
+    /* 信息行勾选框 Figma 2364:1613–2364:1632 */
+    .layer--checkbox { width: 20px; height: 20px; z-index: 11; }
+    .layer--checkbox-1 { left: 359px; top: 364px; }
+    .layer--checkbox-2 { left: 359px; top: 414px; }
+    .layer--checkbox-3 { left: 359px; top: 464px; }
+    .layer--checkbox-4 { left: 359px; top: 514px; }
+    .layer--checkbox-5 { left: 359px; top: 564px; }
+    .layer--checkbox-6 { left: 359px; top: 614px; }
+    .layer--checkbox-7 { left: 359px; top: 664px; }
+
+    /* 用户图标 Figma 2363:1677 */
+    .layer--icon-user { left: 225px; top: 199px; width: 42px; height: 42px; z-index: 11; }
+
+    /* 导航 — renderBounds Figma 2363:1686–2363:1691 */
+    .layer--nav          { left: 12px;  top: 744px; width: 378px; height: 129px; z-index: 15; }
+    .layer--nav-dot      { left: 291px; top: 776px; width:  67px; height:  65px; z-index: 16; }
+    .layer--nav-home     { left:  67px; top: 796.88px; width: 23px; height: 22px; z-index: 17; }
+    .layer--nav-settings { left: 151px; top: 797px; width: 24px; height: 24px; z-index: 17; }
+    .layer--nav-garage   { left: 231px; top: 797px; width: 22px; height: 22px; z-index: 17; }
+    .layer--nav-user     { left: 311px; top: 795px; width: 27px; height: 27px; z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label {
+      font-size: var(--fs-label);
+      line-height: var(--lh-label);
+    }
+
+    .text--title {
+      font-size: var(--fs-title);
+      line-height: var(--lh-title);
+    }
+
+    .text--info {
+      font-size: var(--fs-info);
+      line-height: var(--lh-info);
+    }
+
+    .text--pre { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2363:1658 */
+    .text--tod        { left: 112px; top:  92px; width:  81px; height: 38px; }
+    .text--the-pet    { left: 112px; top: 137px; width:  71px; height: 13px; }
+
+    .text--abby       { left: 112px; top: 199px; width: 109px; height: 38px; }
+    .text--the-owner  { left: 112px; top: 241px; width:  71px; height: 13px; }
+    .text--owner-info { left:  22px; top: 364px; width: 315px; height: 324px; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-003-2-device"><img class="layer layer--section-pet"   data-asset="section-pet.png" alt="" />
+        <img class="layer layer--section-owner" data-asset="section-owner.png" alt="" />
+
+        <img class="layer layer--avatar-tod"  data-asset="avatar-tod.png" alt="" />
+        <img class="layer layer--avatar-abby" data-asset="avatar-abby.png" alt="" />
+        <img class="layer layer--pet-badge"   data-asset="icon-pet-badge.png" alt="" />
+
+        <img class="layer layer--glass-edit" data-asset="glass-edit.png" alt="" />
+        <img class="layer layer--icon-check" data-asset="icon-check-circle.png" alt="" />
+
+        <img class="layer layer--checkbox layer--checkbox-1" data-asset="icon-checkbox-1.png" alt="" />
+        <img class="layer layer--checkbox layer--checkbox-2" data-asset="icon-checkbox-2.png" alt="" />
+        <img class="layer layer--checkbox layer--checkbox-3" data-asset="icon-checkbox-3.png" alt="" />
+        <img class="layer layer--checkbox layer--checkbox-4" data-asset="icon-checkbox-4.png" alt="" />
+        <img class="layer layer--checkbox layer--checkbox-5" data-asset="icon-checkbox-5.png" alt="" />
+        <img class="layer layer--checkbox layer--checkbox-6" data-asset="icon-checkbox-6.png" alt="" />
+        <img class="layer layer--checkbox layer--checkbox-7" data-asset="icon-checkbox-7.png" alt="" />
+
+        <img class="layer layer--icon-user" data-asset="icon-user.png" alt="" />
+
+        <img class="layer layer--nav"          data-asset="nav-bar.png" alt="" />
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod">Tod</span>
+        <span class="text text--label text--the-pet">THE PET</span>
+
+        <span class="text text--title text--abby">Abby</span>
+        <span class="text text--label text--the-owner">THE OWNER</span>
+        <span class="text text--info text--pre text--owner-info">NAME: Abby
+
+TEL:151-0203-3880
+
+MAIL: felicimo12345@gmail.com
+
+ID CARD:**********(Face ID Please)
+
+REGISTER TIME:2026.3
+
+ Address:Page Jump
+
+OWNERSHIP:3 Years
+</span></template>
+    <script type="text/plain" id="ix-embed-003-3-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fs-label: 12px;
+      --fs-title: 48px;
+      --fs-listening: 25px;
+      --fs-faceid: 20px;
+      --lh-label: 13px;
+      --lh-title: 40px;
+      --lh-listening: 40px;
+      --lh-faceid: 24px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* 背景区块 Figma 2364:1710 / 2364:1720 / 2364:1729 / 2364:1772 */
+    .layer--section-pet     { left: 4px; top:  71px; width: 393px; height:  99px; z-index: 1; border-radius: 42px; }
+    .layer--section-owner   { left: 4px; top: 177px; width: 393px; height: 103px; z-index: 2; border-radius: 43px; }
+    .layer--section-ai      { left: 4px; top: 287px; width: 393px; height: 332px; z-index: 3; border-radius: 31px; }
+    .layer--section-payment { left: 4px; top: 626px; width: 393px; height: 232px; z-index: 4; border-radius: 37px; }
+
+    /* 头像 Figma 2364:1711 / 2364:1722 */
+    .layer--avatar-tod  { left: 12px; top:  78px; width: 85px; height: 85px; z-index: 8; border-radius: 50%; object-fit: cover; }
+    .layer--avatar-abby { left: 12px; top: 184px; width: 85px; height: 85px; z-index: 8; border-radius: 50%; object-fit: cover; }
+
+    /* 宠物徽章 Figma 2364:1715 */
+    .layer--pet-badge { left: 200px; top: 94px; width: 34px; height: 34px; z-index: 9; }
+
+    /* 用户图标 Figma 2364:1725 */
+    .layer--icon-user { left: 225px; top: 199px; width: 42px; height: 42px; z-index: 11; }
+
+    /* AI 区玻璃 — bbox 中心 (41,323) Figma 2364:1731 / 2364:1987 */
+    .layer--glass-radial { left: -17px; top: 265px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-radial  { left:  26px; top: 308px; width:  30px; height:  29px; z-index: 11; }
+
+    /* 渐变光晕 Figma 2364:1749 renderBounds 343×148 */
+    .layer--glow { left: 29px; top: 471px; width: 343px; height: 148px; z-index: 6; }
+
+    /* 聊天气泡 Figma 2364:1734 */
+    .layer--icon-chat { left: 169px; top: 420px; width: 66px; height: 66px; z-index: 12; }
+
+    /* 账单区玻璃 — bbox 中心 (41,662) Figma 2364:1773/1774 */
+    .layer--glass-bill { left: -17px; top: 604px; width: 116px; height: 116px; z-index: 10; }
+    .layer--icon-bill  { left:  23px; top: 644px; width:  35px; height:  35px; z-index: 11; }
+
+    /* 导航底框 — Figma 2364:1654 跑道形玻璃（bbox 38,770 326×77，非 PNG 黑底） */
+    .layer--nav {
+      left: 38px;
+      top: 770px;
+      width: 326px;
+      height: 77px;
+      z-index: 15;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border: 0.5px solid rgba(255, 255, 255, 0.35);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+    .layer--nav-dot      { left: 291px; top: 776px; width:  67px; height:  65px; z-index: 16; }
+    .layer--nav-home     { left:  67px; top: 796.88px; width: 23px; height: 22px; z-index: 17; }
+    .layer--nav-settings { left: 151px; top: 797px; width: 24px; height: 24px; z-index: 17; }
+    .layer--nav-garage   { left: 231px; top: 797px; width: 22px; height: 22px; z-index: 17; }
+    .layer--nav-user     { left: 311px; top: 795px; width: 27px; height: 27px; z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label {
+      font-size: var(--fs-label);
+      line-height: var(--lh-label);
+    }
+
+    .text--title {
+      font-size: var(--fs-title);
+      line-height: var(--lh-title);
+    }
+
+    .text--listening {
+      font-size: var(--fs-listening);
+      line-height: var(--lh-listening);
+    }
+
+    .text--faceid {
+      font-size: var(--fs-faceid);
+      line-height: var(--lh-faceid);
+    }
+
+    .text--pre { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2364:1636 */
+    .text--tod          { left: 112px; top:  92px; width:  81px; height: 38px; }
+    .text--the-pet      { left: 112px; top: 137px; width:  71px; height: 13px; }
+
+    .text--abby         { left: 112px; top: 199px; width: 109px; height: 38px; }
+    .text--the-owner    { left: 112px; top: 241px; width:  71px; height: 13px; }
+
+    .text--ai-steward   { left: 89px; top: 310px; width: 55px; height: 26px; }
+
+    .text--listening {
+      left: 62px; top: 499px; width: 277px; height: 40px;
+      display: flex; align-items: flex-end; justify-content: flex-end;
+      letter-spacing: 0;
+    }
+
+    .text--address      { left: 89px;  top: 649px; width: 64px;  height: 26px; }
+    .text--faceid       { left: 132px; top: 720px; width: 161px; height: 24px; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-003-3-device"><img class="layer layer--section-pet"     data-asset="section-pet.png" alt="" />
+        <img class="layer layer--section-owner"   data-asset="section-owner.png" alt="" />
+        <img class="layer layer--section-ai"      data-asset="section-ai.png" alt="" />
+        <img class="layer layer--section-payment" data-asset="section-payment.png" alt="" />
+
+        <img class="layer layer--avatar-tod"  data-asset="avatar-tod.png" alt="" />
+        <img class="layer layer--avatar-abby" data-asset="avatar-abby.png" alt="" />
+        <img class="layer layer--pet-badge"   data-asset="icon-pet-badge.png" alt="" />
+
+        <img class="layer layer--icon-user" data-asset="icon-user.png" alt="" />
+
+        <img class="layer layer--glass-radial" data-asset="glass-radial.png" alt="" />
+        <img class="layer layer--icon-radial"  data-asset="icon-radial.png" alt="" />
+
+        <img class="layer layer--glow" data-asset="glow-ellipse.png" alt="" />
+
+        <img class="layer layer--icon-chat" data-asset="icon-chat.png" alt="" />
+
+        <img class="layer layer--glass-bill" data-asset="glass-bill.png" alt="" />
+        <img class="layer layer--icon-bill"  data-asset="icon-bill.png" alt="" />
+
+        <div class="layer layer--nav" aria-hidden="true"></div>
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--title text--tod">Tod</span>
+        <span class="text text--label text--the-pet">THE PET</span>
+
+        <span class="text text--title text--abby">Abby</span>
+        <span class="text text--label text--the-owner">THE OWNER</span>
+
+        <span class="text text--label text--pre text--ai-steward">AI
+STEWARD</span>
+        <span class="text text--listening">“LISTENING......Please wait</span>
+
+        <span class="text text--label text--pre text--address">ADDRESS
+&amp;PAYMENT</span>
+        <span class="text text--faceid text--faceid">Face ID TO CHECK</span></template>
+    <script type="text/plain" id="ix-embed-003-4-style">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w: 402px;
+      --h: 874px;
+      --bg: #060606;
+      --font: "等线", "DengXian", sans-serif;
+      --fw-regular: 400;
+      --fw-bold: 700;
+      --fs-label: 12px;
+      --fs-address: 18px;
+      --fs-edit: 20px;
+      --fs-exclusive: 40px;
+      --fs-upgrade: 17px;
+      --lh-label: 13px;
+      --lh-address: 18px;
+      --lh-edit: 18px;
+      --lh-exclusive: 40px;
+      --lh-upgrade: 23px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      letter-spacing: .06em;
+      font-family: var(--font);
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    .device {
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 32px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border: 0.5px solid rgba(255, 255, 255, 0.35);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    /* 主背景 Figma 2364:1906 */
+    .layer--section-bg { left: 5px; top: 34px; width: 393px; height: 821px; z-index: 1; border-radius: 37px; }
+
+    /* 地图 Figma 2364:1912 */
+    .layer--map { left: 30.01px; top: 77.2px; width: 349.77px; height: 320.4px; z-index: 5; border-radius: 40px; object-fit: cover; }
+
+    /* 返回玻璃 Figma 2364:1908 */
+    .layer--glass-back {
+      left: 14.75px; top: 41.56px; width: 64.02px; height: 64.51px;
+      z-index: 10; border-radius: 999px;
+    }
+
+    /* 返回箭头 Figma 2364:1910 */
+    .layer--icon-back { left: 29.76px; top: 61.72px; width: 35.01px; height: 25.2px; z-index: 11; }
+
+    /* 地图定位图标 Figma 2364:1916 */
+    .layer--icon-map-pin { left: 42.26px; top: 152.44px; width: 42.52px; height: 42.84px; z-index: 12; }
+
+    /* EDIT 玻璃 Figma 2364:1907 */
+    .layer--glass-edit {
+      left: 149.8px; top: 346.48px; width: 102.54px; height: 50.4px;
+      z-index: 10; border-radius: 999px;
+    }
+
+    /* EXCLUSIVE 卡片 Figma 2364:1976 */
+    .layer--section-exclusive { left: 38px; top: 448px; width: 326px; height: 181px; z-index: 6; border-radius: 31px; }
+
+    /* 星环图标 Figma 2364:1942 */
+    .layer--icon-star { left: 50px; top: 496px; width: 46px; height: 47px; z-index: 11; }
+
+    /* CHANGE PLANS 玻璃 Figma 2364:1934 */
+    .layer--glass-plans {
+      left: 38px; top: 667px; width: 326px; height: 50px;
+      z-index: 10; border-radius: 999px;
+    }
+
+    /* 导航底框 Figma 2364:1787 */
+    .layer--nav {
+      left: 38px; top: 770px; width: 326px; height: 77px;
+      z-index: 15; border-radius: 999px;
+    }
+
+    .layer--nav-dot      { left: 291px; top: 776px; width:  67px; height:  65px; z-index: 16; }
+    .layer--nav-home     { left:  67px; top: 796.88px; width: 23px; height: 22px; z-index: 17; }
+    .layer--nav-settings { left: 151px; top: 797px; width: 24px; height: 24px; z-index: 17; }
+    .layer--nav-garage   { left: 231px; top: 797px; width: 22px; height: 22px; z-index: 17; }
+    .layer--nav-user     { left: 311px; top: 795px; width: 27px; height: 27px; z-index: 17; }
+
+    .text {
+      position: absolute;
+      font-family: var(--font);
+      font-weight: var(--fw-regular);
+      font-style: normal;
+      color: #fff;
+      z-index: 14;
+      pointer-events: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .text--label     { font-size: var(--fs-label);     line-height: var(--lh-label); }
+    .text--address   { font-size: var(--fs-address);   line-height: var(--lh-address); }
+    .text--edit      { font-size: var(--fs-edit);      line-height: var(--lh-edit); }
+    .text--exclusive { font-size: var(--fs-exclusive); line-height: var(--lh-exclusive); font-weight: var(--fw-bold); }
+    .text--upgrade   { font-size: var(--fs-upgrade);   line-height: var(--lh-upgrade); }
+    .text--pre       { white-space: pre-line; }
+
+    /* 文案坐标 — Figma node 2364:1786 */
+    .text--header       { left: 92px;    top:  61px;   width:  64px;  height: 26px; }
+    .text--addr-detail  { left: 42.26px; top: 202.84px; width: 320.11px; height: 113.4px; }
+    .text--edit-label   { left: 182.31px; top: 361.6px; width: 40.01px; height: 17.64px; }
+    .text--exclusive    { left: 50px;    top: 460px;   width: 200px; height: 36px; }
+    .text--upgrade {
+      left: 171px; top: 571px; width: 175px; height: 42px;
+      display: flex; align-items: flex-end; justify-content: flex-end;
+    }
+    .text--change-plans { left: 129.41px; top: 682.2px; width: 143px; height: 18px; text-align: center; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font);
+      z-index: 9999;
+      transition: opacity .35s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .loader__hint { font-size: 11px; color: rgba(255,255,255,.45); max-width: 280px; text-align: center; line-height: 1.5; }</script>
+    <template id="ix-embed-003-4-device"><img class="layer layer--section-bg" data-asset="section-bg.png" alt="" />
+
+        <img class="layer layer--map" data-asset="map.png" alt="" />
+
+        <div class="layer layer--glass-back glass" aria-hidden="true"></div>
+        <img class="layer layer--icon-back" data-asset="icon-back.png" alt="" />
+
+        <img class="layer layer--icon-map-pin" data-asset="icon-map-pin.png" alt="" />
+
+        <div class="layer layer--glass-edit glass" aria-hidden="true"></div>
+
+        <img class="layer layer--section-exclusive" data-asset="section-exclusive.png" alt="" />
+        <img class="layer layer--icon-star" data-asset="icon-star.png" alt="" />
+
+        <div class="layer layer--glass-plans glass" aria-hidden="true"></div>
+
+        <div class="layer layer--nav glass" aria-hidden="true"></div>
+        <img class="layer layer--nav-dot"      data-asset="nav-dot.png" alt="" />
+        <img class="layer layer--nav-home"     data-asset="nav-home.png" alt="" />
+        <img class="layer layer--nav-settings" data-asset="nav-settings.png" alt="" />
+        <img class="layer layer--nav-garage"   data-asset="nav-garage.png" alt="" />
+        <img class="layer layer--nav-user"     data-asset="nav-user.png" alt="" />
+
+        <span class="text text--label text--pre text--header">ADDRESS
+&amp;PAYMENT</span>
+        <span class="text text--address text--pre text--addr-detail">Room 218, Building 1
+No. 66 Zhongqi Road
+Higher Education Mega Center Xiaoguwei Subdistrict, Panyu District
+Guangzhou, Guangdong Province, China.</span>
+        <span class="text text--edit text--edit-label">EDIT</span>
+        <span class="text text--exclusive text--exclusive">EXCLUSIVE</span>
+        <span class="text text--upgrade text--upgrade">YOU&#8217;VE UPGRADED TO EXCLUSIVE</span>
+        <span class="text text--edit text--change-plans">CHANGE PLANS</span></template>
+    <script type="text/plain" id="ix-drill-embed-001">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      font-family: "等线", "DengXian", sans-serif;
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    #device {
+      position: relative;
+      width: 402px;
+      height: 874px;
+      overflow: hidden;
+      background: #060606;
+      box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    /* ── 001-1：跑道玻璃 + nav 层 ── */
+    .ix-nav-glass {
+      position: absolute;
+      left: 34px;
+      top: 772px;
+      width: 326px;
+      height: 77px;
+      border-radius: 999px;
+      z-index: 55;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 0.5px solid rgba(255, 255, 255, 0.38);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        0 4px 28px rgba(0, 0, 0, 0.1);
+      pointer-events: none;
+    }
+
+    .ix-nav-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 56;
+      pointer-events: none;
+    }
+
+    #device [data-zone="nav"] {
+      z-index: 56 !important;
+    }
+
+    #device.is-animating[data-ix-route="001-1"] .ix-metrics-frame {
+      z-index: 12;
+    }
+
+    #device .ix-metrics-frame {
+      position: absolute;
+      left: 3px !important;
+      top: 158px !important;
+      width: 393px !important;
+      border-radius: 42px !important;
+      overflow: hidden;
+      z-index: 2 !important;
+    }
+
+    #device .ix-metrics-frame:not(.is-full-cap) .layer--metrics {
+      position: absolute;
+      left: 0 !important;
+      top: 0 !important;
+      width: 393px !important;
+      height: 194px !important;
+      border-radius: 0 !important;
+      z-index: 2 !important;
+    }
+
+    #device .ix-metrics-frame.is-full-cap .layer--metrics {
+      position: absolute;
+      left: 0 !important;
+      top: 0 !important;
+      width: 393px !important;
+      border-radius: 0 !important;
+      z-index: 2 !important;
+    }
+
+    #device .ix-metrics-frame .ix-metrics-bg-fill {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    #device .ix-metrics-frame.is-full-cap .ix-metrics-bg-fill {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .ix-metrics-frame[data-cap-hidden="true"] .layer--metrics {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .ix-metrics-fade {
+      position: absolute;
+      inset: 0;
+      z-index: 21;
+      pointer-events: none;
+    }
+
+    .ix-metrics-fade .layer,
+    .ix-metrics-fade .text { z-index: inherit; }
+
+    .ix-bottom-fade {
+      position: absolute;
+      inset: 0;
+      z-index: 21;
+      pointer-events: none;
+    }
+
+    #device[data-ix-route="001-1"] [data-zone="below"] {
+      will-change: transform;
+    }
+
+    .ix-extras-persistent,
+    .ix-extras-fade {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .ix-extras-persistent {
+      z-index: 15;
+      visibility: hidden;
+      opacity: 1;
+    }
+
+    .ix-extras-fade {
+      z-index: 14;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .text--mood-label,
+    .text--mood-score,
+    .text--sleep-label,
+    .text--sleep-value {
+      z-index: 16 !important;
+    }
+
+    /* ── 001-2 / 001-3：nav pin + M/S 框 ── */
+    .ix-nav-pin {
+      position: absolute;
+      inset: 0;
+      z-index: 60;
+      pointer-events: none;
+    }
+
+    .ix-nav-pin .ix-nav-glass {
+      position: absolute;
+      left: 35px;
+      top: 772px;
+      width: 326px;
+      height: 77px;
+      border-radius: 999px;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 0.5px solid rgba(255, 255, 255, 0.38);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        0 4px 28px rgba(0, 0, 0, 0.1);
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .ix-nav-pin .layer {
+      z-index: 2 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #device.is-animating .ix-nav-pin,
+    #device.is-animating .ix-nav-pin .layer,
+    #device.is-animating .ix-nav-pin .ix-nav-glass {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #device.is-animating[data-ix-route="001-2"] .ix-m-frame,
+    #device.is-animating[data-ix-route="001-2"] .ix-s-frame,
+    #device.is-animating[data-ix-route="001-3"] .ix-m-frame,
+    #device.is-animating[data-ix-route="001-3"] .ix-s-frame {
+      z-index: 12;
+    }
+
+    .ix-m-frame {
+      position: absolute;
+      left: 3px;
+      top: 357px;
+      width: 194px;
+      height: 174px;
+      border-radius: 33.6px;
+      overflow: hidden;
+      z-index: 4;
+    }
+
+    #device[data-ix-route="001-3"] .ix-m-frame {
+      will-change: transform;
+    }
+
+    .ix-m-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: rgb(197, 197, 197);
+    }
+
+    .ix-m-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .ix-m-content .layer--glass-smile { z-index: 10; }
+    .ix-m-content .layer--icon-smile  { z-index: 11; }
+    .ix-m-content .text               { z-index: 14; }
+
+    .ix-s-frame {
+      position: absolute;
+      left: 202px;
+      top: 357px;
+      width: 194px;
+      height: 174px;
+      border-radius: 33.6px;
+      overflow: hidden;
+      z-index: 4;
+    }
+
+    #device[data-ix-route="001-2"] .ix-s-frame {
+      will-change: transform;
+    }
+
+    #device[data-ix-route="001-3"] .ix-s-frame {
+      z-index: 5;
+    }
+
+    .ix-s-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .ix-s-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .ix-s-content .layer--glass-moon { z-index: 10; }
+    .ix-s-content .layer--icon-moon  { z-index: 11; }
+    .ix-s-content .text              { z-index: 14; }
+
+    /* ── 共用：TOD 头部 ── */
+    .ix-tod-header {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .ix-tod-header .layer--avatar { z-index: 8; }
+    .ix-tod-header .text--tod     { z-index: 14; }
+
+    #device.is-animating .ix-tod-header,
+    #device.is-animating .ix-tod-header .layer,
+    #device.is-animating .ix-tod-header .text {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    /* ── 001-2 / 001-3 extras ── */
+    .ix-extras {
+      position: absolute;
+      inset: 0;
+      z-index: 14;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* ── 热区 ── */
+    .ix-hotspot {
+      position: absolute;
+      z-index: 100;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ix-hotspot:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.45);
+      outline-offset: 2px;
+    }
+
+    #device.is-animating .ix-hotspot {
+      pointer-events: none;
+    }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: "等线", "DengXian", sans-serif;
+      z-index: 9999;
+      transition: opacity 0.35s;
+    }
+    .loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loader__hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.45);
+      max-width: 320px;
+      text-align: center;
+      line-height: 1.5;
+      padding: 0 16px;
+    }
+
+    #ix-embed-root { display: none !important; }</script>
+    <script type="text/plain" id="ix-drill-embed-002">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      font-family: "等线", "DengXian", sans-serif;
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    #device {
+      position: relative;
+      width: 402px;
+      height: 874px;
+      overflow: hidden;
+      background: #060606;
+      box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    .ix-nav-glass {
+      position: absolute;
+      left: 38px;
+      top: 770px;
+      width: 326px;
+      height: 77px;
+      border-radius: 999px;
+      z-index: 55;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 0.5px solid rgba(255, 255, 255, 0.38);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        0 4px 28px rgba(0, 0, 0, 0.1);
+      pointer-events: none;
+    }
+
+    #device [data-zone="nav"] {
+      z-index: 57 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #device .layer--nav-dot,
+    #device .layer--nav-home,
+    #device .layer--nav-settings,
+    #device .layer--nav-garage,
+    #device .layer--nav-user {
+      z-index: 57 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .ix-nav-pin {
+      position: absolute;
+      inset: 0;
+      z-index: 60;
+      pointer-events: none;
+    }
+
+    .ix-nav-pin .ix-nav-glass {
+      position: absolute;
+      left: 38px;
+      top: 770px;
+      width: 326px;
+      height: 77px;
+      border-radius: 999px;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 0.5px solid rgba(255, 255, 255, 0.38);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        0 4px 28px rgba(0, 0, 0, 0.1);
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .ix-nav-pin .layer {
+      z-index: 2 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #device.is-animating .ix-nav-pin,
+    #device.is-animating .ix-nav-pin .layer,
+    #device.is-animating .ix-nav-pin .ix-nav-glass {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #device.is-animating[data-ix-route="002-2"] .ix-tod-frame,
+    #device.is-animating[data-ix-route="002-2"] .ix-ai-frame,
+    #device.is-animating[data-ix-route="002-3"] .ix-tod-frame,
+    #device.is-animating[data-ix-route="002-3"] .ix-ai-frame,
+    #device.is-animating[data-ix-route="002-3"] .ix-m-frame,
+    #device.is-animating[data-ix-route="002-3"] .ix-l-frame,
+    #device.is-animating[data-ix-route="002-4"] .ix-tod-frame,
+    #device.is-animating[data-ix-route="002-4"] .ix-ai-frame,
+    #device.is-animating[data-ix-route="002-4"] .ix-m-frame,
+    #device.is-animating[data-ix-route="002-4"] .ix-l-frame {
+      z-index: 12;
+    }
+
+    .ix-tod-frame[data-cap-hidden="true"] .layer--header {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .ix-ai-frame[data-cap-hidden="true"] .layer--chat {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    #device[data-ix-route="002-1"] [data-zone="below"] {
+      will-change: transform;
+    }
+
+    #device[data-ix-route="002-1"] .ix-extras {
+      will-change: transform;
+    }
+
+    .ix-return {
+      position: absolute;
+      inset: 0;
+      z-index: 22;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .ix-return .layer--glass-share { z-index: 10; }
+    .ix-return .layer--icon-share { z-index: 11; }
+
+    #device[data-screen="002-1"]:not(.is-animating) .ix-return.is-visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .ix-tod-frame {
+      position: absolute;
+      left: 4px;
+      top: 67px;
+      width: 393px;
+      height: 283px;
+      border-radius: 42px;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .ix-tod-frame .layer--header {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 393px;
+      height: 283px;
+      border-radius: 0 !important;
+      z-index: 1;
+    }
+
+    .ix-ai-frame {
+      position: absolute;
+      left: 4px;
+      top: 355px;
+      width: 393px;
+      height: 174px;
+      border-radius: 42px;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .ix-ai-bg-fill {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+    }
+
+    .ix-ai-frame .layer--chat {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 393px;
+      height: 174px;
+      border-radius: 0 !important;
+      z-index: 1;
+    }
+
+    .ix-ai-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .ix-ai-content .layer--glass-radial { z-index: 10; }
+    .ix-ai-content .layer--icon-radial  { z-index: 11; }
+    .ix-ai-content .text--ai-steward    { z-index: 14; }
+
+    .ix-ai-body {
+      position: absolute;
+      inset: 0;
+      z-index: 13;
+      pointer-events: none;
+    }
+
+    .ix-ai-body .text--quote,
+    .ix-ai-body .text--measurements { z-index: 14; }
+    .ix-ai-body .layer--icon-chat { z-index: 12; }
+
+    .ix-m-frame {
+      position: absolute;
+      left: 4px;
+      top: 534px;
+      width: 194px;
+      height: 323px;
+      border-radius: 42px;
+      overflow: hidden;
+      z-index: 3;
+      will-change: transform;
+    }
+
+    .ix-m-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        rgb(236 167 80 / 100%) 0%,
+        rgb(236 167 80 / 70%) 29.33%,
+        rgb(235 168 80 / 5%) 85.58%
+      );
+    }
+
+    .ix-m-header {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .ix-m-header .layer--glass-settings { z-index: 10; }
+    .ix-m-header .layer--icon-settings  { z-index: 11; }
+    .ix-m-header .text--mechanical     { z-index: 14; }
+
+    .ix-m-body {
+      position: absolute;
+      inset: 0;
+      z-index: 15;
+      pointer-events: none;
+    }
+
+    .ix-m-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .ix-m-content .layer--glass-settings { z-index: 10; }
+    .ix-m-content .layer--icon-settings  { z-index: 11; }
+    .ix-m-content .text--mechanical      { z-index: 14; }
+    .ix-m-content .layer--icon-motor,
+    .ix-m-content .layer--icon-battery,
+    .ix-m-content .layer--icon-ventilation,
+    .ix-m-content .layer--icon-temp,
+    .ix-m-content .layer--divider { z-index: 11; }
+    .ix-m-content .text             { z-index: 14; }
+
+    .ix-l-frame {
+      position: absolute;
+      left: 203px;
+      top: 534px;
+      width: 194px;
+      height: 323px;
+      border-radius: 42px;
+      overflow: hidden;
+      z-index: 4;
+    }
+
+    .ix-l-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        rgb(44 196 210 / 100%) 0%,
+        rgb(44 196 210 / 70%) 29.33%,
+        rgb(44 196 210 / 5%) 85.58%
+      );
+    }
+
+    .ix-l-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .ix-l-content .layer--glass-map { z-index: 10; }
+    .ix-l-content .layer--icon-map  { z-index: 11; }
+    .ix-l-content .text             { z-index: 14; }
+
+    #device[data-ix-route="002-3"] .ix-l-frame {
+      will-change: transform;
+    }
+
+    .ix-l-header {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .ix-l-header .layer--glass-map { z-index: 10; }
+    .ix-l-header .layer--icon-map  { z-index: 11; }
+    .ix-l-header .text--location   { z-index: 14; }
+
+    .ix-l-body {
+      position: absolute;
+      inset: 0;
+      z-index: 15;
+      pointer-events: none;
+    }
+
+    .ix-l-body .text--hospital { z-index: 14; }
+    .ix-l-body .layer--icogram { z-index: 9; }
+
+    .ix-tod-header {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .ix-tod-header .layer--avatar,
+    .ix-tod-header .layer--recording { z-index: 8; }
+    .ix-tod-header .layer--recording { z-index: 12; }
+    .ix-tod-header .text { z-index: 14; }
+
+    #device.is-animating[data-ix-route="002-1"] #ix-tod-header,
+    #device.is-animating[data-ix-route="002-1"] #ix-tod-header .layer,
+    #device.is-animating[data-ix-route="002-1"] #ix-tod-header .text,
+    #device.is-animating[data-ix-route="002-2"] #ix-tod-header,
+    #device.is-animating[data-ix-route="002-2"] #ix-tod-header .layer,
+    #device.is-animating[data-ix-route="002-2"] #ix-tod-header .text,
+    #device.is-animating[data-ix-route="002-3"] #ix-tod-header,
+    #device.is-animating[data-ix-route="002-3"] #ix-tod-header .layer,
+    #device.is-animating[data-ix-route="002-3"] #ix-tod-header .text,
+    #device.is-animating[data-ix-route="002-4"] #ix-tod-header,
+    #device.is-animating[data-ix-route="002-4"] #ix-tod-header .layer,
+    #device.is-animating[data-ix-route="002-4"] #ix-tod-header .text {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    .ix-extras {
+      position: absolute;
+      inset: 0;
+      z-index: 14;
+      pointer-events: none;
+    }
+
+    /* 002-1 的 extras 需可见并上滑入；002-2/3/4 初始渐隐由 JS 控制 */
+    #device[data-ix-route="002-2"] .ix-extras,
+    #device[data-ix-route="002-3"] .ix-extras,
+    #device[data-ix-route="002-4"] .ix-extras {
+      opacity: 0;
+    }
+
+    .ix-hotspot {
+      position: absolute;
+      z-index: 100;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ix-hotspot:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.45);
+      outline-offset: 2px;
+    }
+
+    #device.is-animating .ix-hotspot {
+      pointer-events: none;
+    }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: "等线", "DengXian", sans-serif;
+      z-index: 9999;
+      transition: opacity 0.35s;
+    }
+    .loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loader__hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.45);
+      max-width: 320px;
+      text-align: center;
+      line-height: 1.5;
+      padding: 0 16px;
+    }
+
+    #ix-embed-root { display: none !important; }</script>
+    <script type="text/plain" id="ix-drill-embed-003">*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: #0a0a0a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .page__title {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      font-family: "等线", "DengXian", sans-serif;
+    }
+
+    .device-wrap {
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    #device {
+      position: relative;
+      width: 402px;
+      height: 874px;
+      overflow: hidden;
+      background: #060606;
+      box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    .ix-nav-pin {
+      position: absolute;
+      inset: 0;
+      z-index: 60;
+      pointer-events: none;
+    }
+
+    .ix-nav-pin .ix-nav-glass {
+      position: absolute;
+      left: 38px;
+      top: 770px;
+      width: 326px;
+      height: 77px;
+      border-radius: 999px;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 0.5px solid rgba(255, 255, 255, 0.38);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        0 4px 28px rgba(0, 0, 0, 0.1);
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .ix-nav-pin .layer {
+      z-index: 2 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .ix-ai-group {
+      pointer-events: none;
+    }
+
+    .ix-nav-glass {
+      position: absolute;
+      left: 38px;
+      top: 770px;
+      width: 326px;
+      height: 77px;
+      border-radius: 999px;
+      z-index: 56;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 0.5px solid rgba(255, 255, 255, 0.38);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        0 4px 28px rgba(0, 0, 0, 0.1);
+      pointer-events: none;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #device .layer--nav-dot,
+    #device .layer--nav-home,
+    #device .layer--nav-settings,
+    #device .layer--nav-garage,
+    #device .layer--nav-user {
+      z-index: 57 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #device [data-zone="nav"] {
+      z-index: 57 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #device.is-animating .ix-pet-frame,
+    #device.is-animating .ix-owner-frame,
+    #device.is-animating .ix-ai-frame {
+      z-index: 12;
+    }
+
+    #device.is-animating .ix-payment-frame {
+      z-index: 20;
+    }
+
+    /* 渐隐完成后至 003-4 结束：003 内容强制隐藏，防止切换过程中闪现 */
+    #device[data-content003="hidden"] #ix-pet-header,
+    #device[data-content003="hidden"] #ix-edit-bottom,
+    #device[data-content003="hidden"] #ix-edit-top,
+    #device[data-content003="hidden"] .ix-pet-frame,
+    #device[data-content003="hidden"] .ix-owner-frame,
+    #device[data-content003="hidden"] .ix-ai-group,
+    #device[data-content003="hidden"] .text--address:not(.text--addr-detail),
+    #device[data-content003="hidden"] .text--faceid,
+    #device[data-content003="hidden"] .layer--glass-bill,
+    #device[data-content003="hidden"] .layer--icon-bill,
+    #device[data-content003="hidden"] .layer--icon-lock {
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    #device[data-content003="hidden"] #ix-nav-pin,
+    #device[data-content003="hidden"] #ix-nav-pin .layer,
+    #device[data-content003="hidden"] #ix-nav-pin .ix-nav-glass {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #device[data-screen="003-4"] #ix-nav-pin,
+    #device[data-screen="003-4"] #ix-nav-pin .layer,
+    #device[data-screen="003-4"] .ix-nav-pin .ix-nav-glass {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #device[data-screen="003-4"] #ix-extras {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .ix-pet-frame {
+      position: absolute;
+      left: 4px;
+      top: 71px;
+      width: 393px;
+      height: 192px;
+      border-radius: 42px;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    /* 003-1 拉伸渐变 — 仅 003-1 路由（同 3-1INT.html） */
+    #device[data-ix-route="003-1"] .ix-pet-frame {
+      background: linear-gradient(180deg, #000000 0%, #C5C5C5 100%);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+
+    #device[data-ix-route="003-1"] .ix-pet-bg-fill {
+      background: linear-gradient(180deg, #000000 0%, #C5C5C5 100%);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .ix-pet-bg-fill {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* TOD 头部常显 — 003-1/2/3 专用；003-4 无此规则（同 3-4INT.html） */
+    #device.is-animating[data-ix-route="003-1"] #ix-pet-header,
+    #device.is-animating[data-ix-route="003-1"] #ix-pet-header .layer,
+    #device.is-animating[data-ix-route="003-1"] #ix-pet-header .text,
+    #device.is-animating[data-ix-route="003-2"] #ix-pet-header,
+    #device.is-animating[data-ix-route="003-2"] #ix-pet-header .layer,
+    #device.is-animating[data-ix-route="003-2"] #ix-pet-header .text,
+    #device.is-animating[data-ix-route="003-3"] #ix-pet-header,
+    #device.is-animating[data-ix-route="003-3"] #ix-pet-header .layer,
+    #device.is-animating[data-ix-route="003-3"] #ix-pet-header .text {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    #device[data-ix-route="003-1"] [data-zone="below"] {
+      will-change: transform;
+    }
+
+    #device[data-screen="003-2"]:not(.is-animating) #ix-edit-bottom,
+    #device[data-screen="003-2"]:not(.is-animating) #ix-edit-top {
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+
+    #device[data-screen="003-3"]:not(.is-animating) #ix-edit-bottom,
+    #device[data-screen="003-3"]:not(.is-animating) #ix-edit-top {
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+
+    .ix-pet-frame .layer--section-pet {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 393px;
+      height: 192px;
+      border-radius: 0 !important;
+      z-index: 1;
+    }
+
+    .ix-pet-frame[data-cap-hidden="true"] .layer--section-pet {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .ix-owner-frame {
+      position: absolute;
+      left: 4px;
+      top: 268px;
+      width: 393px;
+      height: 192px;
+      border-radius: 43px;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .ix-owner-bg-fill {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .ix-owner-frame .layer--section-owner {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 393px;
+      height: 192px;
+      border-radius: 0 !important;
+      z-index: 1;
+    }
+
+    .ix-owner-frame[data-cap-hidden="true"] .layer--section-owner {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .ix-owner-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .ix-ai-frame {
+      position: absolute;
+      left: 4px;
+      top: 465px;
+      width: 393px;
+      height: 146px;
+      border-radius: 31px;
+      overflow: hidden;
+      z-index: 3;
+    }
+
+    .ix-ai-bg-fill {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .ix-ai-frame .layer--section-ai {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 393px;
+      height: 146px;
+      border-radius: 0 !important;
+      z-index: 1;
+    }
+
+    .ix-ai-frame[data-cap-hidden="true"] .layer--section-ai {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .ix-payment-frame {
+      position: absolute;
+      left: 4px;
+      top: 616px;
+      width: 393px;
+      height: 245px;
+      border-radius: 37px;
+      overflow: hidden;
+      z-index: 4;
+    }
+
+    .ix-payment-bg-fill {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .ix-payment-frame .layer--section-payment {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 393px;
+      height: 245px;
+      border-radius: 0 !important;
+      z-index: 1;
+    }
+
+    .ix-payment-frame[data-cap-hidden="true"] .layer--section-payment {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .ix-pet-header {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .ix-pet-header .layer--avatar-tod { z-index: 8; }
+    .ix-pet-header .layer--pet-badge { z-index: 9; }
+    .ix-pet-header .text { z-index: 14; }
+
+    .ix-edit-bottom {
+      position: absolute;
+      inset: 0;
+      z-index: 21;
+      pointer-events: none;
+    }
+
+    .ix-edit-bottom .layer--glass-edit-bottom { z-index: 10; }
+    .ix-edit-bottom .text--edit-bottom { z-index: 14; }
+
+    .ix-edit-top {
+      position: absolute;
+      inset: 0;
+      z-index: 21;
+      pointer-events: none;
+    }
+
+    .ix-edit-top .layer--glass-edit-top { z-index: 10; }
+    .ix-edit-top .text--edit-top { z-index: 14; }
+
+    .ix-extras {
+      position: absolute;
+      inset: 0;
+      z-index: 15;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    #device[data-screen="003-4"]:not(.is-animating) #ix-pet-header,
+    #device[data-screen="003-4"]:not(.is-animating) #ix-edit-bottom,
+    #device[data-screen="003-4"]:not(.is-animating) #ix-edit-top,
+    #device[data-screen="003-4"]:not(.is-animating) .text--address:not(.text--addr-detail),
+    #device[data-screen="003-4"]:not(.is-animating) .text--faceid,
+    #device[data-screen="003-4"]:not(.is-animating) .layer--glass-bill,
+    #device[data-screen="003-4"]:not(.is-animating) .layer--icon-bill,
+    #device[data-screen="003-4"]:not(.is-animating) .layer--icon-lock,
+    #device[data-screen="003-4"]:not(.is-animating) .ix-ai-group {
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+
+    #device[data-screen="003-4"]:not(.is-animating) .ix-pet-frame,
+    #device[data-screen="003-4"]:not(.is-animating) .ix-owner-frame,
+    #device[data-screen="003-4"]:not(.is-animating) .ix-ai-frame {
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+
+    #device[data-screen="003-4"] #ix-extras,
+    #device[data-screen="003-4"] #ix-extras .layer,
+    #device[data-screen="003-4"] #ix-extras .text,
+    #device[data-screen="003-4"] #ix-extras .glass {
+      pointer-events: none;
+    }
+
+    #device[data-screen="003-4"]:not(.is-animating) #ix-extras .text--addr-detail {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .ix-hotspot {
+      position: absolute;
+      z-index: 100;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ix-hotspot:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.45);
+      outline-offset: 2px;
+    }
+
+    #device.is-animating .ix-hotspot {
+      pointer-events: none;
+    }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: "等线", "DengXian", sans-serif;
+      z-index: 9999;
+      transition: opacity 0.35s;
+    }
+    .loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loader__hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.45);
+      max-width: 320px;
+      text-align: center;
+      line-height: 1.5;
+      padding: 0 16px;
+    }
+
+    #ix-embed-root { display: none !important; }</script>
+  </div>
+
 
   <script>window.__IX_ALL_MODE__ = true; window.__IX_INT_MODE__ = true;</script>
+<script>
+window.__IX_EMBED_LOAD__ = function (id, cfg) {
+  if (!cfg) return null;
+  var styleNode = document.getElementById('ix-embed-' + id + '-style');
+  var deviceTpl = document.getElementById('ix-embed-' + id + '-device');
+  if (!deviceTpl) return null;
+  var innerHTML = deviceTpl.innerHTML.trim();
+  if (!innerHTML) return null;
+  return {
+    id: id,
+    style: styleNode ? styleNode.textContent : '',
+    innerHTML: innerHTML,
+    assetDir: cfg.assetDir
+  };
+};
+</script>
   <script>
 /**
  * 001-001-1INTERACTION — 001 ⇄ 001-1 交互（不修改原 HTML 原稿）
@@ -352,6 +4761,8 @@
   async function parseScreen(id) {
     if (screenCache[id]) return screenCache[id];
     const cfg = SCREENS[id];
+    const embedded = window.__IX_EMBED_LOAD__ && window.__IX_EMBED_LOAD__(id, cfg);
+    if (embedded) { screenCache[id] = embedded; return embedded; }
     const res = await fetch(cfg.file);
     if (!res.ok) throw new Error('无法读取 ' + cfg.file);
     const html = await res.text();
@@ -1216,6 +5627,8 @@
   async function parseScreen(id) {
     if (screenCache[id]) return screenCache[id];
     const cfg = SCREENS[id];
+    const embedded = window.__IX_EMBED_LOAD__ && window.__IX_EMBED_LOAD__(id, cfg);
+    if (embedded) { screenCache[id] = embedded; return embedded; }
     const res = await fetch(cfg.file);
     if (!res.ok) throw new Error('无法读取 ' + cfg.file);
     const html = await res.text();
@@ -1927,6 +6340,8 @@
   async function parseScreen(id) {
     if (screenCache[id]) return screenCache[id];
     const cfg = SCREENS[id];
+    const embedded = window.__IX_EMBED_LOAD__ && window.__IX_EMBED_LOAD__(id, cfg);
+    if (embedded) { screenCache[id] = embedded; return embedded; }
     const res = await fetch(cfg.file);
     if (!res.ok) throw new Error('无法读取 ' + cfg.file);
     const html = await res.text();
@@ -2657,6 +7072,8 @@
   async function parseScreen(id) {
     if (screenCache[id]) return screenCache[id];
     const cfg = SCREENS[id];
+    const embedded = window.__IX_EMBED_LOAD__ && window.__IX_EMBED_LOAD__(id, cfg);
+    if (embedded) { screenCache[id] = embedded; return embedded; }
     const res = await fetch(cfg.file);
     if (!res.ok) throw new Error('无法读取 ' + cfg.file);
     const html = await res.text();
@@ -3199,6 +7616,8 @@
   async function parseScreen(id) {
     if (screenCache[id]) return screenCache[id];
     const cfg = SCREENS[id];
+    const embedded = window.__IX_EMBED_LOAD__ && window.__IX_EMBED_LOAD__(id, cfg);
+    if (embedded) { screenCache[id] = embedded; return embedded; }
     const res = await fetch(cfg.file);
     if (!res.ok) throw new Error('无法读取 ' + cfg.file);
     const html = await res.text();
@@ -4062,6 +8481,8 @@
   async function parseScreen(id) {
     if (screenCache[id]) return screenCache[id];
     const cfg = SCREENS[id];
+    const embedded = window.__IX_EMBED_LOAD__ && window.__IX_EMBED_LOAD__(id, cfg);
+    if (embedded) { screenCache[id] = embedded; return embedded; }
     const res = await fetch(cfg.file);
     if (!res.ok) throw new Error('无法读取 ' + cfg.file);
     const html = await res.text();
@@ -4948,6 +9369,8 @@
   async function parseScreen(id) {
     if (screenCache[id]) return screenCache[id];
     const cfg = SCREENS[id];
+    const embedded = window.__IX_EMBED_LOAD__ && window.__IX_EMBED_LOAD__(id, cfg);
+    if (embedded) { screenCache[id] = embedded; return embedded; }
     const res = await fetch(cfg.file);
     if (!res.ok) throw new Error('无法读取 ' + cfg.file);
     const html = await res.text();
@@ -5698,6 +10121,8 @@
   async function parseScreen(id) {
     if (screenCache[id]) return screenCache[id];
     const cfg = SCREENS[id];
+    const embedded = window.__IX_EMBED_LOAD__ && window.__IX_EMBED_LOAD__(id, cfg);
+    if (embedded) { screenCache[id] = embedded; return embedded; }
     const res = await fetch(cfg.file);
     if (!res.ok) throw new Error('无法读取 ' + cfg.file);
     const html = await res.text();
@@ -6266,6 +10691,8 @@
   async function parseScreen(id) {
     if (screenCache[id]) return screenCache[id];
     const cfg = SCREENS[id];
+    const embedded = window.__IX_EMBED_LOAD__ && window.__IX_EMBED_LOAD__(id, cfg);
+    if (embedded) { screenCache[id] = embedded; return embedded; }
     const res = await fetch(cfg.file);
     if (!res.ok) throw new Error('无法读取 ' + cfg.file);
     const html = await res.text();
@@ -7044,6 +11471,8 @@
   async function parseScreen(id) {
     if (screenCache[id]) return screenCache[id];
     const cfg = SCREENS[id];
+    const embedded = window.__IX_EMBED_LOAD__ && window.__IX_EMBED_LOAD__(id, cfg);
+    if (embedded) { screenCache[id] = embedded; return embedded; }
     const res = await fetch(cfg.file);
     if (!res.ok) throw new Error('无法读取 ' + cfg.file);
     const html = await res.text();
@@ -10775,10 +15204,10 @@
 (function () {
   'use strict';
 
-  const DRILL_CSS_FILES = {
-    '001': '1-ALL.html',
-    '002': '2-ALL.html',
-    '003': '3-ALL.html'
+  const DRILL_CSS_EMBED = {
+    '001': 'ix-drill-embed-001',
+    '002': 'ix-drill-embed-002',
+    '003': 'ix-drill-embed-003'
   };
 
   const PAGE_MOD = {
@@ -10807,9 +15236,8 @@
 
   async function loadDrillCSS(pageId) {
     if (drillCSSCache[pageId]) return drillCSSCache[pageId];
-    const html = await fetchHTML(DRILL_CSS_FILES[pageId]);
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const css = doc.querySelector('style')?.textContent || '';
+    const el = document.getElementById(DRILL_CSS_EMBED[pageId]);
+    const css = el ? el.textContent : '';
     drillCSSCache[pageId] = css;
     return css;
   }
