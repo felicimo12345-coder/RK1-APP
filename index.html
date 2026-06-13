@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALL-INT</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: #0a0a0a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .page__title {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      font-family: "等线", "DengXian", sans-serif;
+    }
+
+    .device-wrap {
+      flex-shrink: 0;
+      margin-left: auto;
+      margin-right: auto;
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    #device {
+      position: relative;
+      width: 402px;
+      height: 874px;
+      overflow: hidden;
+      background: #060606;
+      box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    #ix-content-stage {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .ix-screen-layer {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    #ix-content-stage .ix-screen-layer .layer {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #ix-content-stage .ix-screen-layer .text {
+      position: absolute;
+      margin: 0;
+      padding: 0;
+      pointer-events: none;
+    }
+
+    #ix-nav-pin {
+      position: absolute;
+      inset: 0;
+      z-index: 60;
+      pointer-events: none;
+      isolation: isolate;
+    }
+
+    .ix-nav-glass {
+      position: absolute;
+      left: 38px;
+      top: 770px;
+      width: 326px;
+      height: 77px;
+      border-radius: 999px;
+      z-index: 1 !important;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 0.5px solid rgba(255, 255, 255, 0.38);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        0 4px 28px rgba(0, 0, 0, 0.1);
+    }
+
+    .ix-nav-dot {
+      position: absolute;
+      width: 52px;
+      height: 50px;
+      z-index: 5 !important;
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .ix-nav-icon {
+      position: absolute;
+      z-index: 10 !important;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+      object-fit: contain;
+    }
+
+    .ix-hotspot {
+      position: absolute;
+      z-index: 200;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      pointer-events: auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* 底部四 icon 热点须高于 002-4 / 003-4 等内容热点，避免首次点击被误识别 */
+    .ix-hotspot--topnav {
+      z-index: 300;
+    }
+    .ix-hotspot:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.45);
+      outline-offset: 2px;
+    }
+
+    #device.is-animating .ix-hotspot {
+      pointer-events: none;
+    }
+
+    #device[data-ix-mode="home"] #ix-nav-pin {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: "等线", "DengXian", sans-serif;
+      z-index: 9999;
+      transition: opacity 0.35s;
+    }
+    .loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loader__hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.45);
+      max-width: 320px;
+      text-align: center;
+      line-height: 1.5;
+      padding: 0 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="loader" id="loader">
+    <span id="loaderText">正在加载…</span>
+    <span class="loader__hint" id="loaderHint"></span>
+  </div>
+
+  <div class="page">
+    <p class="page__title">ALL-INT · 0-ALL 一级 + 1/2/3-ALL 二级按需接入</p>
+    <div class="device-wrap">
+      <div id="device" data-screen="001" data-ix-mode="home"></div>
+    </div>
+  </div>
+
+  <script>window.__IX_ALL_MODE__ = true; window.__IX_INT_MODE__ = true;</script>
+  <script src="1-1INT.js"></script>
+  <script src="1-2INT.js"></script>
+  <script src="1-3INT.js"></script>
+  <script src="2-1INT.js"></script>
+  <script src="2-2INT.js"></script>
+  <script src="2-3INT.js"></script>
+  <script src="2-4INT.js"></script>
+  <script src="3-1INT.js"></script>
+  <script src="3-2INT.js"></script>
+  <script src="3-3INT.js"></script>
+  <script src="3-4INT.js"></script>
+  <script src="1-ALL.js"></script>
+  <script src="2-ALL.js"></script>
+  <script src="3-ALL.js"></script>
+  <script src="0-ALL.js"></script>
+  <script>
+/**
+ * ALL-INT 桥接层：0-ALL 为一级入口，按当前页按需接入 1-ALL / 2-ALL / 3-ALL
+ *
+ * 流程：
+ *   进入 → 0-ALL（001 + 底部四 icon）
+ *   点四 icon → 0-ALL 切换 001/002/003
+ *   在 003 点方框 → 接入 3-ALL 二级动效
+ *   3-ALL 结束 → 回到 003（0-ALL 壳）
+ */
+(function () {
+  'use strict';
+
+  const DRILL_CSS_FILES = {
+    '001': '1-ALL.html',
+    '002': '2-ALL.html',
+    '003': '3-ALL.html'
+  };
+
+  const PAGE_MOD = {
+    '001': () => window.IX_ALL_001,
+    '002': () => window.IX_ALL_002,
+    '003': () => window.IX_ALL_003
+  };
+
+  const drillCSSCache = Object.create(null);
+  const drillStyleEls = { '001': null, '002': null, '003': null };
+
+  const device = document.getElementById('device');
+  const loader = document.getElementById('loader');
+  const loaderText = document.getElementById('loaderText');
+  const loaderHint = document.getElementById('loaderHint');
+
+  function currentPage() {
+    return window.IX0ALL?.getCurrentPage() || '001';
+  }
+
+  async function fetchHTML(file) {
+    const res = await fetch(file);
+    if (!res.ok) throw new Error('无法读取 ' + file);
+    return res.text();
+  }
+
+  async function loadDrillCSS(pageId) {
+    if (drillCSSCache[pageId]) return drillCSSCache[pageId];
+    const html = await fetchHTML(DRILL_CSS_FILES[pageId]);
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const css = doc.querySelector('style')?.textContent || '';
+    drillCSSCache[pageId] = css;
+    return css;
+  }
+
+  async function ensureDrillStyles() {
+    for (const page of ['001', '002', '003']) {
+      if (drillStyleEls[page]) continue;
+      const css = await loadDrillCSS(page);
+      const el = document.createElement('style');
+      el.id = 'ix-drill-active-' + page;
+      el.disabled = true;
+      el.textContent = '/* drill ' + page + ' */\n' + css;
+      document.head.appendChild(el);
+      drillStyleEls[page] = el;
+    }
+  }
+
+  function disableRouteStyles() {
+    document.querySelectorAll('style[data-ix-route]').forEach((el) => {
+      el.disabled = true;
+    });
+  }
+
+  /** 一级 0-ALL 样式开；二级仅当前页 drill 样式开 */
+  function setDrillCSS(pageId, enabled) {
+    Object.keys(drillStyleEls).forEach((p) => {
+      if (drillStyleEls[p]) drillStyleEls[p].disabled = !(enabled && p === pageId);
+    });
+    const base = document.getElementById('ix-all-base-styles');
+    if (base) base.disabled = true;
+    if (!enabled) disableRouteStyles();
+    window.IX0ALL?.setPageStylesEnabled(!enabled);
+  }
+
+  function setHomeMode() {
+    setDrillCSS(null, false);
+    if (device) {
+      device.dataset.ixMode = 'home';
+      delete device.dataset.ixRoute;
+      device.removeAttribute('data-content003');
+      device.classList.remove('is-animating');
+    }
+  }
+
+  /** 回到 0-ALL 一级（001/002/003 之一） */
+  async function mountHomeContent(pageId) {
+    setHomeMode();
+    await window.IX0ALL.mountPage(pageId);
+  }
+
+  /** 进入 1/2/3-ALL 前：拆掉 0-ALL 壳 */
+  async function beforeDrillDown() {
+    const pageId = currentPage();
+    window.IX0ALL.teardown();
+    if (device) device.dataset.ixMode = 'drill';
+    setDrillCSS(pageId, true);
+  }
+
+  function setupIxAllProxy() {
+    window.IX_ALL = {
+      activateModuleStyles(routeId) {
+        const page = routeId.slice(0, 3);
+        setDrillCSS(page, true);
+        PAGE_MOD[page]()?.activateModuleStyles(routeId);
+      },
+      refreshHotspots() {
+        const page = currentPage();
+        const mod = PAGE_MOD[page]();
+        if (!mod) return;
+        Promise.resolve(mod.refreshHotspots()).then(() => {
+          if (!device.dataset.ixRoute && device.dataset.ixMode === 'home') {
+            window.IX0ALL.refreshTopNav?.();
+          }
+        });
+      },
+      isNavigating() {
+        return !!window.IX0ALL?.isAnimating?.()
+          || !!PAGE_MOD[currentPage()]()?.isNavigating?.();
+      }
+    };
+  }
+
+  async function init() {
+    if (!device || !loader) return;
+
+    const isHttp = location.protocol === 'http:' || location.protocol === 'https:';
+    if (!isHttp) {
+      loaderText.textContent = '需要本地 HTTP 服务';
+      loaderHint.textContent = '请用 Live Server 或 python -m http.server 打开 index.html';
+      return;
+    }
+
+    if (!window.IX0ALL) {
+      loaderText.textContent = '模块加载失败';
+      loaderHint.textContent = '请确认 0-ALL.js 已加载';
+      return;
+    }
+
+    const missing = ['IX_ALL_001', 'IX_ALL_002', 'IX_ALL_003'].filter((k) => !window[k]);
+    if (missing.length) {
+      loaderText.textContent = '模块加载失败';
+      loaderHint.textContent = 'Missing: ' + missing.join(', ');
+      return;
+    }
+
+    setupIxAllProxy();
+
+    async function onPageReady(pageId) {
+      const mod = PAGE_MOD[pageId]();
+      if (mod) await mod.refreshHotspots();
+    }
+
+    window.IX_INT = {
+      mountHomeContent,
+      beforeDrillDown,
+      setHomeMode,
+      onPageReady,
+      refreshTopNav: () => window.IX0ALL.setupHotspots()
+    };
+
+    try {
+      loaderText.textContent = '正在加载 ALL-INT…';
+      await ensureDrillStyles();
+      await window.IX0ALL.init();
+      loader.classList.add('hidden');
+    } catch (err) {
+      loaderText.textContent = '加载失败';
+      loaderHint.textContent = err.message || String(err);
+      console.error('[ALL-INT]', err);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+  </script>
+</body>
+</html>
