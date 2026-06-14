@@ -4783,16 +4783,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -5649,16 +5653,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -6362,16 +6370,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -7094,16 +7106,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -7638,16 +7654,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -8503,16 +8523,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -9391,16 +9415,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -10143,16 +10171,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -10713,16 +10745,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -11493,16 +11529,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -12596,16 +12636,20 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyStyles(screenId, cssText) {
@@ -13700,7 +13744,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
@@ -13746,11 +13790,15 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyBaseStyles(cssText) {
@@ -14025,7 +14073,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
@@ -14071,11 +14119,15 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyBaseStyles(cssText) {
@@ -14365,7 +14417,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
@@ -14411,11 +14463,15 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   function applyBaseStyles(cssText) {
@@ -14718,7 +14774,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = url + '?t=' + Date.now();
+      img.src = url;
     });
   }
 
@@ -14785,11 +14841,15 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
   }
 
   async function bindAssets(root, assetDir) {
-    await Promise.all([...root.querySelectorAll('[data-asset]')].map(async (el) => {
-      const local = assetDir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
-      else el.removeAttribute('src');
-    }));
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const batchSize = 5;
+    for (let i = 0; i < layers.length; i += batchSize) {
+      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
+        const local = assetDir + '/' + el.dataset.asset;
+        if (await probe(local)) el.src = local;
+        else el.removeAttribute('src');
+      }));
+    }
   }
 
   const PAGE_SCOPE = '#ix-content-stage .ix-screen-layer';
