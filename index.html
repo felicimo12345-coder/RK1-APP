@@ -184,6 +184,34 @@
       padding: 0 16px;
     }
     #ix-embed-root { display: none !important; }
+
+    /* 动效期间关闭毛玻璃，减轻 GPU 压力（尤其 iOS Safari） */
+    #device.is-animating,
+    #device.is-animating * {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    /* 触控设备：简化合成层与阴影，导航玻璃用半透明底色代替 blur */
+    html.ix-mobile .ix-nav-glass {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background: rgba(255, 255, 255, 0.18) !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    }
+    html.ix-mobile #device {
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+    html.ix-mobile .ix-screen-layer {
+      will-change: auto;
+    }
+    html.ix-mobile .ix-screen-layer .layer {
+      backface-visibility: hidden;
+    }
+    html.ix-mobile * {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
   </style>
 </head>
 <body>
@@ -4609,16 +4637,37 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
 };
 </script>
 <script>
-/** 全局资源加载：WebP 优先、分批、单次请求（无 probe 双加载） */
+/** 移动端性能：检测、动画时长缩放、毛玻璃降级 */
+window.__IX_PERF__ = (function () {
+  'use strict';
+  const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    || (navigator.maxTouchPoints > 1 && Math.min(screen.width, screen.height) < 900);
+  if (mobile) document.documentElement.classList.add('ix-mobile');
+  const SCALE = mobile ? 0.55 : 1;
+  function ms(n) { return Math.max(mobile ? 280 : 400, Math.round(n * SCALE)); }
+  return { mobile, ms, SCALE };
+})();
+</script>
+<script>
+/** 全局资源加载：WebP 优先、分批、单次请求、URL 缓存、首屏优先 */
 window.__IX_ASSETS__ = (function () {
   'use strict';
 
-  const BATCH = 5;
+  const mobile = window.__IX_PERF__?.mobile;
+  const BATCH = mobile ? 3 : 5;
   const RX_EXT = /\.(png|jpe?g|webp)$/i;
+  const PRIORITY_RE = /layer--(?:header|nav|avatar|metrics|chat|pet)/i;
+  const urlCache = new Map();
+
+  function cacheKey(assetDir, name) {
+    return assetDir + '/' + name.replace(RX_EXT, '');
+  }
 
   function candidates(assetDir, name) {
     const base = name.replace(RX_EXT, '');
-    return [assetDir + '/' + base + '.webp', assetDir + '/' + base + '.png'];
+    const png = assetDir + '/' + base + '.png';
+    const webp = assetDir + '/' + base + '.webp';
+    return mobile ? [png] : [webp, png];
   }
 
   function candidatesFromUrl(url) {
@@ -4635,6 +4684,7 @@ window.__IX_ASSETS__ = (function () {
         if (!ok) el.removeAttribute('src');
         resolve(ok);
       };
+      el.decoding = 'async';
       el.onload = () => done(true);
       el.onerror = () => done(false);
       el.src = url;
@@ -4650,39 +4700,78 @@ window.__IX_ASSETS__ = (function () {
   }
 
   async function resolveAssetUrl(assetDir, name) {
-    const probe = new Image();
-    for (const url of candidates(assetDir, name)) {
-      if (await setImgSrc(probe, url)) return url;
+    const key = cacheKey(assetDir, name);
+    if (urlCache.has(key)) {
+      const hit = urlCache.get(key);
+      return hit || null;
     }
+    const probe = new Image();
+    probe.decoding = 'async';
+    for (const url of candidates(assetDir, name)) {
+      if (await setImgSrc(probe, url)) {
+        urlCache.set(key, url);
+        return url;
+      }
+    }
+    urlCache.set(key, '');
     return null;
   }
 
   async function resolveAssetPath(url) {
-    const probe = new Image();
-    for (const candidate of candidatesFromUrl(url)) {
-      if (await setImgSrc(probe, candidate)) return candidate;
-    }
-    return null;
+    const m = String(url).match(/^(.+)\/([^/]+)$/);
+    if (!m) return url;
+    return resolveAssetUrl(m[1], m[2]);
   }
 
   async function assignImgUrl(el, url) {
     if (!el || !url) return null;
-    return tryUrlsOnImg(el, candidatesFromUrl(url));
+    const m = String(url).match(/^(.+)\/([^/]+)$/);
+    if (m) {
+      const key = cacheKey(m[1], m[2]);
+      if (urlCache.has(key)) {
+        const hit = urlCache.get(key);
+        if (hit) await setImgSrc(el, hit);
+        else el.removeAttribute('src');
+        return hit || null;
+      }
+    }
+    const resolved = await tryUrlsOnImg(el, candidatesFromUrl(url));
+    if (m) urlCache.set(cacheKey(m[1], m[2]), resolved || '');
+    return resolved;
   }
 
   async function assignImgFile(el, assetDir, name) {
     if (!el || !name) return null;
-    return tryUrlsOnImg(el, candidates(assetDir, name));
+    const key = cacheKey(assetDir, name);
+    if (urlCache.has(key)) {
+      const hit = urlCache.get(key);
+      if (hit) await setImgSrc(el, hit);
+      else el.removeAttribute('src');
+      return hit || null;
+    }
+    const resolved = await tryUrlsOnImg(el, candidates(assetDir, name));
+    urlCache.set(key, resolved || '');
+    return resolved;
   }
 
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
+  async function bindBatch(layers, assetDir) {
     for (let i = 0; i < layers.length; i += BATCH) {
       await Promise.all(layers.slice(i, i + BATCH).map(async (el) => {
         const name = el.dataset.asset;
         if (name) await assignImgFile(el, assetDir, name);
       }));
     }
+  }
+
+  async function bindAssets(root, assetDir) {
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    const priority = [];
+    const rest = [];
+    layers.forEach((el) => {
+      (PRIORITY_RE.test(el.className || '') ? priority : rest).push(el);
+    });
+    await bindBatch(priority, assetDir);
+    await bindBatch(rest, assetDir);
   }
 
   async function applyBgCover(el, assetDir, name) {
@@ -4703,7 +4792,7 @@ window.__IX_ASSETS__ = (function () {
   };
 })();
 </script>
-  <script>
+<script>
 /**
  * 001-001-1INTERACTION — 001 ⇄ 001-1 交互（不修改原 HTML 原稿）
  */
@@ -4734,8 +4823,8 @@ window.__IX_ASSETS__ = (function () {
     '.layer--glass-moon', '.layer--icon-moon'
   ];
 
-  const FADE_MS = 1000;
-  const STRETCH_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1000);
+  const STRETCH_MS = window.__IX_PERF__.ms(1000);
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -5574,8 +5663,8 @@ window.__IX_ASSETS__ = (function () {
   const S_W = 194;
   const S_SLIDE = 402 - S_LEFT + 12;
 
-  const FADE_MS = 1000;
-  const SLIDE_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1000);
+  const SLIDE_MS = window.__IX_PERF__.ms(1000);
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -6279,8 +6368,8 @@ window.__IX_ASSETS__ = (function () {
   /** M 框完全左滑离场位移 */
   const M_SLIDE = M_LEFT + M_W0 + 12;
 
-  const FADE_MS = 1000;
-  const SLIDE_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1000);
+  const SLIDE_MS = window.__IX_PERF__.ms(1000);
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -6982,8 +7071,8 @@ window.__IX_ASSETS__ = (function () {
   ];
 
   const SLIDE_DIST = DEVICE_H - BELOW_START + 60;
-  const FADE_MS = 1000;
-  const SLIDE_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1000);
+  const SLIDE_MS = window.__IX_PERF__.ms(1000);
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -7525,8 +7614,8 @@ window.__IX_ASSETS__ = (function () {
   const AI_RADIUS = 42;
   const AI_RADIUS_END = 31;
 
-  const FADE_MS = 1000;
-  const STRETCH_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1000);
+  const STRETCH_MS = window.__IX_PERF__.ms(1000);
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -8270,8 +8359,8 @@ window.__IX_ASSETS__ = (function () {
   /** L 框完全离开屏幕所需的水平位移 */
   const L_SLIDE = 402 - L_LEFT + 12;
 
-  const FADE_MS = 1000;
-  const SLIDE_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1000);
+  const SLIDE_MS = window.__IX_PERF__.ms(1000);
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -9163,8 +9252,8 @@ window.__IX_ASSETS__ = (function () {
   const L_RIGHT = L_LEFT0 + L_W0;
   const BOX_RADIUS = 42;
 
-  const FADE_MS = 1000;
-  const SLIDE_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1000);
+  const SLIDE_MS = window.__IX_PERF__.ms(1000);
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -10027,8 +10116,8 @@ window.__IX_ASSETS__ = (function () {
   /** 003 中 section-owner 顶边与 pet 底边间距 */
   const BELOW_START = 268;
 
-  const FADE_MS = 1000;
-  const STRETCH_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1000);
+  const STRETCH_MS = window.__IX_PERF__.ms(1000);
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -10564,8 +10653,8 @@ window.__IX_ASSETS__ = (function () {
   const OWNER_GRAD_TOP = '#C5C5C5';
   const OWNER_GRAD_BOTTOM = '#616161';
 
-  const FADE_MS = 1000;
-  const STRETCH_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1000);
+  const STRETCH_MS = window.__IX_PERF__.ms(1000);
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -11315,8 +11404,8 @@ window.__IX_ASSETS__ = (function () {
   const OWNER_GRAD_TOP = '#C5C5C5';
   const OWNER_GRAD_BOTTOM = '#616161';
 
-  const FADE_MS = 1000;
-  const STRETCH_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1000);
+  const STRETCH_MS = window.__IX_PERF__.ms(1000);
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -12304,8 +12393,8 @@ window.__IX_ASSETS__ = (function () {
 
   const BACK_HOTSPOT = { left: 14, top: 42, width: 65, height: 65 };
 
-  const FADE_MS = 1200;
-  const STRETCH_MS = 1000;
+  const FADE_MS = window.__IX_PERF__.ms(1200);
+  const STRETCH_MS = window.__IX_PERF__.ms(1000);
 
   /** 更丝滑的渐隐渐显曲线 */
   function easeSmooth(t) {
@@ -14499,8 +14588,8 @@ window.__IX_ASSETS__ = (function () {
 (function () {
   'use strict';
 
-  const NAV_MS = 1000;
-  const SLIDE_MS = 1000;
+  const NAV_MS = window.__IX_PERF__.ms(1000);
+  const SLIDE_MS = window.__IX_PERF__.ms(1000);
   const DEVICE_H = 874;
 
   const PAGES = {
@@ -14544,7 +14633,7 @@ window.__IX_ASSETS__ = (function () {
 
   const NAV_STRIP_RE = /layer--nav(?:-dot|-home|-settings|-garage|-user)?\b/;
   const FILTER_ACTIVE = 'none';
-  const FILTER_INACTIVE = 'grayscale(0.35) brightness(0.95)';
+  const FILTER_INACTIVE = window.__IX_PERF__.mobile ? 'none' : 'grayscale(0.35) brightness(0.95)';
   const OPACITY_INACTIVE = '0.9';
 
   function iconTop(height) {
@@ -14897,7 +14986,7 @@ window.__IX_ASSETS__ = (function () {
 
     const { layer, data } = await buildScreenLayer(pageId);
     layer.style.transition = 'none';
-    layer.style.transform = opts.initialTransform || 'translateY(0)';
+    layer.style.transform = opts.initialTransform || 'translate3d(0,0,0)';
 
     contentStage.innerHTML = '';
     contentStage.appendChild(layer);
@@ -14946,7 +15035,7 @@ window.__IX_ASSETS__ = (function () {
     /* 预载目标页资源 */
     const { layer: incoming, data: incomingData } = await buildScreenLayer(targetPage);
     incoming.style.transition = 'none';
-    incoming.style.transform = 'translateY(' + DEVICE_H + 'px)';
+    incoming.style.transform = 'translate3d(0,' + DEVICE_H + 'px,0)';
     contentStage.appendChild(incoming);
     await preloadIncomingDot(toTab, targetPage);
 
@@ -14954,7 +15043,7 @@ window.__IX_ASSETS__ = (function () {
     setNavTransitioning(fromTab, toTab);
 
     outgoing.style.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(0.4, 0, 0.2, 1)';
-    outgoing.style.transform = 'translateY(' + DEVICE_H + 'px)';
+    outgoing.style.transform = 'translate3d(0,' + DEVICE_H + 'px,0)';
 
     await Promise.all([
       waitTransition(outgoing, 'transform'),
@@ -14976,7 +15065,7 @@ window.__IX_ASSETS__ = (function () {
     await syncNavVisual(targetPage, toTab);
 
     incoming.style.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(0.4, 0, 0.2, 1)';
-    incoming.style.transform = 'translateY(0)';
+    incoming.style.transform = 'translate3d(0,0,0)';
     await waitTransition(incoming, 'transform');
 
     incoming.style.removeProperty('transition');
