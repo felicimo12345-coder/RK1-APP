@@ -4608,6 +4608,101 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
   };
 };
 </script>
+<script>
+/** 全局资源加载：WebP 优先、分批、单次请求（无 probe 双加载） */
+window.__IX_ASSETS__ = (function () {
+  'use strict';
+
+  const BATCH = 5;
+  const RX_EXT = /\.(png|jpe?g|webp)$/i;
+
+  function candidates(assetDir, name) {
+    const base = name.replace(RX_EXT, '');
+    return [assetDir + '/' + base + '.webp', assetDir + '/' + base + '.png'];
+  }
+
+  function candidatesFromUrl(url) {
+    const m = String(url).match(/^(.+)\/([^/]+)$/);
+    if (!m) return [url];
+    return candidates(m[1], m[2]);
+  }
+
+  function setImgSrc(el, url) {
+    return new Promise((resolve) => {
+      const done = (ok) => {
+        el.onload = null;
+        el.onerror = null;
+        if (!ok) el.removeAttribute('src');
+        resolve(ok);
+      };
+      el.onload = () => done(true);
+      el.onerror = () => done(false);
+      el.src = url;
+    });
+  }
+
+  async function tryUrlsOnImg(el, urls) {
+    for (const url of urls) {
+      if (await setImgSrc(el, url)) return url;
+    }
+    el.removeAttribute('src');
+    return null;
+  }
+
+  async function resolveAssetUrl(assetDir, name) {
+    const probe = new Image();
+    for (const url of candidates(assetDir, name)) {
+      if (await setImgSrc(probe, url)) return url;
+    }
+    return null;
+  }
+
+  async function resolveAssetPath(url) {
+    const probe = new Image();
+    for (const candidate of candidatesFromUrl(url)) {
+      if (await setImgSrc(probe, candidate)) return candidate;
+    }
+    return null;
+  }
+
+  async function assignImgUrl(el, url) {
+    if (!el || !url) return null;
+    return tryUrlsOnImg(el, candidatesFromUrl(url));
+  }
+
+  async function assignImgFile(el, assetDir, name) {
+    if (!el || !name) return null;
+    return tryUrlsOnImg(el, candidates(assetDir, name));
+  }
+
+  async function bindAssets(root, assetDir) {
+    const layers = [...root.querySelectorAll('[data-asset]')];
+    for (let i = 0; i < layers.length; i += BATCH) {
+      await Promise.all(layers.slice(i, i + BATCH).map(async (el) => {
+        const name = el.dataset.asset;
+        if (name) await assignImgFile(el, assetDir, name);
+      }));
+    }
+  }
+
+  async function applyBgCover(el, assetDir, name) {
+    if (!el) return false;
+    const url = await resolveAssetUrl(assetDir, name);
+    if (!url) return false;
+    el.style.background = 'url("' + url + '") center / cover no-repeat';
+    return true;
+  }
+
+  return {
+    bindAssets,
+    assignImgUrl,
+    assignImgFile,
+    resolveAssetUrl,
+    resolveAssetPath,
+    applyBgCover
+  };
+})();
+</script>
   <script>
 /**
  * 001-001-1INTERACTION — 001 ⇄ 001-1 交互（不修改原 HTML 原稿）
@@ -4778,26 +4873,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -5217,7 +5293,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
 
     if (metricsTopCap && metricsFrame) {
       const local = dir + '/section-metrics.png';
-      if (await probe(local)) metricsTopCap.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(metricsTopCap, local);
       setMetricsCapStretchMode(false);
       metricsFrame.style.height = METRICS_H1 + 'px';
       setMetricsTopCapVisible(true);
@@ -5236,7 +5312,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
 
     if (metricsTopCap && metricsFrame) {
       const local = metricsImgUrl001 || SCREENS['001'].assetDir + '/section-metrics.png';
-      if (await probe(local)) metricsTopCap.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(metricsTopCap, local);
       setMetricsCapStretchMode(true);
       updateMetricsGradient(METRICS_H0);
       setMetricsTopCapVisible(true);
@@ -5421,7 +5497,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     setMetricsTopCapVisible(false);
     if (metricsTopCap) {
       const local = metricsImgUrl001 || SCREENS['001'].assetDir + '/section-metrics.png';
-      if (await probe(local)) metricsTopCap.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(metricsTopCap, local);
       updateMetricsGradient(METRICS_H1);
     }
 
@@ -5648,26 +5724,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -5760,7 +5817,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const el = layer.querySelector('.' + cls);
       if (!el || !el.dataset.asset) return;
       const local = dir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(el, local);
     }));
 
     ensureNavPinned();
@@ -5955,18 +6012,14 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     setMContentVisible(false);
     setExpandedMState();
 
-    const moodLocal = dir + '/mood-panel.png';
-    if (mBg && await probe(moodLocal)) {
-      mBg.style.background = 'url("' + moodLocal + '") center / cover no-repeat';
-    }
+    if (mBg) await window.__IX_ASSETS__.applyBgCover(mBg, dir, 'mood-panel.png');
   }
 
   async function apply001PanelBackgrounds() {
     const dir = SCREENS['001'].assetDir;
     if (mBg) {
-      const moodLocal = dir + '/mood-panel.png';
-      if (await probe(moodLocal)) {
-        mBg.style.background = 'url("' + moodLocal + '") center / cover no-repeat';
+      if (await window.__IX_ASSETS__.applyBgCover(mBg, dir, 'mood-panel.png')) {
+        /* ok */
       } else {
         mBg.style.background = 'rgb(197, 197, 197)';
         mBg.style.backgroundImage = '';
@@ -5974,9 +6027,8 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     }
     const sBg = sFrame ? sFrame.querySelector('.ix-s-bg') : null;
     if (sBg) {
-      const sleepLocal = dir + '/sleep-panel.png';
-      if (await probe(sleepLocal)) {
-        sBg.style.background = 'url("' + sleepLocal + '") center / cover no-repeat';
+      if (await window.__IX_ASSETS__.applyBgCover(sBg, dir, 'sleep-panel.png')) {
+        /* ok */
       } else {
         sBg.style.background = 'rgba(255, 255, 255, 0.12)';
         sBg.style.backgroundImage = '';
@@ -6365,26 +6417,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -6477,7 +6510,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const el = layer.querySelector('.' + cls);
       if (!el || !el.dataset.asset) return;
       const local = dir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(el, local);
     }));
 
     ensureNavPinned();
@@ -6681,27 +6714,22 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     setSContentVisible(false);
     setExpandedSState();
 
-    const sleepLocal = dir + '/sleep-panel.png';
-    if (sBg && await probe(sleepLocal)) {
-      sBg.style.background = 'url("' + sleepLocal + '") center / cover no-repeat';
-    }
+    if (sBg) await window.__IX_ASSETS__.applyBgCover(sBg, dir, 'sleep-panel.png');
   }
 
   async function apply001PanelBackgrounds() {
     const dir = SCREENS['001'].assetDir;
     if (mBg) {
-      const moodLocal = dir + '/mood-panel.png';
-      if (await probe(moodLocal)) {
-        mBg.style.background = 'url("' + moodLocal + '") center / cover no-repeat';
+      if (await window.__IX_ASSETS__.applyBgCover(mBg, dir, 'mood-panel.png')) {
+        /* ok */
       } else {
         mBg.style.background = 'rgb(197, 197, 197)';
         mBg.style.backgroundImage = '';
       }
     }
     if (sBg) {
-      const sleepLocal = dir + '/sleep-panel.png';
-      if (await probe(sleepLocal)) {
-        sBg.style.background = 'url("' + sleepLocal + '") center / cover no-repeat';
+      if (await window.__IX_ASSETS__.applyBgCover(sBg, dir, 'sleep-panel.png')) {
+        /* ok */
       } else {
         sBg.style.background = 'rgba(255, 255, 255, 0.12)';
         sBg.style.backgroundImage = '';
@@ -7101,26 +7129,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -7649,26 +7658,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -7749,7 +7739,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const el = layer.querySelector('.' + cls);
       if (!el || !el.dataset.asset) return;
       const local = dir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(el, local);
     }));
 
     ensureNavPinned();
@@ -8001,7 +7991,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       todTopCap.style.height = TOD_H1 + 'px';
       updateTodFrame(TOD_H1, 1);
       const local = dir + '/section-header.png';
-      if (await probe(local)) todTopCap.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(todTopCap, local);
       todTopCap.style.visibility = 'visible';
       setTodCapOpacity(0);
     }
@@ -8010,7 +8000,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       aiTopCap.style.height = AI_H1 + 'px';
       updateAiFrame(AI_H1, AI_TOP1, 1);
       const local = dir + '/section-ai.png';
-      if (await probe(local)) aiTopCap.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(aiTopCap, local);
       setAiTopCapVisible(true);
     }
 
@@ -8018,7 +8008,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const radial = aiContent.querySelector('.layer--icon-radial');
       if (radial) {
         const local = dir + '/icon-radial.png';
-        if (await probe(local)) radial.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(radial, local);
       }
     }
   }
@@ -8030,7 +8020,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       todTopCap.style.height = TOD_H0 + 'px';
       updateTodFrame(TOD_H0, 0);
       const local = dir + '/section-header.png';
-      if (await probe(local)) todTopCap.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(todTopCap, local);
       todTopCap.style.visibility = 'visible';
       setTodCapOpacity(1);
     }
@@ -8039,7 +8029,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       aiTopCap.style.height = AI_H0 + 'px';
       updateAiFrame(AI_H0, AI_TOP0, 0);
       const local = dir + '/section-chat.png';
-      if (await probe(local)) aiTopCap.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(aiTopCap, local);
       setAiTopCapVisible(true);
     }
 
@@ -8047,7 +8037,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const radial = aiContent.querySelector('.layer--icon-radial');
       if (radial) {
         const local = dir + '/icon-radial-blur.png';
-        if (await probe(local)) radial.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(radial, local);
       }
     }
   }
@@ -8518,26 +8508,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -8629,7 +8600,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const el = layer.querySelector('.' + cls);
       if (!el || !el.dataset.asset) return;
       const local = dir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(el, local);
     }));
 
     ensureNavPinned();
@@ -8931,7 +8902,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const radial = aiContent.querySelector('.layer--icon-radial');
       if (radial) {
         const local = SCREENS['002-3'].assetDir + '/icon-radial.png';
-        if (await probe(local)) radial.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(radial, local);
       }
     }
   }
@@ -8950,7 +8921,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const radial = aiContent.querySelector('.layer--icon-radial');
       if (radial) {
         const local = SCREENS['002'].assetDir + '/icon-radial-blur.png';
-        if (await probe(local)) radial.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(radial, local);
       }
     }
   }
@@ -9410,26 +9381,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -9521,7 +9473,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const el = layer.querySelector('.' + cls);
       if (!el || !el.dataset.asset) return;
       const local = dir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(el, local);
     }));
 
     ensureNavPinned();
@@ -9811,7 +9763,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const radial = aiContent.querySelector('.layer--icon-radial');
       if (radial) {
         const local = SCREENS['002-4'].assetDir + '/icon-radial.png';
-        if (await probe(local)) radial.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(radial, local);
       }
     }
   }
@@ -9831,7 +9783,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const radial = aiContent.querySelector('.layer--icon-radial');
       if (radial) {
         const local = SCREENS['002'].assetDir + '/icon-radial-blur.png';
-        if (await probe(local)) radial.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(radial, local);
       }
     }
   }
@@ -10166,26 +10118,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -10257,7 +10190,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const el = device.querySelector('#ix-pet-header ' + sel) || device.querySelector(sel);
       if (!el) return;
       const local = assetDir + '/' + file;
-      if (await probe(local)) el.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(el, local);
     }));
   }
 
@@ -10377,7 +10310,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     petTopCap.style.height = PET_CAP_H + 'px';
     updatePetGradientHeight(PET_H0);
     const local = SCREENS['003'].assetDir + '/section-pet.png';
-    if (await probe(local)) petTopCap.src = local;
+    await window.__IX_ASSETS__.assignImgUrl(petTopCap, local);
     setPetTopCapVisible(true);
   }
 
@@ -10740,26 +10673,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -11079,7 +10993,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       petTopCap.style.height = PET_H1 + 'px';
       updatePetGradient(PET_H1);
       const petLocal = dir + '/section-pet.png';
-      if (await probe(petLocal)) petTopCap.src = petLocal;
+      await window.__IX_ASSETS__.assignImgUrl(petTopCap, petLocal);
       setPetTopCapVisible(true);
     }
 
@@ -11087,7 +11001,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       ownerTopCap.style.height = OWNER_H1 + 'px';
       updateOwnerGradient(OWNER_H1, OWNER_TOP1);
       const ownerLocal = dir + '/section-owner.png';
-      if (await probe(ownerLocal)) ownerTopCap.src = ownerLocal;
+      await window.__IX_ASSETS__.assignImgUrl(ownerTopCap, ownerLocal);
       setOwnerTopCapVisible(true);
     }
 
@@ -11100,7 +11014,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
         const el = ownerContent.querySelector(sel);
         if (!el) return;
         const local = dir + '/' + file;
-        if (await probe(local)) el.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(el, local);
       }));
     }
   }
@@ -11110,14 +11024,14 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       petTopCap.style.height = PET_H0 + 'px';
       updatePetGradient(PET_H0);
       const petLocal = SCREENS['003'].assetDir + '/section-pet.png';
-      if (await probe(petLocal)) petTopCap.src = petLocal;
+      await window.__IX_ASSETS__.assignImgUrl(petTopCap, petLocal);
       setPetTopCapVisible(true);
     }
     if (ownerTopCap && ownerFrame) {
       ownerTopCap.style.height = OWNER_H0 + 'px';
       updateOwnerGradient(OWNER_H0, OWNER_TOP0);
       const ownerLocal = SCREENS['003'].assetDir + '/section-owner.png';
-      if (await probe(ownerLocal)) ownerTopCap.src = ownerLocal;
+      await window.__IX_ASSETS__.assignImgUrl(ownerTopCap, ownerLocal);
       setOwnerTopCapVisible(true);
     }
     if (ownerContent) {
@@ -11130,7 +11044,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
         const el = ownerContent.querySelector(sel);
         if (!el) return;
         const local = dir + '/' + file;
-        if (await probe(local)) el.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(el, local);
       }));
     }
   }
@@ -11524,26 +11438,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -12019,7 +11914,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       petTopCap.style.height = PET_H1 + 'px';
       updatePetGradient(PET_H1);
       const petLocal = dir + '/section-pet.png';
-      if (await probe(petLocal)) petTopCap.src = petLocal;
+      await window.__IX_ASSETS__.assignImgUrl(petTopCap, petLocal);
       setPetTopCapVisible(true);
     }
 
@@ -12027,7 +11922,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       ownerTopCap.style.height = OWNER_H1 + 'px';
       updateOwnerGradient(OWNER_H1, OWNER_TOP1);
       const ownerLocal = dir + '/section-owner.png';
-      if (await probe(ownerLocal)) ownerTopCap.src = ownerLocal;
+      await window.__IX_ASSETS__.assignImgUrl(ownerTopCap, ownerLocal);
       setOwnerTopCapVisible(true);
     }
 
@@ -12038,7 +11933,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       aiTopCap.style.height = AI_H1 + 'px';
       aiTopCap.style.width = '393px';
       const aiLocal = dir + '/section-ai.png';
-      if (await probe(aiLocal)) aiTopCap.src = aiLocal;
+      await window.__IX_ASSETS__.assignImgUrl(aiTopCap, aiLocal);
       setAiTopCapVisible(true);
       if (aiFrame) {
         aiFrame.style.top = AI_TOP1 + 'px';
@@ -12056,14 +11951,14 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
         const el = ownerContent.querySelector(sel);
         if (!el) return;
         const local = dir + '/' + file;
-        if (await probe(local)) el.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(el, local);
       }));
     }
 
     const paymentCap = device.querySelector('.layer--section-payment');
     if (paymentCap) {
       const paymentLocal = dir + '/section-payment.png';
-      if (await probe(paymentLocal)) paymentCap.src = paymentLocal;
+      await window.__IX_ASSETS__.assignImgUrl(paymentCap, paymentLocal);
     }
 
     const belowFiles = {
@@ -12074,7 +11969,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const el = device.querySelector(sel);
       if (!el) return;
       const local = dir + '/' + file;
-      if (await probe(local)) el.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(el, local);
     }));
   }
 
@@ -12083,14 +11978,14 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       petTopCap.style.height = PET_H0 + 'px';
       updatePetGradient(PET_H0);
       const petLocal = SCREENS['003'].assetDir + '/section-pet.png';
-      if (await probe(petLocal)) petTopCap.src = petLocal;
+      await window.__IX_ASSETS__.assignImgUrl(petTopCap, petLocal);
       setPetTopCapVisible(true);
     }
     if (ownerTopCap && ownerFrame) {
       ownerTopCap.style.height = OWNER_H0 + 'px';
       updateOwnerGradient(OWNER_H0, OWNER_TOP0);
       const ownerLocal = SCREENS['003'].assetDir + '/section-owner.png';
-      if (await probe(ownerLocal)) ownerTopCap.src = ownerLocal;
+      await window.__IX_ASSETS__.assignImgUrl(ownerTopCap, ownerLocal);
       setOwnerTopCapVisible(true);
     }
     aiStretchUrl = '';
@@ -12099,7 +11994,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     const aiCap = device.querySelector('.layer--section-ai');
     if (aiCap) {
       const aiLocal = SCREENS['003'].assetDir + '/section-ai.png';
-      if (await probe(aiLocal)) aiCap.src = aiLocal;
+      await window.__IX_ASSETS__.assignImgUrl(aiCap, aiLocal);
     }
     if (ownerContent) {
       const dir = SCREENS['003'].assetDir;
@@ -12111,13 +12006,13 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
         const el = ownerContent.querySelector(sel);
         if (!el) return;
         const local = dir + '/' + file;
-        if (await probe(local)) el.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(el, local);
       }));
     }
     const paymentCap = device.querySelector('.layer--section-payment');
     if (paymentCap) {
       const paymentLocal = SCREENS['003'].assetDir + '/section-payment.png';
-      if (await probe(paymentLocal)) paymentCap.src = paymentLocal;
+      await window.__IX_ASSETS__.assignImgUrl(paymentCap, paymentLocal);
     }
     const belowFiles = {
       '.layer--glass-bill': 'glass-bill.png',
@@ -12127,7 +12022,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const el = device.querySelector(sel);
       if (!el) return;
       const local = SCREENS['003'].assetDir + '/' + file;
-      if (await probe(local)) el.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(el, local);
     }));
   }
 
@@ -12267,8 +12162,9 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
 
     ensureAiFrameForAnimation();
     const aiLocal33 = SCREENS['003-3'].assetDir + '/section-ai.png';
-    if (await probe(aiLocal33)) {
-      aiStretchUrl = aiLocal33;
+    const aiUrl33 = await window.__IX_ASSETS__.resolveAssetPath(aiLocal33);
+    if (aiUrl33) {
+      aiStretchUrl = aiUrl33;
     } else if (aiTopCap && aiTopCap.src) {
       aiStretchUrl = aiTopCap.src;
     }
@@ -12314,8 +12210,9 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
 
     if (!aiFrame) ensureAiFrameForAnimation();
     const aiLocal33 = SCREENS['003-3'].assetDir + '/section-ai.png';
-    if (await probe(aiLocal33)) {
-      aiStretchUrl = aiLocal33;
+    const aiUrl33 = await window.__IX_ASSETS__.resolveAssetPath(aiLocal33);
+    if (aiUrl33) {
+      aiStretchUrl = aiUrl33;
     } else if (aiTopCap && aiTopCap.src) {
       aiStretchUrl = aiTopCap.src;
     }
@@ -12631,26 +12528,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyStyles(screenId, cssText) {
     if (!styleEl) {
@@ -12744,7 +12622,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const el = layer.querySelector('.' + cls);
       if (!el || !el.dataset.asset) return;
       const local = dir + '/' + el.dataset.asset;
-      if (await probe(local)) el.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(el, local);
     }));
 
     ensureNavPinned();
@@ -13320,7 +13198,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       paymentTopCap.style.removeProperty('object-fit');
       paymentTopCap.style.removeProperty('object-position');
       const bgLocal = dir + '/section-bg.png';
-      if (await probe(bgLocal)) paymentTopCap.src = bgLocal;
+      await window.__IX_ASSETS__.assignImgUrl(paymentTopCap, bgLocal);
       setPaymentTopCapVisible(true);
       paymentFrame.style.left = '5px';
       paymentFrame.style.top = PAYMENT_TOP1 + 'px';
@@ -13342,7 +13220,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
         petFrame.style.opacity = '1';
       }
       const petLocal = SCREENS['003'].assetDir + '/section-pet.png';
-      if (await probe(petLocal)) petTopCap.src = petLocal;
+      await window.__IX_ASSETS__.assignImgUrl(petTopCap, petLocal);
       setPetTopCapVisible(true);
     }
     if (ownerTopCap && ownerFrame) {
@@ -13352,7 +13230,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
         ownerFrame.style.opacity = '1';
       }
       const ownerLocal = SCREENS['003'].assetDir + '/section-owner.png';
-      if (await probe(ownerLocal)) ownerTopCap.src = ownerLocal;
+      await window.__IX_ASSETS__.assignImgUrl(ownerTopCap, ownerLocal);
       setOwnerTopCapVisible(true);
     }
     if (ownerContent) {
@@ -13365,7 +13243,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
         const el = ownerContent.querySelector(sel);
         if (!el) return;
         const local = dir + '/' + file;
-        if (await probe(local)) el.src = local;
+        await window.__IX_ASSETS__.assignImgUrl(el, local);
       }));
     }
 
@@ -13379,7 +13257,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
         aiFrame.style.removeProperty('opacity');
       }
       const aiLocal = SCREENS['003'].assetDir + '/section-ai.png';
-      if (await probe(aiLocal)) aiTopCap.src = aiLocal;
+      await window.__IX_ASSETS__.assignImgUrl(aiTopCap, aiLocal);
       setAiTopCapVisible(true);
     }
 
@@ -13391,7 +13269,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       paymentFrame.style.visibility = 'visible';
       paymentFrame.style.opacity = '1';
       const paymentLocal = SCREENS['003'].assetDir + '/section-payment.png';
-      if (await probe(paymentLocal)) paymentTopCap.src = paymentLocal;
+      await window.__IX_ASSETS__.assignImgUrl(paymentTopCap, paymentLocal);
       paymentTopCap.style.removeProperty('object-fit');
       paymentTopCap.style.removeProperty('object-position');
       setPaymentTopCapVisible(true);
@@ -13406,7 +13284,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       const el = device.querySelector(sel);
       if (!el) return;
       const local = SCREENS['003'].assetDir + '/' + file;
-      if (await probe(local)) el.src = local;
+      await window.__IX_ASSETS__.assignImgUrl(el, local);
     }));
 
     setupAiGroup();
@@ -13621,7 +13499,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
       paymentStretchUrl = '';
       clearPaymentStretchBackground();
       const paymentLocal = SCREENS['003'].assetDir + '/section-payment.png';
-      if (await probe(paymentLocal)) paymentTopCap.src = paymentLocal;
+      await window.__IX_ASSETS__.assignImgUrl(paymentTopCap, paymentLocal);
       paymentTopCap.style.removeProperty('object-fit');
       paymentTopCap.style.removeProperty('object-position');
       updatePaymentFrame(PAYMENT_H0, PAYMENT_TOP0);
@@ -13739,15 +13617,6 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
   const loaderText = document.getElementById('loaderText');
   const loaderHint = document.getElementById('loaderHint');
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
   function loadEmbeddedScreen(id) {
     const cfg = SCREENS[id];
     if (!cfg) return null;
@@ -13789,17 +13658,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyBaseStyles(cssText) {
     if (!baseStyleEl) {
@@ -13941,11 +13800,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     setupAllHotspots();
   }
 
-  function preloadScreens() {
-    ['001-1', '001-2', '001-3'].forEach((id) => {
-      parseScreen(id).catch(() => {});
-    });
-  }
+  function preloadScreens() { /* lazy: no sub-screen preload on init */ }
 
   async function init() {
     const hasEmbed = !!document.getElementById('ix-embed-001-device');
@@ -13968,7 +13823,6 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     try {
       loaderText.textContent = '正在加载 001-ALL…';
       await mountNeutral001();
-      preloadScreens();
       loader.classList.add('hidden');
     } catch (err) {
       loaderText.textContent = '加载失败';
@@ -14068,15 +13922,6 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
   const loaderText = document.getElementById('loaderText');
   const loaderHint = document.getElementById('loaderHint');
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
   function loadEmbeddedScreen(id) {
     const cfg = SCREENS[id];
     if (!cfg) return null;
@@ -14118,17 +13963,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyBaseStyles(cssText) {
     if (!baseStyleEl) {
@@ -14296,11 +14131,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     setupAllHotspots();
   }
 
-  function preloadScreens() {
-    ['002-1', '002-2', '002-3', '002-4'].forEach((id) => {
-      parseScreen(id).catch(() => {});
-    });
-  }
+  function preloadScreens() { /* lazy: no sub-screen preload on init */ }
 
   async function init() {
     const hasEmbed = !!document.getElementById('ix-embed-002-device');
@@ -14323,7 +14154,6 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     try {
       loaderText.textContent = '正在加载 002-ALL…';
       await mountNeutral002();
-      preloadScreens();
       loader.classList.add('hidden');
     } catch (err) {
       loaderText.textContent = '加载失败';
@@ -14412,15 +14242,6 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
   const loaderText = document.getElementById('loaderText');
   const loaderHint = document.getElementById('loaderHint');
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
   function loadEmbeddedScreen(id) {
     const cfg = SCREENS[id];
     if (!cfg) return null;
@@ -14462,17 +14283,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   function applyBaseStyles(cssText) {
     if (!baseStyleEl) {
@@ -14633,11 +14444,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     setupAllHotspots();
   }
 
-  function preloadScreens() {
-    ['003-1', '003-2', '003-3', '003-4'].forEach((id) => {
-      parseScreen(id).catch(() => {});
-    });
-  }
+  function preloadScreens() { /* lazy: no sub-screen preload on init */ }
 
   async function init() {
     const hasEmbed = !!document.getElementById('ix-embed-003-device');
@@ -14660,7 +14467,6 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     try {
       loaderText.textContent = '正在加载 003-ALL…';
       await mountNeutral003();
-      preloadScreens();
       loader.classList.add('hidden');
     } catch (err) {
       loaderText.textContent = '加载失败';
@@ -14769,15 +14575,6 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
   let navDots = {};
   let navIcons = {};
 
-  function probe(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
   function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
@@ -14840,17 +14637,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     return data;
   }
 
-  async function bindAssets(root, assetDir) {
-    const layers = [...root.querySelectorAll('[data-asset]')];
-    const batchSize = 5;
-    for (let i = 0; i < layers.length; i += batchSize) {
-      await Promise.all(layers.slice(i, i + batchSize).map(async (el) => {
-        const local = assetDir + '/' + el.dataset.asset;
-        if (await probe(local)) el.src = local;
-        else el.removeAttribute('src');
-      }));
-    }
-  }
+  const bindAssets = window.__IX_ASSETS__.bindAssets;
 
   const PAGE_SCOPE = '#ix-content-stage .ix-screen-layer';
 
@@ -14985,8 +14772,8 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
   }
 
   async function loadNavDotImage(dotEl, tab, assetDir) {
-    const url = assetDir + '/nav-dot.png';
-    if (await probe(url)) {
+    const url = await window.__IX_ASSETS__.resolveAssetUrl(assetDir, 'nav-dot.png');
+    if (url) {
       dotEl.style.background = '';
       dotEl.style.backgroundImage = 'url("' + url + '")';
       dotEl.style.backgroundSize = 'contain';
@@ -15005,9 +14792,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     await Promise.all(Object.keys(navIcons).map(async (tab) => {
       const img = navIcons[tab];
       const file = NAV_ASSETS[tab];
-      const local = assetDir + '/' + file;
-      if (await probe(local)) img.src = local;
-      else img.removeAttribute('src');
+      await window.__IX_ASSETS__.assignImgFile(img, assetDir, file);
 
       const isActive = tab === activeTab;
       img.style.filter = isActive ? FILTER_ACTIVE : FILTER_INACTIVE;
@@ -15205,11 +14990,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     }
   }
 
-  function preloadScreens() {
-    ['002', '003'].forEach((id) => {
-      parseScreen(id).catch(() => {});
-    });
-  }
+  function preloadScreens() { /* lazy: no sub-screen preload on init */ }
 
   async function init() {
     const hasEmbed = !!document.getElementById('ix-embed-001-device');
@@ -15225,7 +15006,6 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
     try {
       loaderText.textContent = '正在加载 0-ALL…';
       await mountPage('001');
-      preloadScreens();
       loader.classList.add('hidden');
     } catch (err) {
       loaderText.textContent = '加载失败';
