@@ -238,6 +238,145 @@
       background: #060606;
       box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
     }
+
+    /* 手机端：锁定字号与换行，避免 iOS 文本自动放大导致框内错位 */
+    html.ix-mobile {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    html.ix-mobile #device,
+    html.ix-mobile #device .text,
+    html.ix-mobile #ix-content-stage .text {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      font-synthesis: none;
+    }
+
+    html.ix-mobile #device .text--label,
+    html.ix-mobile #device .text--label-sm,
+    html.ix-mobile #ix-content-stage .text--label,
+    html.ix-mobile #ix-content-stage .text--label-sm {
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+    }
+
+    html.ix-mobile #device .text--heart-rate,
+    html.ix-mobile #device .text--over-all,
+    html.ix-mobile #device .text--temperature,
+    html.ix-mobile #device .text--bpm,
+    html.ix-mobile #device .text--respiratory,
+    html.ix-mobile #device .text--temp,
+    html.ix-mobile #device .text--motor,
+    html.ix-mobile #device .text--battery,
+    html.ix-mobile #device .text--ventilation,
+    html.ix-mobile #device .text--location,
+    html.ix-mobile #device .text--measurements,
+    html.ix-mobile #device .text--motor-val,
+    html.ix-mobile #device .text--battery-val,
+    html.ix-mobile #device .text--vent-val,
+    html.ix-mobile #device .text--temp-val,
+    html.ix-mobile #ix-content-stage .text--heart-rate,
+    html.ix-mobile #ix-content-stage .text--over-all,
+    html.ix-mobile #ix-content-stage .text--temperature,
+    html.ix-mobile #ix-content-stage .text--bpm,
+    html.ix-mobile #ix-content-stage .text--respiratory {
+      white-space: nowrap !important;
+    }
+
+    html.ix-mobile #device .text--ai-steward,
+    html.ix-mobile #device .text--mechanical {
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      word-break: keep-all;
+      overflow: hidden;
+    }
+
+    html.ix-mobile #device .text--ai-steward {
+      width: 55px !important;
+      min-width: 55px !important;
+      max-width: 55px !important;
+    }
+
+    html.ix-mobile #device .text--mechanical {
+      width: 73px !important;
+      min-width: 73px !important;
+      max-width: 73px !important;
+    }
+
+    html.ix-mobile #device .text--sleep-label {
+      white-space: pre-line !important;
+      width: 43px !important;
+      min-width: 43px !important;
+      max-width: 43px !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      word-break: keep-all;
+      overflow: hidden;
+    }
+
+    html.ix-mobile #device .text--hr-value,
+    html.ix-mobile #device .text--good,
+    html.ix-mobile #device .text--temp-value,
+    html.ix-mobile #device .text--resp-value,
+    html.ix-mobile #device .text--sleep-value,
+    html.ix-mobile #ix-content-stage .text--hr-value,
+    html.ix-mobile #ix-content-stage .text--good,
+    html.ix-mobile #ix-content-stage .text--temp-value,
+    html.ix-mobile #ix-content-stage .text--resp-value,
+    html.ix-mobile #ix-content-stage .text--sleep-value {
+      display: flex !important;
+      align-items: flex-end !important;
+      letter-spacing: 0 !important;
+    }
+
+    html.ix-mobile #device .text--sleep-value,
+    html.ix-mobile #ix-content-stage .text--sleep-value {
+      justify-content: center !important;
+    }
+
+    html.ix-mobile #device .score-main,
+    html.ix-mobile #device .value-main,
+    html.ix-mobile #ix-content-stage .score-main,
+    html.ix-mobile #ix-content-stage .value-main {
+      font-size: 48px !important;
+      line-height: 40px !important;
+      flex-shrink: 0;
+    }
+
+    html.ix-mobile #device .score-sub,
+    html.ix-mobile #device .value-sub,
+    html.ix-mobile #ix-content-stage .score-sub,
+    html.ix-mobile #ix-content-stage .value-sub {
+      font-size: 12px !important;
+      line-height: 13px !important;
+      flex-shrink: 0;
+    }
+
+    html.ix-mobile #device .text--quote,
+    html.ix-mobile #device .ix-extras .text--quote {
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: flex-end !important;
+      white-space: nowrap !important;
+      letter-spacing: 0 !important;
+    }
+
+    html.ix-mobile #device .ix-metrics-fade .text,
+    html.ix-mobile #device .ix-s-content .text,
+    html.ix-mobile #device .ix-m-content .text,
+    html.ix-mobile #device .ix-m-body .text,
+    html.ix-mobile #device .ix-m-header .text,
+    html.ix-mobile #device .ix-ai-content .text,
+    html.ix-mobile #device .ix-ai-body .text,
+    html.ix-mobile #device .ix-l-content .text,
+    html.ix-mobile #device .ix-extras .text {
+      font-family: "等线", "DengXian", "PingFang SC", sans-serif;
+    }
   </style>
 </head>
 <body>
@@ -4671,6 +4810,7 @@ window.__IX_PERF__ = (function () {
   if (mobile) document.documentElement.classList.add('ix-mobile');
   const SCALE = 1;
   function ms(n) { return n; }
+  function layoutPx(n) { return mobile ? Math.round(n) : n; }
 
   const DEVICE_W = 402;
   const DEVICE_H = 874;
@@ -4695,7 +4835,7 @@ window.__IX_PERF__ = (function () {
     window.visualViewport.addEventListener('resize', fitDevice, { passive: true });
   }
 
-  return { mobile, ms, SCALE, fitDevice };
+  return { mobile, ms, SCALE, fitDevice, layoutPx };
 })();
 </script>
 <script>
@@ -6020,8 +6160,9 @@ window.__IX_DRILL__ = (function () {
     if (el.parentNode !== wrap) wrap.appendChild(el);
     const pos = layout[sel];
     if (pos) {
-      el.style.left = pos.left + 'px';
-      el.style.top = pos.top + 'px';
+      const px = window.__IX_PERF__?.layoutPx || ((n) => n);
+      el.style.left = px(pos.left) + 'px';
+      el.style.top = px(pos.top) + 'px';
     }
   }
 
@@ -6715,8 +6856,9 @@ window.__IX_DRILL__ = (function () {
     if (el.parentNode !== wrap) wrap.appendChild(el);
     const pos = layout[sel];
     if (pos) {
-      el.style.left = pos.left + 'px';
-      el.style.top = pos.top + 'px';
+      const px = window.__IX_PERF__?.layoutPx || ((n) => n);
+      el.style.left = px(pos.left) + 'px';
+      el.style.top = px(pos.top) + 'px';
     }
   }
 
@@ -8205,12 +8347,13 @@ window.__IX_DRILL__ = (function () {
     const el = aiContent?.querySelector(sel);
     const pos = AI_CONTENT_LAYOUT[sel];
     if (!el || !pos) return;
+    const px = window.__IX_PERF__?.layoutPx || ((n) => n);
 
-    if ('left' in pos) el.style.left = pos.left + 'px';
-    else el.style.left = (pos.left0 + (pos.left1 - pos.left0) * t) + 'px';
+    if ('left' in pos) el.style.left = px(pos.left) + 'px';
+    else el.style.left = px(pos.left0 + (pos.left1 - pos.left0) * t) + 'px';
 
     const top = pos.top0 + (pos.top1 - pos.top0) * t;
-    el.style.top = top + 'px';
+    el.style.top = px(top) + 'px';
   }
 
   function updateTodFrame(h, t) {
@@ -8808,8 +8951,9 @@ window.__IX_DRILL__ = (function () {
     if (el.parentNode !== wrap) wrap.appendChild(el);
     const pos = layout[sel];
     if (pos) {
-      el.style.left = pos.left + 'px';
-      el.style.top = pos.top + 'px';
+      const px = window.__IX_PERF__?.layoutPx || ((n) => n);
+      el.style.left = px(pos.left) + 'px';
+      el.style.top = px(pos.top) + 'px';
     }
   }
 
@@ -9682,8 +9826,9 @@ window.__IX_DRILL__ = (function () {
     if (el.parentNode !== wrap) wrap.appendChild(el);
     const pos = layout[sel];
     if (pos) {
-      el.style.left = pos.left + 'px';
-      el.style.top = pos.top + 'px';
+      const px = window.__IX_PERF__?.layoutPx || ((n) => n);
+      el.style.left = px(pos.left) + 'px';
+      el.style.top = px(pos.top) + 'px';
     }
   }
 
