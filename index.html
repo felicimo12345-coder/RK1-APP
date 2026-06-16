@@ -2,28 +2,53 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ALL-INT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>ALL-INT V4</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --ix-device-w: 402px;
+      --ix-device-h: 874px;
+      --ix-pad: 12px;
+      --ix-scale: 1;
+      --ix-safe-top: env(safe-area-inset-top, 0px);
+      --ix-safe-bottom: env(safe-area-inset-bottom, 0px);
+      --ix-safe-left: env(safe-area-inset-left, 0px);
+      --ix-safe-right: env(safe-area-inset-right, 0px);
+      --ix-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
     html, body {
       width: 100%;
-      min-height: 100%;
+      height: 100%;
+      height: 100dvh;
+      min-height: 100dvh;
       background: #0a0a0a;
       -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+      touch-action: manipulation;
+      overscroll-behavior: none;
     }
 
     .page {
       width: 100%;
-      min-height: 100vh;
+      height: 100dvh;
+      min-height: 100dvh;
+      max-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 20px;
+      gap: 8px;
+      padding:
+        max(6px, var(--ix-safe-top))
+        max(var(--ix-pad), var(--ix-safe-right))
+        max(6px, var(--ix-safe-bottom))
+        max(var(--ix-pad), var(--ix-safe-left));
       box-sizing: border-box;
+      overflow: hidden;
     }
 
     .page__title {
@@ -33,18 +58,26 @@
       font-family: "等线", "DengXian", sans-serif;
     }
 
+    html.ix-mobile .page__title {
+      display: none;
+    }
+
     .device-wrap {
+      position: relative;
       flex-shrink: 0;
       margin-left: auto;
       margin-right: auto;
-      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      width: var(--ix-device-w);
+      height: var(--ix-device-h);
+      transform: scale(var(--ix-scale));
       transform-origin: center center;
+      will-change: transform;
     }
 
     #device {
       position: relative;
-      width: 402px;
-      height: 874px;
+      width: var(--ix-device-w);
+      height: var(--ix-device-h);
       overflow: hidden;
       background: #060606;
       box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -185,32 +218,25 @@
     }
     #ix-embed-root { display: none !important; }
 
-    /* 动效期间关闭毛玻璃，减轻 GPU 压力（尤其 iOS Safari） */
-    #device.is-animating,
-    #device.is-animating * {
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
+    /* drill 准备阶段：冻结当前画面，DOM 重建在遮罩下进行 */
+    .ix-drill-freeze {
+      position: absolute;
+      inset: 0;
+      z-index: 200;
+      overflow: hidden;
+      pointer-events: none;
     }
-
-    /* 触控设备：简化合成层与阴影，导航玻璃用半透明底色代替 blur */
-    html.ix-mobile .ix-nav-glass {
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-      background: rgba(255, 255, 255, 0.18) !important;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    .ix-drill-freeze__snap {
+      width: 100%;
+      height: 100%;
     }
-    html.ix-mobile #device {
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
-    }
-    html.ix-mobile .ix-screen-layer {
-      will-change: auto;
-    }
-    html.ix-mobile .ix-screen-layer .layer {
-      backface-visibility: hidden;
-    }
-    html.ix-mobile * {
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
+    .ix-drill-freeze__snap > .ix-drill-freeze__device {
+      position: relative;
+      width: var(--ix-device-w);
+      height: var(--ix-device-h);
+      overflow: hidden;
+      background: #060606;
+      box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
     }
   </style>
 </head>
@@ -221,7 +247,7 @@
   </div>
 
   <div class="page">
-    <p class="page__title">ALL-INT · 0-ALL 一级 + 1/2/3-ALL 二级按需接入</p>
+    <p class="page__title">ALL-INT V4 · CSS 动效 + iPhone 自适应</p>
     <div class="device-wrap">
       <div id="device" data-screen="001" data-ix-mode="home"></div>
     </div>
@@ -4637,15 +4663,39 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
 };
 </script>
 <script>
-/** 移动端性能：检测、动画时长缩放、毛玻璃降级 */
+/** 移动端性能：检测、动画时长缩放、视口自适应（iPhone 14 等） */
 window.__IX_PERF__ = (function () {
   'use strict';
   const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
     || (navigator.maxTouchPoints > 1 && Math.min(screen.width, screen.height) < 900);
   if (mobile) document.documentElement.classList.add('ix-mobile');
-  const SCALE = mobile ? 0.55 : 1;
-  function ms(n) { return Math.max(mobile ? 280 : 400, Math.round(n * SCALE)); }
-  return { mobile, ms, SCALE };
+  const SCALE = 1;
+  function ms(n) { return n; }
+
+  const DEVICE_W = 402;
+  const DEVICE_H = 874;
+
+  function fitDevice() {
+    const pad = 12;
+    const root = document.documentElement;
+    const safeT = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-top')) || 0;
+    const safeB = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-bottom')) || 0;
+    const safeL = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-left')) || 0;
+    const safeR = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-right')) || 0;
+    const vw = window.innerWidth - pad * 2 - safeL - safeR;
+    const vh = window.innerHeight - pad * 2 - safeT - safeB;
+    const s = Math.min(1, vw / DEVICE_W, vh / DEVICE_H);
+    root.style.setProperty('--ix-scale', String(Math.max(0.01, s)));
+  }
+
+  fitDevice();
+  window.addEventListener('resize', fitDevice, { passive: true });
+  window.addEventListener('orientationchange', () => setTimeout(fitDevice, 100), { passive: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', fitDevice, { passive: true });
+  }
+
+  return { mobile, ms, SCALE, fitDevice };
 })();
 </script>
 <script>
@@ -4751,6 +4801,10 @@ window.__IX_ASSETS__ = (function () {
     }
     const resolved = await tryUrlsOnImg(el, candidates(assetDir, name));
     urlCache.set(key, resolved || '');
+    if (resolved) {
+      const frame = el.closest('[class*="-frame"]');
+      if (frame) frame.dataset.bgReady = 'true';
+    }
     return resolved;
   }
 
@@ -4779,7 +4833,81 @@ window.__IX_ASSETS__ = (function () {
     const url = await resolveAssetUrl(assetDir, name);
     if (!url) return false;
     el.style.background = 'url("' + url + '") center / cover no-repeat';
+    const frame = el.closest('[class*="-frame"]');
+    if (frame) frame.dataset.bgReady = 'true';
     return true;
+  }
+
+  function markFrameReady(frame) {
+    if (frame) frame.dataset.bgReady = 'true';
+  }
+
+  async function warmScreen(screenId, assetDir) {
+    const tpl = document.getElementById('ix-embed-' + screenId + '-device');
+    if (!tpl) return;
+    const tmp = document.createElement('div');
+    tmp.innerHTML = tpl.innerHTML;
+    const names = [...new Set([...tmp.querySelectorAll('[data-asset]')].map((el) => el.dataset.asset).filter(Boolean))];
+    for (let i = 0; i < names.length; i += BATCH) {
+      await Promise.all(names.slice(i, i + BATCH).map((name) => resolveAssetUrl(assetDir, name)));
+    }
+  }
+
+  async function warmAll() {
+    const jobs = [
+      ['001', '001_assets'], ['001-1', '001-1_assets'], ['001-2', '001-2_assets'], ['001-3', '001-3_assets'],
+      ['002', '002_assets'], ['002-1', '002-1_assets'], ['002-2', '002-2_assets'], ['002-3', '002-3_assets'], ['002-4', '002-4_assets'],
+      ['003', '003_assets'], ['003-1', '003-1_assets'], ['003-2', '003-2_assets'], ['003-3', '003-3_assets'], ['003-4', '003-4_assets']
+    ];
+    for (const [id, dir] of jobs) {
+      await warmScreen(id, dir);
+    }
+  }
+
+  const DRILL_WARM = {
+    '001-1': [['001', '001_assets'], ['001-1', '001-1_assets']],
+    '001-2': [['001', '001_assets'], ['001-2', '001-2_assets']],
+    '001-3': [['001', '001_assets'], ['001-3', '001-3_assets']],
+    '002-1': [['002', '002_assets'], ['002-1', '002-1_assets']],
+    '002-2': [['002', '002_assets'], ['002-2', '002-2_assets']],
+    '002-3': [['002', '002_assets'], ['002-3', '002-3_assets']],
+    '002-4': [['002', '002_assets'], ['002-4', '002-4_assets']],
+    '003-1': [['003', '003_assets'], ['003-1', '003-1_assets']],
+    '003-2': [['003', '003_assets'], ['003-2', '003-2_assets']],
+    '003-3': [['003', '003_assets'], ['003-3', '003-3_assets']],
+    '003-4': [['003', '003_assets'], ['003-4', '003-4_assets']]
+  };
+
+  async function preloadDrillRoute(routeId) {
+    const sets = DRILL_WARM[routeId];
+    if (!sets) return;
+    const keys = new Set();
+    for (const [id, dir] of sets) {
+      await warmScreen(id, dir);
+      const tpl = document.getElementById('ix-embed-' + id + '-device');
+      if (tpl) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = tpl.innerHTML;
+        [...tmp.querySelectorAll('[data-asset]')].forEach((el) => {
+          if (el.dataset.asset) keys.add(cacheKey(dir, el.dataset.asset));
+        });
+      }
+    }
+    const decodeJobs = [];
+    keys.forEach((key) => {
+      const url = urlCache.get(key);
+      if (!url) return;
+      const img = new Image();
+      img.decoding = 'async';
+      decodeJobs.push(new Promise((resolve) => {
+        img.onload = img.onerror = () => {
+          if (img.decode) img.decode().then(resolve).catch(resolve);
+          else resolve();
+        };
+        img.src = url;
+      }));
+    });
+    if (decodeJobs.length) await Promise.all(decodeJobs);
   }
 
   return {
@@ -4788,8 +4916,56 @@ window.__IX_ASSETS__ = (function () {
     assignImgFile,
     resolveAssetUrl,
     resolveAssetPath,
-    applyBgCover
+    applyBgCover,
+    markFrameReady,
+    warmScreen,
+    warmAll,
+    preloadDrillRoute
   };
+})();
+</script>
+<script>
+/** drill 过渡：预载期间保持画面；DOM 切换时用快照遮罩，就绪后再开启动效 */
+window.__IX_DRILL__ = (function () {
+  'use strict';
+
+  function freeze() {
+    const device = document.getElementById('device');
+    const wrap = device?.closest('.device-wrap');
+    if (!device || !wrap) return null;
+
+    const freezeEl = document.createElement('div');
+    freezeEl.className = 'ix-drill-freeze';
+    freezeEl.setAttribute('aria-hidden', 'true');
+
+    const snap = document.createElement('div');
+    snap.className = 'ix-drill-freeze__snap';
+
+    const shell = document.createElement('div');
+    shell.className = 'ix-drill-freeze__device';
+
+    const clone = device.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.querySelectorAll('.ix-hotspot').forEach((el) => el.remove());
+
+    shell.appendChild(clone);
+    snap.appendChild(shell);
+    freezeEl.appendChild(snap);
+    wrap.appendChild(freezeEl);
+    return freezeEl;
+  }
+
+  function unfreeze(freezeEl) {
+    if (freezeEl && freezeEl.parentNode) freezeEl.remove();
+  }
+
+  function settlePaint() {
+    return new Promise((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(resolve));
+    });
+  }
+
+  return { freeze, unfreeze, settlePaint };
 })();
 </script>
 <script>
@@ -4823,8 +4999,8 @@ window.__IX_ASSETS__ = (function () {
     '.layer--glass-moon', '.layer--icon-moon'
   ];
 
-  const FADE_MS = window.__IX_PERF__.ms(1000);
-  const STRETCH_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1000;
+  const STRETCH_MS = 1000;
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -5221,6 +5397,7 @@ window.__IX_ASSETS__ = (function () {
     setMetricsCapStretchMode(true);
     updateMetricsGradient(METRICS_H0);
     setMetricsTopCapVisible(true);
+    window.__IX_ASSETS__.markFrameReady(metricsFrame);
   }
 
   function gradCss(top, bottom) {
@@ -5280,6 +5457,7 @@ window.__IX_ASSETS__ = (function () {
       metricsBgFill.style.background = grad;
       metricsBgFill.style.backgroundSize = '100% ' + h + 'px';
     }
+    window.__IX_ASSETS__.markFrameReady(metricsFrame);
   }
 
   function applyStretch(delta) {
@@ -5663,8 +5841,8 @@ window.__IX_ASSETS__ = (function () {
   const S_W = 194;
   const S_SLIDE = 402 - S_LEFT + 12;
 
-  const FADE_MS = window.__IX_PERF__.ms(1000);
-  const SLIDE_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1000;
+  const SLIDE_MS = 1000;
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -5971,6 +6149,7 @@ window.__IX_ASSETS__ = (function () {
     Object.keys(M_CONTENT_LAYOUT).forEach((sel) => {
       placeInWrap(mContentWrap, sel, M_CONTENT_LAYOUT);
     });
+    if (mBg) window.__IX_ASSETS__.applyBgCover(mBg, SCREENS['001'].assetDir, 'mood-panel.png');
   }
 
   function setupSFrame() {
@@ -6004,6 +6183,7 @@ window.__IX_ASSETS__ = (function () {
     Object.keys(S_CONTENT_LAYOUT).forEach((sel) => {
       placeInWrap(sContentWrap, sel, S_CONTENT_LAYOUT);
     });
+    window.__IX_ASSETS__.applyBgCover(sBg, SCREENS['001'].assetDir, 'sleep-panel.png');
   }
 
   function setWrapOpacity(wrap, value) {
@@ -6368,8 +6548,8 @@ window.__IX_ASSETS__ = (function () {
   /** M 框完全左滑离场位移 */
   const M_SLIDE = M_LEFT + M_W0 + 12;
 
-  const FADE_MS = window.__IX_PERF__.ms(1000);
-  const SLIDE_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1000;
+  const SLIDE_MS = 1000;
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -6664,6 +6844,7 @@ window.__IX_ASSETS__ = (function () {
     Object.keys(M_CONTENT_LAYOUT).forEach((sel) => {
       placeInWrap(mContentWrap, sel, M_CONTENT_LAYOUT);
     });
+    if (mBg) window.__IX_ASSETS__.applyBgCover(mBg, SCREENS['001'].assetDir, 'mood-panel.png');
   }
 
   function setupSFrame() {
@@ -6698,6 +6879,7 @@ window.__IX_ASSETS__ = (function () {
     Object.keys(S_CONTENT_LAYOUT).forEach((sel) => {
       placeInWrap(sContentWrap, sel, S_CONTENT_LAYOUT);
     });
+    window.__IX_ASSETS__.applyBgCover(sBg, SCREENS['001'].assetDir, 'sleep-panel.png');
   }
 
   function setWrapOpacity(wrap, value) {
@@ -7071,8 +7253,8 @@ window.__IX_ASSETS__ = (function () {
   ];
 
   const SLIDE_DIST = DEVICE_H - BELOW_START + 60;
-  const FADE_MS = window.__IX_PERF__.ms(1000);
-  const SLIDE_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1000;
+  const SLIDE_MS = 1000;
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -7614,8 +7796,8 @@ window.__IX_ASSETS__ = (function () {
   const AI_RADIUS = 42;
   const AI_RADIUS_END = 31;
 
-  const FADE_MS = window.__IX_PERF__.ms(1000);
-  const STRETCH_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1000;
+  const STRETCH_MS = 1000;
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -8359,8 +8541,8 @@ window.__IX_ASSETS__ = (function () {
   /** L 框完全离开屏幕所需的水平位移 */
   const L_SLIDE = 402 - L_LEFT + 12;
 
-  const FADE_MS = window.__IX_PERF__.ms(1000);
-  const SLIDE_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1000;
+  const SLIDE_MS = 1000;
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -8835,6 +9017,7 @@ window.__IX_ASSETS__ = (function () {
       const el = device.querySelector(sel);
       if (el && el.parentNode !== mBodyFloat) mBodyFloat.appendChild(el);
     });
+    window.__IX_ASSETS__.markFrameReady(mFrame);
   }
 
   function setupLFrame() {
@@ -9252,8 +9435,8 @@ window.__IX_ASSETS__ = (function () {
   const L_RIGHT = L_LEFT0 + L_W0;
   const BOX_RADIUS = 42;
 
-  const FADE_MS = window.__IX_PERF__.ms(1000);
-  const SLIDE_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1000;
+  const SLIDE_MS = 1000;
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -10116,8 +10299,8 @@ window.__IX_ASSETS__ = (function () {
   /** 003 中 section-owner 顶边与 pet 底边间距 */
   const BELOW_START = 268;
 
-  const FADE_MS = window.__IX_PERF__.ms(1000);
-  const STRETCH_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1000;
+  const STRETCH_MS = 1000;
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -10653,8 +10836,8 @@ window.__IX_ASSETS__ = (function () {
   const OWNER_GRAD_TOP = '#C5C5C5';
   const OWNER_GRAD_BOTTOM = '#616161';
 
-  const FADE_MS = window.__IX_PERF__.ms(1000);
-  const STRETCH_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1000;
+  const STRETCH_MS = 1000;
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -11404,8 +11587,8 @@ window.__IX_ASSETS__ = (function () {
   const OWNER_GRAD_TOP = '#C5C5C5';
   const OWNER_GRAD_BOTTOM = '#616161';
 
-  const FADE_MS = window.__IX_PERF__.ms(1000);
-  const STRETCH_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1000;
+  const STRETCH_MS = 1000;
 
   const NAV_CLASSES = [
     'layer--nav-dot', 'layer--nav-home', 'layer--nav-settings',
@@ -12393,8 +12576,8 @@ window.__IX_ASSETS__ = (function () {
 
   const BACK_HOTSPOT = { left: 14, top: 42, width: 65, height: 65 };
 
-  const FADE_MS = window.__IX_PERF__.ms(1200);
-  const STRETCH_MS = window.__IX_PERF__.ms(1000);
+  const FADE_MS = 1200;
+  const STRETCH_MS = 1000;
 
   /** 更丝滑的渐隐渐显曲线 */
   function easeSmooth(t) {
@@ -13790,6 +13973,26 @@ window.__IX_ASSETS__ = (function () {
       && !isNavigating;
   }
 
+  function allDrillModulesAtHome() {
+    return ROUTES.every((r) => {
+      const m = r.module();
+      return m && m.current === '001';
+    });
+  }
+
+  const INT_DRILL_LEFTOVER_SEL =
+    '#ix-nav-layer, .ix-metrics-frame, .ix-m-frame, .ix-s-frame, #ix-extras, .ix-pet-frame, .ix-tod-header';
+
+  async function maybeRestoreIntHome() {
+    if (!window.__IX_INT_MODE__) return false;
+    if (isNavigating || device.classList.contains('is-animating')) return false;
+    if (device.dataset.screen !== '001' || !allDrillModulesAtHome()) return false;
+    const drillLeftovers = device.querySelector(INT_DRILL_LEFTOVER_SEL);
+    if (hasIntHomeShell() && !device.dataset.ixRoute && !drillLeftovers) return false;
+    await mountNeutral001();
+    return true;
+  }
+
   function setupAllHotspots() {
     clearHotspots();
     if (!isOn001Home()) return;
@@ -13827,13 +14030,21 @@ window.__IX_ASSETS__ = (function () {
     if (device.dataset.screen !== '001' || mod.current !== '001') return;
 
     isNavigating = true;
-    device.dataset.ixRoute = route.id;
     clearHotspots();
+    let freeze = null;
     try {
+      await window.__IX_ASSETS__.preloadDrillRoute(route.id);
+      if (window.__IX_DRILL__) freeze = window.__IX_DRILL__.freeze();
       if (window.__IX_INT_MODE__ && window.IX_INT) {
         await window.IX_INT.beforeDrillDown();
       }
       await mod.remount();
+      if (window.__IX_DRILL__) await window.__IX_DRILL__.settlePaint();
+      if (freeze && window.__IX_DRILL__) {
+        window.__IX_DRILL__.unfreeze(freeze);
+        freeze = null;
+      }
+      device.dataset.ixRoute = route.id;
       await mod.forward();
     } catch (err) {
       console.error('[001-ALL] 导航至 ' + route.id + ' 失败', err);
@@ -13841,6 +14052,7 @@ window.__IX_ASSETS__ = (function () {
       deactivateModuleStyles();
       await mountNeutral001();
     } finally {
+      if (freeze && window.__IX_DRILL__) window.__IX_DRILL__.unfreeze(freeze);
       isNavigating = false;
     }
   }
@@ -13867,6 +14079,7 @@ window.__IX_ASSETS__ = (function () {
       clearHotspots();
       return;
     }
+    if (await maybeRestoreIntHome()) return;
     if (isOn001Home()) {
       if (window.__IX_INT_MODE__) {
         const drillLeftovers = device.querySelector(
@@ -14121,6 +14334,26 @@ window.__IX_ASSETS__ = (function () {
       && !isNavigating;
   }
 
+  function allDrillModulesAtHome() {
+    return ROUTES.every((r) => {
+      const m = r.module();
+      return m && m.current === '002';
+    });
+  }
+
+  const INT_DRILL_LEFTOVER_SEL =
+    '.ix-tod-frame, .ix-ai-frame, .ix-m-frame, .ix-l-frame, #ix-extras, #ix-return';
+
+  async function maybeRestoreIntHome() {
+    if (!window.__IX_INT_MODE__) return false;
+    if (isNavigating || device.classList.contains('is-animating')) return false;
+    if (device.dataset.screen !== '002' || !allDrillModulesAtHome()) return false;
+    const drillLeftovers = device.querySelector(INT_DRILL_LEFTOVER_SEL);
+    if (hasIntHomeShell() && !device.dataset.ixRoute && !drillLeftovers) return false;
+    await mountNeutral002();
+    return true;
+  }
+
   function setupAllHotspots() {
     clearHotspots();
     if (!isOn002Home()) return;
@@ -14156,13 +14389,21 @@ window.__IX_ASSETS__ = (function () {
     if (device.dataset.screen !== '002' || mod.current !== '002') return;
 
     isNavigating = true;
-    device.dataset.ixRoute = route.id;
     clearHotspots();
+    let freeze = null;
     try {
+      await window.__IX_ASSETS__.preloadDrillRoute(route.id);
+      if (window.__IX_DRILL__) freeze = window.__IX_DRILL__.freeze();
       if (window.__IX_INT_MODE__ && window.IX_INT) {
         await window.IX_INT.beforeDrillDown();
       }
       await mod.remount();
+      if (window.__IX_DRILL__) await window.__IX_DRILL__.settlePaint();
+      if (freeze && window.__IX_DRILL__) {
+        window.__IX_DRILL__.unfreeze(freeze);
+        freeze = null;
+      }
+      device.dataset.ixRoute = route.id;
       await mod.forward();
     } catch (err) {
       console.error('[002-ALL] 导航至 ' + route.id + ' 失败', err);
@@ -14170,6 +14411,7 @@ window.__IX_ASSETS__ = (function () {
       deactivateModuleStyles();
       await mountNeutral002();
     } finally {
+      if (freeze && window.__IX_DRILL__) window.__IX_DRILL__.unfreeze(freeze);
       isNavigating = false;
     }
   }
@@ -14197,6 +14439,7 @@ window.__IX_ASSETS__ = (function () {
       clearHotspots();
       return;
     }
+    if (await maybeRestoreIntHome()) return;
     if (isOn002Home()) {
       if (window.__IX_INT_MODE__) {
         const drillLeftovers = device.querySelector(
@@ -14434,6 +14677,26 @@ window.__IX_ASSETS__ = (function () {
       && !isNavigating;
   }
 
+  function allDrillModulesAtHome() {
+    return ROUTES.every((r) => {
+      const m = r.module();
+      return m && m.current === '003';
+    });
+  }
+
+  const INT_DRILL_LEFTOVER_SEL =
+    '.ix-pet-frame, .ix-payment-frame, #ix-pet-header, #ix-owner-header';
+
+  async function maybeRestoreIntHome() {
+    if (!window.__IX_INT_MODE__) return false;
+    if (isNavigating || device.classList.contains('is-animating')) return false;
+    if (device.dataset.screen !== '003' || !allDrillModulesAtHome()) return false;
+    const drillLeftovers = device.querySelector(INT_DRILL_LEFTOVER_SEL);
+    if (hasIntHomeShell() && !device.dataset.ixRoute && !drillLeftovers) return false;
+    await mountNeutral003();
+    return true;
+  }
+
   function setupAllHotspots() {
     clearHotspots();
     if (!isOn003Home()) return;
@@ -14467,13 +14730,21 @@ window.__IX_ASSETS__ = (function () {
     if (device.dataset.screen !== '003' || mod.current !== '003') return;
 
     isNavigating = true;
-    device.dataset.ixRoute = route.id;
     clearHotspots();
+    let freeze = null;
     try {
+      await window.__IX_ASSETS__.preloadDrillRoute(route.id);
+      if (window.__IX_DRILL__) freeze = window.__IX_DRILL__.freeze();
       if (window.__IX_INT_MODE__ && window.IX_INT) {
         await window.IX_INT.beforeDrillDown();
       }
       await mod.remount();
+      if (window.__IX_DRILL__) await window.__IX_DRILL__.settlePaint();
+      if (freeze && window.__IX_DRILL__) {
+        window.__IX_DRILL__.unfreeze(freeze);
+        freeze = null;
+      }
+      device.dataset.ixRoute = route.id;
       await mod.forward();
     } catch (err) {
       console.error('[003-ALL] 导航至 ' + route.id + ' 失败', err);
@@ -14481,6 +14752,7 @@ window.__IX_ASSETS__ = (function () {
       deactivateModuleStyles();
       await mountNeutral003();
     } finally {
+      if (freeze && window.__IX_DRILL__) window.__IX_DRILL__.unfreeze(freeze);
       isNavigating = false;
     }
   }
@@ -14509,6 +14781,7 @@ window.__IX_ASSETS__ = (function () {
       clearHotspots();
       return;
     }
+    if (await maybeRestoreIntHome()) return;
     if (isOn003Home()) {
       if (window.__IX_INT_MODE__) {
         const drillLeftovers = device.querySelector(
@@ -14588,8 +14861,8 @@ window.__IX_ASSETS__ = (function () {
 (function () {
   'use strict';
 
-  const NAV_MS = window.__IX_PERF__.ms(1000);
-  const SLIDE_MS = window.__IX_PERF__.ms(1000);
+  const NAV_MS = 1000;
+  const SLIDE_MS = 1000;
   const DEVICE_H = 874;
 
   const PAGES = {
@@ -14633,7 +14906,7 @@ window.__IX_ASSETS__ = (function () {
 
   const NAV_STRIP_RE = /layer--nav(?:-dot|-home|-settings|-garage|-user)?\b/;
   const FILTER_ACTIVE = 'none';
-  const FILTER_INACTIVE = window.__IX_PERF__.mobile ? 'none' : 'grayscale(0.35) brightness(0.95)';
+  const FILTER_INACTIVE = 'grayscale(0.35) brightness(0.95)';
   const OPACITY_INACTIVE = '0.9';
 
   function iconTop(height) {
@@ -15095,6 +15368,7 @@ window.__IX_ASSETS__ = (function () {
     try {
       loaderText.textContent = '正在加载 0-ALL…';
       await mountPage('001');
+      window.__IX_PERF__.fitDevice();
       loader.classList.add('hidden');
     } catch (err) {
       loaderText.textContent = '加载失败';
@@ -15291,7 +15565,21 @@ window.__IX_ASSETS__ = (function () {
       loaderText.textContent = '正在加载 ALL-INT…';
       await ensureDrillStyles();
       await window.IX0ALL.init();
+      window.__IX_PERF__.fitDevice();
       loader.classList.add('hidden');
+      const warmDrill = async () => {
+        const page = window.IX0ALL?.getCurrentPage?.() || '001';
+        const sets = {
+          '001': [['001-1', '001-1_assets'], ['001-2', '001-2_assets'], ['001-3', '001-3_assets']],
+          '002': [['002-1', '002-1_assets'], ['002-2', '002-2_assets'], ['002-3', '002-3_assets'], ['002-4', '002-4_assets']],
+          '003': [['003-1', '003-1_assets'], ['003-2', '003-2_assets'], ['003-3', '003-3_assets'], ['003-4', '003-4_assets']]
+        };
+        for (const [id, dir] of (sets[page] || [])) {
+          await window.__IX_ASSETS__.warmScreen(id, dir);
+        }
+      };
+      if (typeof requestIdleCallback === 'function') requestIdleCallback(() => { warmDrill().catch(() => {}); }, { timeout: 2500 });
+      else setTimeout(() => { warmDrill().catch(() => {}); }, 800);
     } catch (err) {
       loaderText.textContent = '加载失败';
       loaderHint.textContent = err.message || String(err);
