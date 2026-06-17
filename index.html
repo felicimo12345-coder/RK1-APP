@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>ALL-INT V4</title>
   <style>
@@ -59,17 +59,24 @@
     }
 
     html.ix-mobile .page {
+      position: fixed;
+      inset: 0;
+      width: 100%;
       height: 100dvh;
       min-height: 100dvh;
       max-height: 100dvh;
-      gap: 8px;
+      gap: 0;
       padding:
-        max(6px, var(--ix-safe-top))
-        max(var(--ix-pad), var(--ix-safe-right))
-        max(6px, var(--ix-safe-bottom))
-        max(var(--ix-pad), var(--ix-safe-left));
+        env(safe-area-inset-top, 0px)
+        env(safe-area-inset-right, 0px)
+        env(safe-area-inset-bottom, 0px)
+        env(safe-area-inset-left, 0px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
       touch-action: manipulation;
+      box-sizing: border-box;
     }
 
     html.ix-mobile body {
@@ -79,7 +86,10 @@
     }
 
     html.ix-mobile .device-wrap {
+      flex-shrink: 0;
+      margin: 0;
       transform: scale(var(--ix-scale));
+      transform-origin: center center;
     }
 
     #device {
@@ -234,11 +244,12 @@
       font-size: 14px;
       font-family: "等线", "DengXian", sans-serif;
       z-index: 9999;
-      transition: opacity 0.35s;
     }
-    .loader.hidden {
-      opacity: 0;
-      pointer-events: none;
+    html.ix-app-ready .loader {
+      display: none;
+    }
+    html:not(.ix-app-ready) .page {
+      visibility: hidden;
     }
     .loader__hint {
       font-size: 11px;
@@ -4849,30 +4860,40 @@ window.__IX_PERF__ = (function () {
   function fitDevice() {
     if (!mobile) return;
     const root = document.documentElement;
-    const safeT = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-top')) || 0;
-    const safeB = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-bottom')) || 0;
-    const safeL = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-left')) || 0;
-    const safeR = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-right')) || 0;
-    const padX = 20;
-    const padY = 20;
     let vw = window.innerWidth;
     let vh = window.innerHeight;
-    if (window.visualViewport) {
-      vw = window.visualViewport.width;
-      vh = window.visualViewport.height;
+    const page = document.querySelector('.page');
+    if (page) {
+      const cs = getComputedStyle(page);
+      vw -= parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+      vh -= parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
     }
-    vw = vw - padX * 2 - safeL - safeR;
-    vh = vh - padY * 2 - safeT - safeB;
     const s = Math.min(1, vw / DEVICE_W, vh / DEVICE_H);
     root.style.setProperty('--ix-scale', String(Math.max(0.01, s)));
   }
 
+  let fitRaf = 0;
+  function fitDeviceStable() {
+    if (!mobile) return;
+    if (fitRaf) cancelAnimationFrame(fitRaf);
+    fitRaf = requestAnimationFrame(() => {
+      fitRaf = 0;
+      fitDevice();
+    });
+  }
+
+  async function revealApp() {
+    fitDevice();
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    document.documentElement.classList.add('ix-app-ready');
+  }
+
   if (mobile) {
     fitDevice();
-    window.addEventListener('resize', fitDevice, { passive: true });
-    window.addEventListener('orientationchange', () => setTimeout(fitDevice, 100), { passive: true });
+    window.addEventListener('resize', fitDeviceStable, { passive: true });
+    window.addEventListener('orientationchange', () => setTimeout(fitDeviceStable, 100), { passive: true });
     if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', fitDevice, { passive: true });
+      window.visualViewport.addEventListener('resize', fitDeviceStable, { passive: true });
     }
   } else {
     (function injectShellGuard() {
@@ -4910,7 +4931,7 @@ window.__IX_PERF__ = (function () {
     })();
   }
 
-  return { mobile, ms, SCALE, fitDevice, layoutPx };
+  return { mobile, ms, SCALE, fitDevice, fitDeviceStable, revealApp, layoutPx };
 })();
 </script>
 <script>
@@ -5891,8 +5912,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount001Base() {
     const data = await parseScreen('001');
-    applyStyles('001', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('001', data.style);
     device.dataset.screen = '001';
     await bindAssets(device, SCREENS['001'].assetDir);
 
@@ -6621,8 +6642,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount001Base() {
     const data = await parseScreen('001');
-    applyStyles('001', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('001', data.style);
     device.dataset.screen = '001';
     await bindAssets(device, SCREENS['001'].assetDir);
     await setupNavPinLayer();
@@ -7326,8 +7347,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount001Base() {
     const data = await parseScreen('001');
-    applyStyles('001', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('001', data.style);
     device.dataset.screen = '001';
     await bindAssets(device, SCREENS['001'].assetDir);
     await setupNavPinLayer();
@@ -7880,8 +7901,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount002Base() {
     const data = await parseScreen('002');
-    applyStyles('002', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('002', data.style);
     device.dataset.screen = '002';
     await bindAssets(device, SCREENS['002'].assetDir);
     setupNavGlass();
@@ -8621,8 +8642,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount002Base() {
     const data = await parseScreen('002');
-    applyStyles('002', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('002', data.style);
     device.dataset.screen = '002';
     await bindAssets(device, SCREENS['002'].assetDir);
     await setupNavPinLayer();
@@ -9511,8 +9532,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount002Base() {
     const data = await parseScreen('002');
-    applyStyles('002', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('002', data.style);
     device.dataset.screen = '002';
     await bindAssets(device, SCREENS['002'].assetDir);
     await setupNavPinLayer();
@@ -10374,8 +10395,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount002Base() {
     const data = await parseScreen('002');
-    applyStyles('002', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('002', data.style);
     device.dataset.screen = '002';
     await bindAssets(device, SCREENS['002'].assetDir);
     await setupNavPinLayer();
@@ -10902,8 +10923,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount003Base() {
     const data = await parseScreen('003');
-    applyStyles('003', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('003', data.style);
     device.dataset.screen = '003';
     await bindAssets(device, SCREENS['003'].assetDir);
     setupNavGlass();
@@ -11644,8 +11665,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount003Base() {
     const data = await parseScreen('003');
-    applyStyles('003', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('003', data.style);
     device.dataset.screen = '003';
     await bindAssets(device, SCREENS['003'].assetDir);
     setupNavGlass();
@@ -12617,8 +12638,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount003Base() {
     const data = await parseScreen('003');
-    applyStyles('003', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('003', data.style);
     device.dataset.screen = '003';
     await bindAssets(device, SCREENS['003'].assetDir);
     setupNavGlass();
@@ -13895,8 +13916,8 @@ window.__IX_DRILL__ = (function () {
 
   async function mount003Base() {
     const data = await parseScreen('003');
-    applyStyles('003', data.style);
     device.innerHTML = data.innerHTML;
+    applyStyles('003', data.style);
     device.dataset.screen = '003';
     await bindAssets(device, SCREENS['003'].assetDir);
     setupPetShrinkFrame();
@@ -14257,7 +14278,11 @@ window.__IX_DRILL__ = (function () {
         await window.IX_INT.beforeDrillDown();
       }
       await mod.remount();
-      device.dataset.ixRoute = route.id;
+      if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
+        window.IX_INT.afterDrillMount(route.id);
+      } else {
+        device.dataset.ixRoute = route.id;
+      }
       await mod.forward();
     } catch (err) {
       console.error('[001-ALL] 导航至 ' + route.id + ' 失败', err);
@@ -14608,7 +14633,11 @@ window.__IX_DRILL__ = (function () {
         await window.IX_INT.beforeDrillDown();
       }
       await mod.remount();
-      device.dataset.ixRoute = route.id;
+      if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
+        window.IX_INT.afterDrillMount(route.id);
+      } else {
+        device.dataset.ixRoute = route.id;
+      }
       await mod.forward();
     } catch (err) {
       console.error('[002-ALL] 导航至 ' + route.id + ' 失败', err);
@@ -14941,7 +14970,11 @@ window.__IX_DRILL__ = (function () {
         await window.IX_INT.beforeDrillDown();
       }
       await mod.remount();
-      device.dataset.ixRoute = route.id;
+      if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
+        window.IX_INT.afterDrillMount(route.id);
+      } else {
+        device.dataset.ixRoute = route.id;
+      }
       await mod.forward();
     } catch (err) {
       console.error('[003-ALL] 导航至 ' + route.id + ' 失败', err);
@@ -15253,14 +15286,14 @@ window.__IX_DRILL__ = (function () {
 
   function prepareDrillDown() {
     clearHotspots();
-    setPageStylesEnabled(false);
-    resetShellRefs();
-    resetDeviceVisualState();
   }
 
   function teardown() {
-    prepareDrillDown();
+    clearHotspots();
+    setPageStylesEnabled(false);
     device.innerHTML = '';
+    resetShellRefs();
+    resetDeviceVisualState();
   }
 
   function stripNavFromFragment(root) {
@@ -15449,20 +15482,21 @@ window.__IX_DRILL__ = (function () {
 
   async function mountPage(pageId, options) {
     const opts = options || {};
-    /* INT：从二级返回时 device 内仍有 drill DOM，必须先清空再挂壳 */
-    if (window.__IX_INT_MODE__) {
-      device.innerHTML = '';
-      resetShellRefs();
-      resetDeviceVisualState();
-    }
-    ensureShell();
-
     const { layer, data } = await buildScreenLayer(pageId);
     layer.style.transition = 'none';
     layer.style.transform = opts.initialTransform || 'translate3d(0,0,0)';
 
-    contentStage.innerHTML = '';
-    contentStage.appendChild(layer);
+    if (window.__IX_INT_MODE__) {
+      device.innerHTML = '';
+      resetShellRefs();
+      resetDeviceVisualState();
+      ensureShell();
+      contentStage.appendChild(layer);
+    } else {
+      ensureShell();
+      contentStage.innerHTML = '';
+      contentStage.appendChild(layer);
+    }
 
     applyPageStyles(data.style);
     currentPage = pageId;
@@ -15568,8 +15602,11 @@ window.__IX_DRILL__ = (function () {
     try {
       loaderText.textContent = '正在加载 0-ALL…';
       await mountPage('001');
-      window.__IX_PERF__.fitDevice();
-      loader.classList.add('hidden');
+      if (!window.__IX_INT_MODE__) {
+        window.__IX_PERF__.fitDevice();
+        if (window.__IX_PERF__.revealApp) await window.__IX_PERF__.revealApp();
+        else document.documentElement.classList.add('ix-app-ready');
+      }
     } catch (err) {
       loaderText.textContent = '加载失败';
       loaderHint.textContent =
@@ -15735,12 +15772,15 @@ window.__IX_DRILL__ = (function () {
     await window.IX0ALL.mountPage(pageId);
   }
 
-  /** 进入 1/2/3-ALL 前：关一级样式；勿清空 device，由 remount 原子替换避免黑屏 */
-  async function beforeDrillDown() {
-    const pageId = currentPage();
-    window.IX0ALL.prepareDrillDown();
-    if (device) device.dataset.ixMode = 'drill';
-    setDrillCSS(pageId, true);
+  /** 进入二级前：不修改样式/DOM，保持当前画面直到 remount 原子替换 */
+  async function beforeDrillDown() {}
+
+  function afterDrillMount(routeId) {
+    if (device) {
+      device.dataset.ixMode = 'drill';
+      device.dataset.ixRoute = routeId;
+    }
+    window.IX0ALL?.setPageStylesEnabled(false);
   }
 
   function setupIxAllProxy() {
@@ -15800,6 +15840,7 @@ window.__IX_DRILL__ = (function () {
     window.IX_INT = {
       mountHomeContent,
       beforeDrillDown,
+      afterDrillMount,
       setHomeMode,
       onPageReady,
       refreshTopNav: () => window.IX0ALL.setupHotspots()
@@ -15810,8 +15851,11 @@ window.__IX_DRILL__ = (function () {
       ensureShellGuard();
       await ensureDrillStyles();
       await window.IX0ALL.init();
-      window.__IX_PERF__.fitDevice();
-      loader.classList.add('hidden');
+      if (window.__IX_PERF__.revealApp) await window.__IX_PERF__.revealApp();
+      else {
+        window.__IX_PERF__.fitDevice();
+        document.documentElement.classList.add('ix-app-ready');
+      }
       const warmDrill = async () => {
         const page = window.IX0ALL?.getCurrentPage?.() || '001';
         const sets = {
