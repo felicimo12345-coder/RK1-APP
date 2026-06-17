@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>ALL-INT V4</title>
   <style>
@@ -22,33 +22,21 @@
 
     html, body {
       width: 100%;
-      height: 100%;
-      height: 100dvh;
-      min-height: 100dvh;
+      min-height: 100%;
       background: #0a0a0a;
       -webkit-font-smoothing: antialiased;
-      overflow: hidden;
-      touch-action: manipulation;
-      overscroll-behavior: none;
     }
 
     .page {
       width: 100%;
-      height: 100dvh;
-      min-height: 100dvh;
-      max-height: 100dvh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding:
-        max(6px, var(--ix-safe-top))
-        max(var(--ix-pad), var(--ix-safe-right))
-        max(6px, var(--ix-safe-bottom))
-        max(var(--ix-pad), var(--ix-safe-left));
+      gap: 12px;
+      padding: 20px;
       box-sizing: border-box;
-      overflow: hidden;
     }
 
     .page__title {
@@ -63,26 +51,68 @@
     }
 
     .device-wrap {
-      position: relative;
       flex-shrink: 0;
       margin-left: auto;
       margin-right: auto;
-      width: calc(var(--ix-device-w) * var(--ix-scale));
-      height: calc(var(--ix-device-h) * var(--ix-scale));
-      overflow: visible;
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402)));
+      transform-origin: center center;
+    }
+
+    html.ix-mobile .page {
+      height: 100dvh;
+      min-height: 100dvh;
+      max-height: 100dvh;
+      gap: 8px;
+      padding:
+        max(6px, var(--ix-safe-top))
+        max(var(--ix-pad), var(--ix-safe-right))
+        max(6px, var(--ix-safe-bottom))
+        max(var(--ix-pad), var(--ix-safe-left));
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+
+    html.ix-mobile body {
+      height: 100dvh;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    html.ix-mobile .device-wrap {
+      transform: scale(var(--ix-scale));
     }
 
     #device {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: var(--ix-device-w);
-      height: var(--ix-device-h);
-      transform: scale(var(--ix-scale));
-      transform-origin: top left;
+      position: relative;
+      width: 402px;
+      height: 874px;
       overflow: hidden;
       background: #060606;
       box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    /* 桌面端：强制壳层布局，防止 drill 嵌入样式覆盖导致偏左/下沉 */
+    html:not(.ix-mobile) .page {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    html:not(.ix-mobile) .page > .device-wrap {
+      width: auto !important;
+      height: auto !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402))) !important;
+      transform-origin: center center !important;
+    }
+    html:not(.ix-mobile) #device {
+      position: relative !important;
+      width: 402px !important;
+      height: 874px !important;
+      transform: none !important;
+      left: auto !important;
+      top: auto !important;
     }
 
     #ix-content-stage {
@@ -229,30 +259,13 @@
       pointer-events: none;
     }
     .ix-drill-freeze__snap {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: calc(var(--ix-device-w) * var(--ix-scale));
-      height: calc(var(--ix-device-h) * var(--ix-scale));
-      overflow: hidden;
+      width: 100%;
+      height: 100%;
     }
     .ix-drill-freeze__snap > .ix-drill-freeze__device {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: calc(var(--ix-device-w) * var(--ix-scale));
-      height: calc(var(--ix-device-h) * var(--ix-scale));
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .ix-drill-freeze__snap > .ix-drill-freeze__device > div {
-      position: absolute;
-      left: 0;
-      top: 0;
+      position: relative;
       width: var(--ix-device-w);
       height: var(--ix-device-h);
-      transform: scale(var(--ix-scale));
-      transform-origin: top left;
       overflow: hidden;
       background: #060606;
       box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -4824,8 +4837,7 @@ window.__IX_EMBED_LOAD__ = function (id, cfg) {
 /** 移动端性能：检测、动画时长缩放、视口自适应（iPhone 14 等） */
 window.__IX_PERF__ = (function () {
   'use strict';
-  const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-    || (navigator.maxTouchPoints > 1 && Math.min(screen.width, screen.height) < 900);
+  const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   if (mobile) document.documentElement.classList.add('ix-mobile');
   const SCALE = 1;
   function ms(n) { return n; }
@@ -4835,29 +4847,67 @@ window.__IX_PERF__ = (function () {
   const DEVICE_H = 874;
 
   function fitDevice() {
-    const padX = mobile ? 20 : 12;
-    const padY = mobile ? 20 : 12;
-    const reserveY = mobile ? 12 : 0;
+    if (!mobile) return;
     const root = document.documentElement;
     const safeT = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-top')) || 0;
     const safeB = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-bottom')) || 0;
     const safeL = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-left')) || 0;
     const safeR = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-right')) || 0;
-    const vv = window.visualViewport;
-    let vw = vv ? vv.width : window.innerWidth;
-    let vh = vv ? vv.height : window.innerHeight;
+    const padX = 20;
+    const padY = 20;
+    let vw = window.innerWidth;
+    let vh = window.innerHeight;
+    if (window.visualViewport) {
+      vw = window.visualViewport.width;
+      vh = window.visualViewport.height;
+    }
     vw = vw - padX * 2 - safeL - safeR;
-    vh = vh - padY * 2 - safeT - safeB - reserveY;
+    vh = vh - padY * 2 - safeT - safeB;
     const s = Math.min(1, vw / DEVICE_W, vh / DEVICE_H);
     root.style.setProperty('--ix-scale', String(Math.max(0.01, s)));
   }
 
-  fitDevice();
-  window.addEventListener('resize', fitDevice, { passive: true });
-  window.addEventListener('orientationchange', () => setTimeout(fitDevice, 100), { passive: true });
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', fitDevice, { passive: true });
-    window.visualViewport.addEventListener('scroll', fitDevice, { passive: true });
+  if (mobile) {
+    fitDevice();
+    window.addEventListener('resize', fitDevice, { passive: true });
+    window.addEventListener('orientationchange', () => setTimeout(fitDevice, 100), { passive: true });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', fitDevice, { passive: true });
+    }
+  } else {
+    (function injectShellGuard() {
+      const id = 'ix-shell-guard';
+      let el = document.getElementById(id);
+      if (!el) {
+        el = document.createElement('style');
+        el.id = id;
+        document.head.appendChild(el);
+      }
+      el.textContent = [
+        'html:not(.ix-mobile) .page {',
+        '  display: flex !important;',
+        '  flex-direction: column !important;',
+        '  align-items: center !important;',
+        '  justify-content: center !important;',
+        '}',
+        'html:not(.ix-mobile) .page > .device-wrap {',
+        '  width: auto !important;',
+        '  height: auto !important;',
+        '  margin-left: auto !important;',
+        '  margin-right: auto !important;',
+        '  transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402))) !important;',
+        '  transform-origin: center center !important;',
+        '}',
+        'html:not(.ix-mobile) #device {',
+        '  position: relative !important;',
+        '  width: 402px !important;',
+        '  height: 874px !important;',
+        '  transform: none !important;',
+        '  left: auto !important;',
+        '  top: auto !important;',
+        '}'
+      ].join('\n');
+    })();
   }
 
   return { mobile, ms, SCALE, fitDevice, layoutPx };
@@ -14201,20 +14251,12 @@ window.__IX_DRILL__ = (function () {
 
     isNavigating = true;
     clearHotspots();
-    let freeze = null;
     try {
       await window.__IX_ASSETS__.preloadDrillRoute(route.id);
-      if (window.__IX_DRILL__) freeze = window.__IX_DRILL__.freeze();
       if (window.__IX_INT_MODE__ && window.IX_INT) {
         await window.IX_INT.beforeDrillDown();
       }
       await mod.remount();
-      if (window.__IX_DRILL__) await window.__IX_DRILL__.settlePaint();
-      if (freeze && window.__IX_DRILL__) {
-        window.__IX_DRILL__.unfreeze(freeze);
-        freeze = null;
-      }
-      window.__IX_PERF__?.fitDevice?.();
       device.dataset.ixRoute = route.id;
       await mod.forward();
     } catch (err) {
@@ -14223,7 +14265,6 @@ window.__IX_DRILL__ = (function () {
       deactivateModuleStyles();
       await mountNeutral001();
     } finally {
-      if (freeze && window.__IX_DRILL__) window.__IX_DRILL__.unfreeze(freeze);
       isNavigating = false;
     }
   }
@@ -14561,20 +14602,12 @@ window.__IX_DRILL__ = (function () {
 
     isNavigating = true;
     clearHotspots();
-    let freeze = null;
     try {
       await window.__IX_ASSETS__.preloadDrillRoute(route.id);
-      if (window.__IX_DRILL__) freeze = window.__IX_DRILL__.freeze();
       if (window.__IX_INT_MODE__ && window.IX_INT) {
         await window.IX_INT.beforeDrillDown();
       }
       await mod.remount();
-      if (window.__IX_DRILL__) await window.__IX_DRILL__.settlePaint();
-      if (freeze && window.__IX_DRILL__) {
-        window.__IX_DRILL__.unfreeze(freeze);
-        freeze = null;
-      }
-      window.__IX_PERF__?.fitDevice?.();
       device.dataset.ixRoute = route.id;
       await mod.forward();
     } catch (err) {
@@ -14583,7 +14616,6 @@ window.__IX_DRILL__ = (function () {
       deactivateModuleStyles();
       await mountNeutral002();
     } finally {
-      if (freeze && window.__IX_DRILL__) window.__IX_DRILL__.unfreeze(freeze);
       isNavigating = false;
     }
   }
@@ -14903,20 +14935,12 @@ window.__IX_DRILL__ = (function () {
 
     isNavigating = true;
     clearHotspots();
-    let freeze = null;
     try {
       await window.__IX_ASSETS__.preloadDrillRoute(route.id);
-      if (window.__IX_DRILL__) freeze = window.__IX_DRILL__.freeze();
       if (window.__IX_INT_MODE__ && window.IX_INT) {
         await window.IX_INT.beforeDrillDown();
       }
       await mod.remount();
-      if (window.__IX_DRILL__) await window.__IX_DRILL__.settlePaint();
-      if (freeze && window.__IX_DRILL__) {
-        window.__IX_DRILL__.unfreeze(freeze);
-        freeze = null;
-      }
-      window.__IX_PERF__?.fitDevice?.();
       device.dataset.ixRoute = route.id;
       await mod.forward();
     } catch (err) {
@@ -14925,7 +14949,6 @@ window.__IX_DRILL__ = (function () {
       deactivateModuleStyles();
       await mountNeutral003();
     } finally {
-      if (freeze && window.__IX_DRILL__) window.__IX_DRILL__.unfreeze(freeze);
       isNavigating = false;
     }
   }
@@ -15179,7 +15202,7 @@ window.__IX_DRILL__ = (function () {
   function scopePageCSS(cssText) {
     let css = cssText || '';
     css = css.replace(/\*,\s*\*::before,\s*\*::after\s*\{[^}]*\}/g, '');
-    css = css.replace(/(?:html|body)\s*\{[^}]*\}/g, '');
+    css = css.replace(/(?:html|body)(?:\s*,\s*(?:html|body))*\s*\{[^}]*\}/g, '');
     css = css.replace(/\.page(?:__\w+)?\s*\{[^}]*\}/g, '');
     css = css.replace(/\.device-wrap\s*\{[^}]*\}/g, '');
     css = css.replace(/\.loader(?:__\w+)?\s*\{[^}]*\}/g, '');
@@ -15228,12 +15251,16 @@ window.__IX_DRILL__ = (function () {
     device.style.removeProperty('transition');
   }
 
-  function teardown() {
+  function prepareDrillDown() {
     clearHotspots();
     setPageStylesEnabled(false);
-    device.innerHTML = '';
     resetShellRefs();
     resetDeviceVisualState();
+  }
+
+  function teardown() {
+    prepareDrillDown();
+    device.innerHTML = '';
   }
 
   function stripNavFromFragment(root) {
@@ -15560,6 +15587,7 @@ window.__IX_DRILL__ = (function () {
     setupHotspots,
     refreshTopNav: setupHotspots,
     teardown,
+    prepareDrillDown,
     setPageStylesEnabled,
     isAnimating: () => isAnimating
   };
@@ -15610,31 +15638,66 @@ window.__IX_DRILL__ = (function () {
     return res.text();
   }
 
+  const DRILL_SHELL_RE = /\.(?:page(?:__\w+)?|device-wrap|loader(?:__\w+)?|device)\s*\{[^}]*\}|#device\s*\{[^}]*\}|(?:html|body)(?:\s*,\s*(?:html|body))*\s*\{[^}]*\}/g;
+
+  function sanitizeDrillCSS(css) {
+    return String(css || '')
+      .replace(/\*,\s*\*::before,\s*\*::after\s*\{[^}]*\}/g, '')
+      .replace(DRILL_SHELL_RE, '');
+  }
+
+  function ensureShellGuard() {
+    let el = document.getElementById('ix-shell-guard');
+    if (!el) {
+      el = document.createElement('style');
+      el.id = 'ix-shell-guard';
+      document.head.appendChild(el);
+    }
+    el.textContent = [
+      'html:not(.ix-mobile) .page {',
+      '  display: flex !important;',
+      '  flex-direction: column !important;',
+      '  align-items: center !important;',
+      '  justify-content: center !important;',
+      '}',
+      'html:not(.ix-mobile) .page > .device-wrap {',
+      '  width: auto !important;',
+      '  height: auto !important;',
+      '  margin-left: auto !important;',
+      '  margin-right: auto !important;',
+      '  transform: scale(min(1, calc((100vh - 80px) / 874), calc((100vw - 40px) / 402))) !important;',
+      '  transform-origin: center center !important;',
+      '}',
+      'html:not(.ix-mobile) #device {',
+      '  position: relative !important;',
+      '  width: 402px !important;',
+      '  height: 874px !important;',
+      '  transform: none !important;',
+      '  left: auto !important;',
+      '  top: auto !important;',
+      '}'
+    ].join('\n');
+  }
+
   async function loadDrillCSS(pageId) {
-    if (drillCSSCache[pageId]) return drillCSSCache[pageId];
     const el = document.getElementById(DRILL_CSS_EMBED[pageId]);
-    let css = el ? el.textContent : '';
-    css = css.replace(/\*,\s*\*::before,\s*\*::after\s*\{[^}]*\}/g, '');
-    css = css.replace(/(?:html|body)\s*\{[^}]*\}/g, '');
-    css = css.replace(/\.page(?:__\w+)?\s*\{[^}]*\}/g, '');
-    css = css.replace(/\.device-wrap\s*\{[^}]*\}/g, '');
-    css = css.replace(/\.loader(?:__\w+)?\s*\{[^}]*\}/g, '');
-    css = css.replace(/#device\s*\{[^}]*\}/g, '');
-    css = css.replace(/\.device\s*\{[^}]*\}/g, '');
+    const css = sanitizeDrillCSS(el ? el.textContent : '');
     drillCSSCache[pageId] = css;
     return css;
   }
 
   async function ensureDrillStyles() {
     for (const page of ['001', '002', '003']) {
-      if (drillStyleEls[page]) continue;
       const css = await loadDrillCSS(page);
-      const el = document.createElement('style');
-      el.id = 'ix-drill-active-' + page;
-      el.disabled = true;
-      el.textContent = '/* drill ' + page + ' */\n' + css;
-      document.head.appendChild(el);
-      drillStyleEls[page] = el;
+      if (!drillStyleEls[page]) {
+        const el = document.createElement('style');
+        el.id = 'ix-drill-active-' + page;
+        el.disabled = true;
+        document.head.appendChild(el);
+        drillStyleEls[page] = el;
+      }
+      drillStyleEls[page].textContent = '/* drill ' + page + ' */\n' + css;
+      drillStyleEls[page].disabled = true;
     }
   }
 
@@ -15653,7 +15716,7 @@ window.__IX_DRILL__ = (function () {
     if (base) base.disabled = true;
     if (!enabled) disableRouteStyles();
     window.IX0ALL?.setPageStylesEnabled(!enabled);
-    window.__IX_PERF__?.fitDevice?.();
+    ensureShellGuard();
   }
 
   function setHomeMode() {
@@ -15672,10 +15735,10 @@ window.__IX_DRILL__ = (function () {
     await window.IX0ALL.mountPage(pageId);
   }
 
-  /** 进入 1/2/3-ALL 前：拆掉 0-ALL 壳 */
+  /** 进入 1/2/3-ALL 前：关一级样式；勿清空 device，由 remount 原子替换避免黑屏 */
   async function beforeDrillDown() {
     const pageId = currentPage();
-    window.IX0ALL.teardown();
+    window.IX0ALL.prepareDrillDown();
     if (device) device.dataset.ixMode = 'drill';
     setDrillCSS(pageId, true);
   }
@@ -15744,6 +15807,7 @@ window.__IX_DRILL__ = (function () {
 
     try {
       loaderText.textContent = '正在加载 ALL-INT…';
+      ensureShellGuard();
       await ensureDrillStyles();
       await window.IX0ALL.init();
       window.__IX_PERF__.fitDevice();
