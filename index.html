@@ -67,17 +67,19 @@
       flex-shrink: 0;
       margin-left: auto;
       margin-right: auto;
-      width: var(--ix-device-w);
-      height: var(--ix-device-h);
-      transform: scale(var(--ix-scale));
-      transform-origin: center center;
-      will-change: transform;
+      width: calc(var(--ix-device-w) * var(--ix-scale));
+      height: calc(var(--ix-device-h) * var(--ix-scale));
+      overflow: visible;
     }
 
     #device {
-      position: relative;
+      position: absolute;
+      left: 0;
+      top: 0;
       width: var(--ix-device-w);
       height: var(--ix-device-h);
+      transform: scale(var(--ix-scale));
+      transform-origin: top left;
       overflow: hidden;
       background: #060606;
       box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -227,13 +229,30 @@
       pointer-events: none;
     }
     .ix-drill-freeze__snap {
-      width: 100%;
-      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: calc(var(--ix-device-w) * var(--ix-scale));
+      height: calc(var(--ix-device-h) * var(--ix-scale));
+      overflow: hidden;
     }
     .ix-drill-freeze__snap > .ix-drill-freeze__device {
-      position: relative;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: calc(var(--ix-device-w) * var(--ix-scale));
+      height: calc(var(--ix-device-h) * var(--ix-scale));
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .ix-drill-freeze__snap > .ix-drill-freeze__device > div {
+      position: absolute;
+      left: 0;
+      top: 0;
       width: var(--ix-device-w);
       height: var(--ix-device-h);
+      transform: scale(var(--ix-scale));
+      transform-origin: top left;
       overflow: hidden;
       background: #060606;
       box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -4816,14 +4835,19 @@ window.__IX_PERF__ = (function () {
   const DEVICE_H = 874;
 
   function fitDevice() {
-    const pad = 12;
+    const padX = mobile ? 20 : 12;
+    const padY = mobile ? 20 : 12;
+    const reserveY = mobile ? 12 : 0;
     const root = document.documentElement;
     const safeT = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-top')) || 0;
     const safeB = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-bottom')) || 0;
     const safeL = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-left')) || 0;
     const safeR = parseFloat(getComputedStyle(root).getPropertyValue('--ix-safe-right')) || 0;
-    const vw = window.innerWidth - pad * 2 - safeL - safeR;
-    const vh = window.innerHeight - pad * 2 - safeT - safeB;
+    const vv = window.visualViewport;
+    let vw = vv ? vv.width : window.innerWidth;
+    let vh = vv ? vv.height : window.innerHeight;
+    vw = vw - padX * 2 - safeL - safeR;
+    vh = vh - padY * 2 - safeT - safeB - reserveY;
     const s = Math.min(1, vw / DEVICE_W, vh / DEVICE_H);
     root.style.setProperty('--ix-scale', String(Math.max(0.01, s)));
   }
@@ -4833,6 +4857,7 @@ window.__IX_PERF__ = (function () {
   window.addEventListener('orientationchange', () => setTimeout(fitDevice, 100), { passive: true });
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', fitDevice, { passive: true });
+    window.visualViewport.addEventListener('scroll', fitDevice, { passive: true });
   }
 
   return { mobile, ms, SCALE, fitDevice, layoutPx };
@@ -14189,6 +14214,7 @@ window.__IX_DRILL__ = (function () {
         window.__IX_DRILL__.unfreeze(freeze);
         freeze = null;
       }
+      window.__IX_PERF__?.fitDevice?.();
       device.dataset.ixRoute = route.id;
       await mod.forward();
     } catch (err) {
@@ -14548,6 +14574,7 @@ window.__IX_DRILL__ = (function () {
         window.__IX_DRILL__.unfreeze(freeze);
         freeze = null;
       }
+      window.__IX_PERF__?.fitDevice?.();
       device.dataset.ixRoute = route.id;
       await mod.forward();
     } catch (err) {
@@ -14889,6 +14916,7 @@ window.__IX_DRILL__ = (function () {
         window.__IX_DRILL__.unfreeze(freeze);
         freeze = null;
       }
+      window.__IX_PERF__?.fitDevice?.();
       device.dataset.ixRoute = route.id;
       await mod.forward();
     } catch (err) {
@@ -15585,7 +15613,14 @@ window.__IX_DRILL__ = (function () {
   async function loadDrillCSS(pageId) {
     if (drillCSSCache[pageId]) return drillCSSCache[pageId];
     const el = document.getElementById(DRILL_CSS_EMBED[pageId]);
-    const css = el ? el.textContent : '';
+    let css = el ? el.textContent : '';
+    css = css.replace(/\*,\s*\*::before,\s*\*::after\s*\{[^}]*\}/g, '');
+    css = css.replace(/(?:html|body)\s*\{[^}]*\}/g, '');
+    css = css.replace(/\.page(?:__\w+)?\s*\{[^}]*\}/g, '');
+    css = css.replace(/\.device-wrap\s*\{[^}]*\}/g, '');
+    css = css.replace(/\.loader(?:__\w+)?\s*\{[^}]*\}/g, '');
+    css = css.replace(/#device\s*\{[^}]*\}/g, '');
+    css = css.replace(/\.device\s*\{[^}]*\}/g, '');
     drillCSSCache[pageId] = css;
     return css;
   }
@@ -15618,6 +15653,7 @@ window.__IX_DRILL__ = (function () {
     if (base) base.disabled = true;
     if (!enabled) disableRouteStyles();
     window.IX0ALL?.setPageStylesEnabled(!enabled);
+    window.__IX_PERF__?.fitDevice?.();
   }
 
   function setHomeMode() {
