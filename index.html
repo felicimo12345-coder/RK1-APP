@@ -260,6 +260,14 @@
       line-height: 1.5;
       padding: 0 16px;
     }
+
+    #device[data-ix-mode="drill"] .ix-nav-glass,
+    #device[data-ix-mode="drill"] .ix-nav-pin {
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
     #ix-embed-root { display: none !important; }
 
     /* drill 准备阶段：冻结当前画面，DOM 重建在遮罩下进行 */
@@ -297,9 +305,9 @@
       font-synthesis: none;
     }
 
-    html.ix-mobile #device .text--label,
+    html.ix-mobile #device .text--label:not(.text--addr-detail),
     html.ix-mobile #device .text--label-sm,
-    html.ix-mobile #ix-content-stage .text--label,
+    html.ix-mobile #ix-content-stage .text--label:not(.text--addr-detail),
     html.ix-mobile #ix-content-stage .text--label-sm {
       font-size: 12px !important;
       line-height: 13px !important;
@@ -329,29 +337,31 @@
       white-space: nowrap !important;
     }
 
-    html.ix-mobile #device .text--ai-steward,
-    html.ix-mobile #device .text--mechanical {
+    html.ix-mobile #device .text--ai-steward:not(#ix-extras .text--ai-steward):not(.ix-extras .text--ai-steward):not(.ix-ai-content .text--ai-steward):not(.ix-ai-body .text--ai-steward),
+    html.ix-mobile #device .text--mechanical:not(.ix-m-content .text--mechanical):not(.ix-m-body .text--mechanical) {
       white-space: pre-line !important;
       font-size: 12px !important;
       line-height: 13px !important;
       letter-spacing: 0 !important;
-      word-break: keep-all;
-      overflow: hidden;
+      word-break: normal !important;
+      overflow: visible !important;
     }
 
-    html.ix-mobile #device .text--ai-steward {
+    html.ix-mobile #device .text--ai-steward:not(#ix-extras .text--ai-steward):not(.ix-extras .text--ai-steward):not(.ix-ai-content .text--ai-steward):not(.ix-ai-body .text--ai-steward) {
       width: 55px !important;
       min-width: 55px !important;
       max-width: 55px !important;
+      height: 26px !important;
     }
 
-    html.ix-mobile #device .text--mechanical {
+    html.ix-mobile #device .text--mechanical:not(.ix-m-content .text--mechanical):not(.ix-m-body .text--mechanical) {
       width: 73px !important;
       min-width: 73px !important;
       max-width: 73px !important;
+      height: 26px !important;
     }
 
-    html.ix-mobile #device .text--sleep-label {
+    html.ix-mobile #device .text--sleep-label:not(.ix-extras .text--sleep-label):not(#ix-extras-fade .text--sleep-label):not(#ix-extras-persistent .text--sleep-label) {
       white-space: pre-line !important;
       width: 43px !important;
       min-width: 43px !important;
@@ -359,15 +369,15 @@
       font-size: 12px !important;
       line-height: 13px !important;
       letter-spacing: 0 !important;
-      word-break: keep-all;
-      overflow: hidden;
+      word-break: normal !important;
+      overflow: visible !important;
     }
 
     html.ix-mobile #device .text--hr-value,
     html.ix-mobile #device .text--good,
     html.ix-mobile #device .text--temp-value,
     html.ix-mobile #device .text--resp-value,
-    html.ix-mobile #device .text--sleep-value,
+    html.ix-mobile #device .text--sleep-value:not(.ix-extras .text--sleep-value):not(#ix-extras-fade .text--sleep-value):not(#ix-extras-persistent .text--sleep-value),
     html.ix-mobile #ix-content-stage .text--hr-value,
     html.ix-mobile #ix-content-stage .text--good,
     html.ix-mobile #ix-content-stage .text--temp-value,
@@ -378,7 +388,7 @@
       letter-spacing: 0 !important;
     }
 
-    html.ix-mobile #device .text--sleep-value,
+    html.ix-mobile #device .text--sleep-value:not(.ix-extras .text--sleep-value):not(#ix-extras-fade .text--sleep-value):not(#ix-extras-persistent .text--sleep-value),
     html.ix-mobile #ix-content-stage .text--sleep-value {
       justify-content: center !important;
     }
@@ -401,13 +411,264 @@
       flex-shrink: 0;
     }
 
-    html.ix-mobile #device .text--quote,
-    html.ix-mobile #device .ix-extras .text--quote {
+    html.ix-mobile #device .text--quote:not(.ix-extras .text--quote):not(.ix-ai-body .text--quote) {
       display: flex !important;
       align-items: flex-end !important;
       justify-content: flex-end !important;
       white-space: nowrap !important;
       letter-spacing: 0 !important;
+    }
+
+    html.ix-mobile #device .ix-extras .text--quote,
+    html.ix-mobile #device .ix-ai-body .text--quote {
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: flex-end !important;
+      white-space: normal !important;
+      letter-spacing: 0 !important;
+    }
+
+    /* ── 手机端：AI STEWARD / ADDRESS&PAYMENT / SLEEP INDEX — 对齐 V1 桌面 ── */
+
+    /* AI STEWARD 基础态 */
+    html.ix-mobile #device[data-screen="002"] > .text--ai-steward,
+    html.ix-mobile #device[data-screen="002"] .ix-ai-group > .text--ai-steward {
+      left: 89px !important;
+      top: 378px !important;
+      width: 55px !important;
+      height: 26px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device[data-screen="003"] > .text--ai-steward,
+    html.ix-mobile #device[data-screen="003"] .ix-ai-group > .text--ai-steward {
+      left: 89px !important;
+      top: 488px !important;
+      width: 55px !important;
+      height: 26px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device[data-screen="003-3"] > .text--ai-steward,
+    html.ix-mobile #device[data-screen="003-3"] .ix-ai-content .text--ai-steward {
+      left: 89px !important;
+      top: 310px !important;
+      width: 55px !important;
+      height: 26px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    /* AI STEWARD 展开态 */
+    html.ix-mobile #device .ix-extras .text--ai-steward {
+      left: 94px !important;
+      top: 665.97px !important;
+      width: 55px !important;
+      height: 25.95px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device #ix-extras .text--ai-steward {
+      left: 89px !important;
+      top: 310px !important;
+      width: 55px !important;
+      height: 26px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device .ix-ai-content .text--ai-steward {
+      left: 89px !important;
+      top: 23px !important;
+      width: 55px !important;
+      height: 26px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device .ix-ai-body .text--ai-steward {
+      left: 85px !important;
+      top: 23px !important;
+      width: 55px !important;
+      height: 26px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device[data-screen="002-2"] > .text--ai-steward,
+    html.ix-mobile #device[data-screen="002-2"] .text--ai-steward {
+      left: 89px !important;
+      top: 187px !important;
+      width: 55px !important;
+      height: 26px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device[data-screen="002"] > .text--quote:not(.ix-extras .text--quote),
+    html.ix-mobile #device[data-screen="002"] .ix-ai-group ~ .text--quote {
+      left: 143px !important;
+      top: 464.95px !important;
+      width: 200px !important;
+      height: 52.8px !important;
+      display: block !important;
+      text-align: right !important;
+      white-space: normal !important;
+      letter-spacing: 0 !important;
+    }
+
+    html.ix-mobile #device[data-screen="002-2"] > .text--quote,
+    html.ix-mobile #device[data-screen="002-2"] .text--quote {
+      left: 103px !important;
+      top: 414px !important;
+      width: 195px !important;
+      height: 34px !important;
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: flex-end !important;
+      white-space: normal !important;
+      letter-spacing: 0 !important;
+    }
+
+    /* ADDRESS&PAYMENT 基础态 */
+    html.ix-mobile #device[data-screen="003"] > .text--address,
+    html.ix-mobile #device[data-screen="003"] .ix-ai-group ~ .text--address,
+    html.ix-mobile #device[data-screen="003"] .text--address.text--label {
+      left: 89px !important;
+      top: 639px !important;
+      width: 64px !important;
+      height: 26px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device[data-screen="003-3"] > .text--address,
+    html.ix-mobile #device[data-screen="003-3"] .text--address.text--label {
+      left: 89px !important;
+      top: 649px !important;
+      width: 64px !important;
+      height: 26px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    /* ADDRESS&PAYMENT 展开态 */
+    html.ix-mobile #device #ix-extras .text--header {
+      left: 92px !important;
+      top: 61px !important;
+      width: 64px !important;
+      height: 26px !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      white-space: pre-line !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device #ix-extras .text--addr-detail,
+    html.ix-mobile #device #ix-extras .text--address.text--addr-detail {
+      left: 42.26px !important;
+      top: 202.84px !important;
+      width: 320.11px !important;
+      height: auto !important;
+      min-height: 113.4px !important;
+      font-size: 18px !important;
+      line-height: 18px !important;
+      letter-spacing: 0 !important;
+      white-space: pre-line !important;
+      display: block !important;
+      overflow: visible !important;
+      color: #fff !important;
+    }
+
+    /* SLEEP INDEX 展开态 */
+    html.ix-mobile #device .ix-extras .text--sleep-label,
+    html.ix-mobile #device #ix-extras-fade .text--sleep-label,
+    html.ix-mobile #device #ix-extras-persistent .text--sleep-label {
+      left: 22.89px !important;
+      top: 433.65px !important;
+      width: 43px !important;
+      height: 26px !important;
+      white-space: pre-line !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device .ix-extras .text--sleep-value,
+    html.ix-mobile #device #ix-extras-fade .text--sleep-value,
+    html.ix-mobile #device #ix-extras-persistent .text--sleep-value {
+      left: 21px !important;
+      top: 480.45px !important;
+      width: 88.97px !important;
+      height: 38px !important;
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: center !important;
+      letter-spacing: 0 !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device .ix-extras .text--sleep-title,
+    html.ix-mobile #device #ix-extras-fade .text--sleep-title,
+    html.ix-mobile #device #ix-extras-persistent .text--sleep-title {
+      left: 138px !important;
+      top: 401px !important;
+      width: 237px !important;
+      height: 44px !important;
+      font-size: 40px !important;
+      line-height: 40px !important;
+      letter-spacing: 0 !important;
+      white-space: normal !important;
+      overflow: visible !important;
+    }
+
+    html.ix-mobile #device .ix-extras .text--sleep-sub,
+    html.ix-mobile #device #ix-extras-fade .text--sleep-sub,
+    html.ix-mobile #device #ix-extras-persistent .text--sleep-sub {
+      left: 224px !important;
+      top: 445px !important;
+      width: 151px !important;
+      height: 41px !important;
+      font-size: 12px !important;
+      line-height: 13px !important;
+      letter-spacing: 0 !important;
+      white-space: normal !important;
+      overflow: visible !important;
     }
 
     html.ix-mobile #device .ix-metrics-fade .text,
@@ -4859,7 +5120,7 @@ window.__IX_PERF__ = (function () {
   const DEVICE_H = 874;
 
   function fitDevice() {
-    if (!mobile) return;
+    if (!mobile || shouldDeferFit()) return;
     const root = document.documentElement;
     let vw = window.innerWidth;
     let vh = window.innerHeight;
@@ -4870,7 +5131,23 @@ window.__IX_PERF__ = (function () {
       vh -= parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
     }
     const s = Math.min(1, vw / DEVICE_W, vh / DEVICE_H);
+    const prev = parseFloat(getComputedStyle(root).getPropertyValue('--ix-scale')) || 1;
+    if (Math.abs(s - prev) < 0.004) return;
     root.style.setProperty('--ix-scale', String(Math.max(0.01, s)));
+  }
+
+  let fitCooldownUntil = 0;
+  function armFitCooldown(ms) {
+    fitCooldownUntil = performance.now() + (ms || 450);
+  }
+
+  function shouldDeferFit() {
+    if (performance.now() < fitCooldownUntil) return true;
+    const device = document.getElementById('device');
+    if (device?.classList.contains('is-animating')) return true;
+    if (window.IX_ALL?.isNavigating?.()) return true;
+    if (window.IX0ALL?.isAnimating?.()) return true;
+    return false;
   }
 
   let fitRaf = 0;
@@ -4932,7 +5209,7 @@ window.__IX_PERF__ = (function () {
     })();
   }
 
-  return { mobile, ms, SCALE, fitDevice, fitDeviceStable, revealApp, layoutPx };
+  return { mobile, ms, SCALE, fitDevice, fitDeviceStable, revealApp, armFitCooldown, layoutPx };
 })();
 </script>
 <script>
@@ -5229,7 +5506,14 @@ window.__IX_DRILL__ = (function () {
     }
   }
 
-  return { freeze, unfreeze, settlePaint, swapWhileFrozen, isFrozen };
+  async function releaseAnimating(device) {
+    if (!device) return;
+    await settlePaint();
+    device.classList.remove('is-animating');
+    window.__IX_PERF__?.armFitCooldown?.(450);
+  }
+
+  return { freeze, unfreeze, settlePaint, swapWhileFrozen, releaseAnimating, isFrozen };
 })();
 </script>
 <script>
@@ -5485,8 +5769,13 @@ window.__IX_DRILL__ = (function () {
     navLayer = layer;
 
     const glass = device.querySelector('.ix-nav-glass');
-    if (glass) device.appendChild(glass);
-    device.appendChild(layer);
+    const needsReorder = glass
+      ? device.lastElementChild !== layer || glass.nextElementSibling !== layer
+      : device.lastElementChild !== layer;
+    if (needsReorder) {
+      if (glass) device.appendChild(glass);
+      device.appendChild(layer);
+    }
   }
 
   function setupTodHeaderLayer() {
@@ -5996,12 +6285,11 @@ window.__IX_DRILL__ = (function () {
     });
 
     await apply0011FinalVisuals();
-    setupNavLayer();
     await fadeExtrasIn();
 
     currentScreen = '001-1';
     device.dataset.screen = '001-1';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupBackHotspot();
   }
@@ -6048,7 +6336,7 @@ window.__IX_DRILL__ = (function () {
     currentScreen = '001';
     await fadeContentIn();
 
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupMetricsHotspot();
   }
@@ -6311,7 +6599,9 @@ window.__IX_DRILL__ = (function () {
 
   function ensureNavPinOnTop() {
     if (navPinLayer && navPinLayer.parentNode === device) {
-      device.appendChild(navPinLayer);
+      if (device.lastElementChild !== navPinLayer) {
+        device.appendChild(navPinLayer);
+      }
     }
     ensureNavPinned();
   }
@@ -6713,9 +7003,8 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '001-2';
     device.dataset.screen = '001-2';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupBackHotspot();
   }
 
@@ -6752,9 +7041,8 @@ window.__IX_DRILL__ = (function () {
     currentScreen = '001';
     await fadeMContentIn();
 
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupMHotspot();
   }
 
@@ -7007,7 +7295,9 @@ window.__IX_DRILL__ = (function () {
 
   function ensureNavPinOnTop() {
     if (navPinLayer && navPinLayer.parentNode === device) {
-      device.appendChild(navPinLayer);
+      if (device.lastElementChild !== navPinLayer) {
+        device.appendChild(navPinLayer);
+      }
     }
     ensureNavPinned();
   }
@@ -7418,9 +7708,8 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '001-3';
     device.dataset.screen = '001-3';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupBackHotspot();
   }
 
@@ -7461,9 +7750,8 @@ window.__IX_DRILL__ = (function () {
     currentScreen = '001';
     await fadeSContentIn();
 
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupSHotspot();
   }
 
@@ -7969,7 +8257,7 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '002-1';
     device.dataset.screen = '002-1';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupReturnHotspot();
   }
@@ -7999,7 +8287,7 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '002';
     device.dataset.screen = '002';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupTodHotspot();
   }
@@ -8239,7 +8527,9 @@ window.__IX_DRILL__ = (function () {
 
   function ensureNavPinOnTop() {
     if (navPinLayer && navPinLayer.parentNode === device) {
-      device.appendChild(navPinLayer);
+      if (device.lastElementChild !== navPinLayer) {
+        device.appendChild(navPinLayer);
+      }
     }
     ensureNavPinned();
   }
@@ -8717,9 +9007,8 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '002-2';
     device.dataset.screen = '002-2';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupReturnHotspot();
   }
 
@@ -8749,9 +9038,8 @@ window.__IX_DRILL__ = (function () {
     currentScreen = '002';
     await fadeAiBodyAndTodIn();
 
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupAiHotspot();
   }
 
@@ -9102,7 +9390,9 @@ window.__IX_DRILL__ = (function () {
 
   function ensureNavPinOnTop() {
     if (navPinLayer && navPinLayer.parentNode === device) {
-      device.appendChild(navPinLayer);
+      if (device.lastElementChild !== navPinLayer) {
+        device.appendChild(navPinLayer);
+      }
     }
     ensureNavPinned();
   }
@@ -9607,9 +9897,8 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '002-3';
     device.dataset.screen = '002-3';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupReturnHotspot();
   }
 
@@ -9642,9 +9931,8 @@ window.__IX_DRILL__ = (function () {
     currentScreen = '002';
     await fadeAiAndMBodyIn();
 
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupMHotspot();
   }
 
@@ -9977,7 +10265,9 @@ window.__IX_DRILL__ = (function () {
 
   function ensureNavPinOnTop() {
     if (navPinLayer && navPinLayer.parentNode === device) {
-      device.appendChild(navPinLayer);
+      if (device.lastElementChild !== navPinLayer) {
+        device.appendChild(navPinLayer);
+      }
     }
     ensureNavPinned();
   }
@@ -10470,9 +10760,8 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '002-4';
     device.dataset.screen = '002-4';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupReturnHotspot();
   }
 
@@ -10508,9 +10797,8 @@ window.__IX_DRILL__ = (function () {
     currentScreen = '002';
     await fadeAiAndLBodyIn();
 
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupLHotspot();
   }
 
@@ -10997,7 +11285,7 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '003-1';
     device.dataset.screen = '003-1';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupCheckHotspot();
   }
@@ -11032,7 +11320,7 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '003';
     device.dataset.screen = '003';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupEditHotspot();
   }
@@ -11740,7 +12028,7 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '003-2';
     device.dataset.screen = '003-2';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupCheckHotspot();
   }
@@ -11776,7 +12064,7 @@ window.__IX_DRILL__ = (function () {
     currentScreen = '003';
     await fadeEditsIn();
 
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupEditHotspot();
   }
@@ -12725,7 +13013,7 @@ window.__IX_DRILL__ = (function () {
 
     currentScreen = '003-3';
     device.dataset.screen = '003-3';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupAiHotspot();
   }
@@ -12774,7 +13062,7 @@ window.__IX_DRILL__ = (function () {
     currentScreen = '003';
     await fadeAiAndEditsIn();
 
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupAiHotspot();
   }
@@ -13126,7 +13414,9 @@ window.__IX_DRILL__ = (function () {
 
   function ensureNavPinOnTop() {
     if (navPinLayer && navPinLayer.parentNode === device) {
-      device.appendChild(navPinLayer);
+      if (device.lastElementChild !== navPinLayer) {
+        device.appendChild(navPinLayer);
+      }
     }
     ensureNavPinned();
   }
@@ -14005,9 +14295,8 @@ window.__IX_DRILL__ = (function () {
     set003ContentLocked(false);
     currentScreen = '003-4';
     device.dataset.screen = '003-4';
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
-    ensureNavPinOnTop();
     setupPaymentHotspot();
   }
 
@@ -15641,7 +15930,7 @@ window.__IX_DRILL__ = (function () {
     incoming.style.removeProperty('transition');
     incoming.style.removeProperty('transform');
 
-    device.classList.remove('is-animating');
+    await window.__IX_DRILL__?.releaseAnimating?.(device);
     isAnimating = false;
     setupHotspots();
     if (window.__IX_INT_MODE__ && window.IX_INT?.onPageReady) {
