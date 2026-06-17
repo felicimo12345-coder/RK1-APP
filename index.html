@@ -51,6 +51,7 @@
     }
 
     .device-wrap {
+      position: relative;
       flex-shrink: 0;
       margin-left: auto;
       margin-right: auto;
@@ -275,8 +276,8 @@
     }
     .ix-drill-freeze__snap > .ix-drill-freeze__device {
       position: relative;
-      width: var(--ix-device-w);
-      height: var(--ix-device-h);
+      width: 100%;
+      height: 100%;
       overflow: hidden;
       background: #060606;
       box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -5165,10 +5166,18 @@ window.__IX_ASSETS__ = (function () {
 window.__IX_DRILL__ = (function () {
   'use strict';
 
+  let freezeDepth = 0;
+
+  function isFrozen() {
+    return freezeDepth > 0;
+  }
+
   function freeze() {
     const device = document.getElementById('device');
     const wrap = device?.closest('.device-wrap');
     if (!device || !wrap) return null;
+
+    freezeDepth++;
 
     const freezeEl = document.createElement('div');
     freezeEl.className = 'ix-drill-freeze';
@@ -5188,11 +5197,19 @@ window.__IX_DRILL__ = (function () {
     snap.appendChild(shell);
     freezeEl.appendChild(snap);
     wrap.appendChild(freezeEl);
+    device.setAttribute('data-ix-swap', '1');
+    device.style.visibility = 'hidden';
     return freezeEl;
   }
 
   function unfreeze(freezeEl) {
+    const device = document.getElementById('device');
+    if (device) {
+      device.style.visibility = '';
+      device.removeAttribute('data-ix-swap');
+    }
     if (freezeEl && freezeEl.parentNode) freezeEl.remove();
+    freezeDepth = Math.max(0, freezeDepth - 1);
   }
 
   function settlePaint() {
@@ -5201,7 +5218,18 @@ window.__IX_DRILL__ = (function () {
     });
   }
 
-  return { freeze, unfreeze, settlePaint };
+  async function swapWhileFrozen(work) {
+    const freezeEl = freeze();
+    try {
+      const result = await work();
+      await settlePaint();
+      return result;
+    } finally {
+      unfreeze(freezeEl);
+    }
+  }
+
+  return { freeze, unfreeze, settlePaint, swapWhileFrozen, isFrozen };
 })();
 </script>
 <script>
@@ -14277,11 +14305,23 @@ window.__IX_DRILL__ = (function () {
       if (window.__IX_INT_MODE__ && window.IX_INT) {
         await window.IX_INT.beforeDrillDown();
       }
-      await mod.remount();
-      if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
-        window.IX_INT.afterDrillMount(route.id);
+      const swap = window.__IX_DRILL__?.swapWhileFrozen;
+      if (swap) {
+        await swap(async () => {
+          await mod.remount();
+        });
+        if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
+          window.IX_INT.afterDrillMount(route.id);
+        } else {
+          device.dataset.ixRoute = route.id;
+        }
       } else {
-        device.dataset.ixRoute = route.id;
+        await mod.remount();
+        if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
+          window.IX_INT.afterDrillMount(route.id);
+        } else {
+          device.dataset.ixRoute = route.id;
+        }
       }
       await mod.forward();
     } catch (err) {
@@ -14295,15 +14335,14 @@ window.__IX_DRILL__ = (function () {
   }
 
   async function mountNeutral001() {
-    deactivateModuleStyles();
     const data = await parseScreen('001');
     device.dataset.screen = '001';
     device.classList.remove('is-animating');
     delete device.dataset.ixRoute;
     if (window.__IX_INT_MODE__ && window.IX_INT) {
-      if (window.IX_INT.setHomeMode) window.IX_INT.setHomeMode();
       await window.IX_INT.mountHomeContent('001', data);
     } else {
+      deactivateModuleStyles();
       applyBaseStyles(data.style);
       device.innerHTML = data.innerHTML;
       await bindAssets(device, SCREENS['001'].assetDir);
@@ -14632,11 +14671,23 @@ window.__IX_DRILL__ = (function () {
       if (window.__IX_INT_MODE__ && window.IX_INT) {
         await window.IX_INT.beforeDrillDown();
       }
-      await mod.remount();
-      if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
-        window.IX_INT.afterDrillMount(route.id);
+      const swap = window.__IX_DRILL__?.swapWhileFrozen;
+      if (swap) {
+        await swap(async () => {
+          await mod.remount();
+        });
+        if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
+          window.IX_INT.afterDrillMount(route.id);
+        } else {
+          device.dataset.ixRoute = route.id;
+        }
       } else {
-        device.dataset.ixRoute = route.id;
+        await mod.remount();
+        if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
+          window.IX_INT.afterDrillMount(route.id);
+        } else {
+          device.dataset.ixRoute = route.id;
+        }
       }
       await mod.forward();
     } catch (err) {
@@ -14650,15 +14701,14 @@ window.__IX_DRILL__ = (function () {
   }
 
   async function mountNeutral002() {
-    deactivateModuleStyles();
     const data = await parseScreen('002');
     device.dataset.screen = '002';
     device.classList.remove('is-animating');
     delete device.dataset.ixRoute;
     if (window.__IX_INT_MODE__ && window.IX_INT) {
-      if (window.IX_INT.setHomeMode) window.IX_INT.setHomeMode();
       await window.IX_INT.mountHomeContent('002', data);
     } else {
+      deactivateModuleStyles();
       applyBaseStyles(data.style);
       device.innerHTML = data.innerHTML;
       await bindAssets(device, SCREENS['002'].assetDir);
@@ -14969,11 +15019,23 @@ window.__IX_DRILL__ = (function () {
       if (window.__IX_INT_MODE__ && window.IX_INT) {
         await window.IX_INT.beforeDrillDown();
       }
-      await mod.remount();
-      if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
-        window.IX_INT.afterDrillMount(route.id);
+      const swap = window.__IX_DRILL__?.swapWhileFrozen;
+      if (swap) {
+        await swap(async () => {
+          await mod.remount();
+        });
+        if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
+          window.IX_INT.afterDrillMount(route.id);
+        } else {
+          device.dataset.ixRoute = route.id;
+        }
       } else {
-        device.dataset.ixRoute = route.id;
+        await mod.remount();
+        if (window.__IX_INT_MODE__ && window.IX_INT?.afterDrillMount) {
+          window.IX_INT.afterDrillMount(route.id);
+        } else {
+          device.dataset.ixRoute = route.id;
+        }
       }
       await mod.forward();
     } catch (err) {
@@ -14987,16 +15049,15 @@ window.__IX_DRILL__ = (function () {
   }
 
   async function mountNeutral003() {
-    deactivateModuleStyles();
     const data = await parseScreen('003');
     device.dataset.screen = '003';
     device.classList.remove('is-animating');
     device.removeAttribute('data-content003');
     delete device.dataset.ixRoute;
     if (window.__IX_INT_MODE__ && window.IX_INT) {
-      if (window.IX_INT.setHomeMode) window.IX_INT.setHomeMode();
       await window.IX_INT.mountHomeContent('003', data);
     } else {
+      deactivateModuleStyles();
       applyBaseStyles(data.style);
       device.innerHTML = data.innerHTML;
       await bindAssets(device, SCREENS['003'].assetDir);
@@ -15557,10 +15618,10 @@ window.__IX_DRILL__ = (function () {
       wait(NAV_MS)
     ]);
 
-    outgoing.remove();
+    outgoing.style.visibility = 'hidden';
     clearNavTransitions();
 
-    /* 第二部分：新内容自下而上到位 */
+    /* 第二部分：新内容自下而上到位（先换样式再移除旧层，减少空帧闪烁） */
     applyPageStyles(incomingData.style);
     currentPage = targetPage;
     device.dataset.screen = targetPage;
@@ -15570,6 +15631,8 @@ window.__IX_DRILL__ = (function () {
       if (targetPage !== '003') device.removeAttribute('data-content003');
     }
     await syncNavVisual(targetPage, toTab);
+
+    outgoing.remove();
 
     incoming.style.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(0.4, 0, 0.2, 1)';
     incoming.style.transform = 'translate3d(0,0,0)';
@@ -15752,7 +15815,9 @@ window.__IX_DRILL__ = (function () {
     const base = document.getElementById('ix-all-base-styles');
     if (base) base.disabled = true;
     if (!enabled) disableRouteStyles();
-    window.IX0ALL?.setPageStylesEnabled(!enabled);
+    if (!window.__IX_DRILL__?.isFrozen?.()) {
+      window.IX0ALL?.setPageStylesEnabled(!enabled);
+    }
     ensureShellGuard();
   }
 
@@ -15768,6 +15833,14 @@ window.__IX_DRILL__ = (function () {
 
   /** 回到 0-ALL 一级（001/002/003 之一） */
   async function mountHomeContent(pageId) {
+    const swap = window.__IX_DRILL__?.swapWhileFrozen;
+    if (swap) {
+      await swap(async () => {
+        await window.IX0ALL.mountPage(pageId);
+        setHomeMode();
+      });
+      return;
+    }
     setHomeMode();
     await window.IX0ALL.mountPage(pageId);
   }
